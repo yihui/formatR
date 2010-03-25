@@ -7,12 +7,9 @@ GUI to format R code
 Create a GUI to format R code.
 }
 \usage{
-formatR(guiToolkit = "RGtk2")
+formatR()
 }
 \arguments{
-  \item{guiToolkit}{
-the GUI toolkit to be used; possible values are `RGtk2', `tcltk' and `rJava'.
-}
 }
 \details{
 This function calls \code{\link[animation]{tidy.source}} to format R code. Spaces and indent will be added to the code automatically.
@@ -36,14 +33,7 @@ Yihui Xie <\url{http://yihui.name}>
 \examples{
 \dontrun{
 
-# default RGtk2
 formatR()
-
-# use tcltk
-formatR("tcltk")
-
-# use rJava
-formatR("rJava")
 
 }
 }
