@@ -49,6 +49,27 @@ formatR <- function() {
         if (!is.na(s))
             writeLines(svalue(txt), s)
     })
+    gbutton("execute", container = g2, handler = function(h,
+        ...) {
+        con = tempfile()
+        enc = getOption("encoding")
+        options(encoding = "")
+        writeLines(svalue(txt), con)
+        tidy.opt = tag(txt, "tidy.opt")
+        text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment,
+            keep.blank.line = tidy.opt$keep.blank.line, width.cutoff = tidy.opt$width.cutoff,
+            output = FALSE)
+        zz = textConnection(text.tidy$text.mask)
+        options(encoding = enc)
+        x = capture.output(source(zz, max.deparse.length = Inf,
+            echo = TRUE))
+        x = gsub(sprintf("%s = \"|%s\"", text.tidy$begin.comment,
+            text.tidy$end.comment), "", x)
+        rm(list = text.tidy$begin.comment, pos = 1)
+        cat(paste(x, collapse = "\n"), "\n")
+        close(zz)
+        unlink(con)
+    })
     gbutton("select-font", container = g2, handler = function(h,
         ...) {
         w = gwindow("Font Specification", )
@@ -129,5 +150,7 @@ formatR <- function() {
             dispose(w)
         })
     })
+    focus(txt)
     invisible(NULL)
 }
+
