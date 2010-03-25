@@ -24,6 +24,7 @@ formatR <- function() {
         con = tempfile()
         enc = getOption("encoding")
         options(encoding = "")
+        writeLines(svalue(txt), con)
         svalue(txt) = ""
         tidy.opt = tag(txt, "tidy.opt")
         text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment,
@@ -33,6 +34,7 @@ formatR <- function() {
         # text.tidy=iconv(text.tidy,from='UTF-8',to='GB2312')
         insert(txt, text.tidy, font.attr = tag(txt, "font.attr"))
         options(encoding = enc)
+        unlink(con)
     })
     gbutton("save", container = g2, handler = function(h, ...) {
         s = tag(txt, "src.file")
