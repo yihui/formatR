@@ -9,8 +9,6 @@ Create a GUI to format R code.
 \usage{
 formatR()
 }
-\arguments{
-}
 \details{
 This function calls \code{\link[animation]{tidy.source}} to format R code. Spaces and indent will be added to the code automatically.
 
