@@ -1,7 +1,7 @@
 Package: formatR
 Type: Package
 Title: Format R Code Automatically
-Version: 0.1-1
+Version: 0.1-2
 Date: 2010-04-01
 Author: Yihui Xie 
 Maintainer: Yihui Xie <xie@yihui.name>
