@@ -27,8 +27,8 @@ formatR <- function() {
         con = tempfile()
         enc = getOption("encoding")
         options(encoding = "")
+        on.exit(options(encoding = enc))
         writeLines(svalue(txt), con)
-        svalue(txt) = ""
         tidy.opt = tag(txt, "tidy.opt")
         text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment,
             keep.blank.line = tidy.opt$keep.blank.line, width.cutoff = tidy.opt$width.cutoff,
@@ -36,7 +36,6 @@ formatR <- function() {
         # Encoding(text.tidy)='UTF-8'
         # text.tidy=iconv(text.tidy,from='UTF-8',to='GB2312')
         svalue(txt) = text.tidy
-        options(encoding = enc)
         unlink(con)
         focus(txt)
     })
@@ -69,7 +68,7 @@ formatR <- function() {
             echo = TRUE))
         x = gsub(sprintf("%s = \"|%s\"", text.tidy$begin.comment,
             text.tidy$end.comment), "", x)
-        rm(list = text.tidy$begin.comment, pos = 1)
+        try(rm(list = text.tidy$begin.comment, pos = 1))
         cat(paste(x, collapse = "\n"), "\n")
         close(zz)
         unlink(con)
