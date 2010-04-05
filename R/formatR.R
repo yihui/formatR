@@ -5,7 +5,7 @@ formatR <- function() {
     g = ggroup(horizontal = FALSE, container = gwindow("Tidy R Source"))
     g1 = ggroup(container = g, expand = TRUE)
     g2 = ggroup(container = g)
-    txt = gtext("", container = g1, wrap = FALSE, font.attr = c(family = "monospace",
+    txt = gtext(container = g1, wrap = FALSE, font.attr = c(family = "monospace",
         size = "medium", styles = "normal", weights = "light"),
         expand = TRUE)
     tag(txt, "font.attr") = c(family = "monospace", size = "medium",
@@ -16,10 +16,11 @@ formatR <- function() {
     tag(txt, "enc.to") = ""
     gbutton("open", container = g2, handler = function(h, ...) {
         s = gfile("Open R Source")
-        if (!is.na(s))
+        if (!is.na(s)) {
             svalue(txt) = readLines(s)
         tag(txt, "src.file") = s
         tooltip(txt) = s
+        }
         focus(txt)
     })
     gbutton("convert", container = g2, handler = function(h,
