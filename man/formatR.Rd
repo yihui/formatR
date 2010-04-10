@@ -21,6 +21,8 @@ Invisible \code{NULL}.
 Inline comments will be removed, as documented in \code{\link[animation]{tidy.source}}.
 
 For the time being, multi-byte characters cannot be handled correctly.
+
+The ``Font'' button can only set font styles for the selected texts.
 }
 \author{
 Yihui Xie <\url{http://yihui.name}>
