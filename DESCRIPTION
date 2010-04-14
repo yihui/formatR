@@ -6,6 +6,7 @@ Date: 2010-04-20
 Author: Yihui Xie 
 Maintainer: Yihui Xie <xie@yihui.name>
 Description: This package provides a GUI (using gWidgetsRGtk2) to format R source code. Spaces and indent will be added to the code automatically, so that R code will be more readable and tidy.
-Depends: gWidgetsRGtk2, animation
+Depends: gWidgets, animation
+Suggests: gWidgetsRGtk2
 License: 	GPL-2 | GPL-3
 URL: http://yihui.name
