@@ -1,3 +1,6 @@
 .First.lib <- function(lib, pkg) {
-    if (interactive()) formatR()
+    if (is.null(getOption("guiToolkit")))
+        options(guiToolkit = "RGtk2")
+    if (interactive())
+        formatR()
 }

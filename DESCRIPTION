@@ -1,8 +1,8 @@
 Package: formatR
 Type: Package
 Title: Format R Code Automatically
-Version: 0.1-3
-Date: 2010-04-15
+Version: 0.1-4
+Date: 2010-04-20
 Author: Yihui Xie 
 Maintainer: Yihui Xie <xie@yihui.name>
 Description: This package provides a GUI (using gWidgetsRGtk2) to format R source code. Spaces and indent will be added to the code automatically, so that R code will be more readable and tidy.

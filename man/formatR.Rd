@@ -4,7 +4,7 @@
 GUI to format R code
 }
 \description{
-Create a GUI to format R code.
+Create a GUI (via GTK+ by default) to format R code.
 }
 \usage{
 formatR()
@@ -22,7 +22,7 @@ Inline comments will be removed, as documented in \code{\link[animation]{tidy.so
 
 For the time being, multi-byte characters cannot be handled correctly.
 
-The ``Font'' button can only set font styles for the selected texts.
+By default, the interface is based on GTK+ (R package \bold{RGtk2}), but other options (tcltk and Java) are possible too. See the examples below. Note the ``Font'' button is only for the GTK+ interface and it can only set font styles for the selected texts.
 }
 \author{
 Yihui Xie <\url{http://yihui.name}>
@@ -33,6 +33,18 @@ Yihui Xie <\url{http://yihui.name}>
 \examples{
 \dontrun{
 
+## a GUI will show up on loading
+library(formatR)
+
+## manually call the GUI
+formatR()
+
+## tcl/tk interface: need gWidgetstcltk package
+options(guiToolkit = "tcltk")
+formatR()
+
+## Java interface: need gWidgetsrJava package
+options(guiToolkit = "rJava")
 formatR()
 
 }
