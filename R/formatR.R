@@ -32,8 +32,8 @@ formatR <- function() {
         text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment, 
             keep.blank.line = tidy.opt$keep.blank.line, width.cutoff = tidy.opt$width.cutoff, 
             output = FALSE)$text.tidy
-        # Encoding(text.tidy)='UTF-8'
-        # text.tidy=iconv(text.tidy,from='UTF-8',to='GB2312')
+        ## Encoding works on some platforms for multi-byte characters...
+        Encoding(text.tidy) = "UTF-8"
         svalue(txt) = text.tidy
         unlink(con)
     })
