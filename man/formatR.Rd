@@ -17,12 +17,13 @@ We can either open an R source file or directly write R code in the text widget.
 \value{
 Invisible \code{NULL}.
 }
+\references{\url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}}
 \note{
 Inline comments will be removed, as documented in \code{\link[animation]{tidy.source}}.
 
 For the time being, multi-byte characters cannot be handled correctly.
 
-By default, the interface is based on GTK+ (R package \bold{RGtk2}), but other options (tcltk and Java) are possible too. See the examples below. Note the ``Font'' button is only for the GTK+ interface and it can only set font styles for the selected texts.
+By default, the interface is based on GTK+ (R package \bold{RGtk2}), but other options (\bold{tcltk} and \bold{rJava}) are possible too. See the examples below. Note the ``Font'' button is only for the GTK+ interface and it can only set font styles for the selected texts.
 }
 \author{
 Yihui Xie <\url{http://yihui.name}>
