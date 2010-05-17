@@ -81,13 +81,15 @@ formatR <- function() {
         enc = getOption("encoding")
         options(encoding = "native.enc")
         on.exit(options(encoding = enc))
-        writeLines(svalue(txt), con)
+        originalCode <- svalue(txt)
+        Encoding(originalCode) <- "UTF-8"
+        writeLines(originalCode, con)
         tidy.opt = tag(txt, "tidy.opt")
         text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment,
             keep.blank.line = tidy.opt$keep.blank.line, width.cutoff = tidy.opt$width.cutoff,
             output = FALSE)$text.tidy
         ## Encoding works on some platforms for multi-byte characters...
-        Encoding(text.tidy) = "UTF-8"
+        ## Encoding(text.tidy) = "UTF-8"
         svalue(txt) = text.tidy
         unlink(con)
     })
