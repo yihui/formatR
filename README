@@ -1,0 +1,4 @@
+This package provides a GUI (by gWidgets and prefers gWidgetsRGtk2) 
+to format R source code. Spaces and indent will be added to the code 
+automatically, so that R code will be more human-readable and tidy.
+
