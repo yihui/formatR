@@ -1,4 +1,4 @@
-##' `Tidy up' R Code and Partially Preserve Comments.
+##' `Tidy up' R code and partially preserve comments.
 ##' Actually this function has nothing to do with code optimization; it just
 ##' returns parsed source code, but some comments can be preserved, which is
 ##' different with \code{\link[base]{parse}}. See `Details'.
@@ -17,15 +17,16 @@
 ##' @param source a string: location of the source code (default to be the
 ##'   clipboard; this means we can copy the code to clipboard and use
 ##'   \code{tidy.souce()} without specifying the argument \code{source})
-##' @param keep.comment logical value: whether to keep comments or not? (TRUE by
-##' default)
+##' @param keep.comment logical value: whether to keep comments or not?
+##' (\code{TRUE} by default)
 ##' @param keep.blank.line logical value: whether to keep blank lines or not?
-##' (FALSE by default)
+##' (\code{FALSE} by default)
 ##' @param begin.comment,end.comment identifiers to mark the comments
 ##' @param output output to the console or a file using
 ##'   \code{\link[base]{cat}}?
 ##' @param width.cutoff passed to \code{\link[base]{deparse}}: integer in [20,
-##'   500] determining the cutoff at which line-breaking is tried
+##'   500] determining the cutoff at which line-breaking is tried (default to be
+##' \code{0.75 * getOption("width")})
 ##' @param \dots other arguments passed to \code{\link[base]{cat}}, e.g.
 ##'   \code{file}
 ##' @return A list with components \item{text.tidy}{The parsed code as a
@@ -35,11 +36,11 @@
 ##'
 ##' @note For Mac users, this function will automatically set \code{source} to
 ##'   be \code{pipe("pbpaste")} so that we still don't need to specify this
-##'   argument if we want to rea the code form the clipboard.
+##'   argument if we want to read the code form the clipboard.
 ##'
 ##' There are hidden options which can control the behaviour of this function:
-##' the argument 'keep.comment' gets value from \code{options('keep.comment')}
-##' by default; and 'keep.blank.line' from \code{options('keep.blank.line')}.
+##' the argument \code{keep.comment} gets value from \code{options('keep.comment')}
+##' by default; and \code{keep.blank.line} from \code{options('keep.blank.line')}.
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
 ##'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
 ##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
@@ -47,6 +48,7 @@
 ##' @references
 ##'   \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
 ##' @keywords IO
+##' @export
 ##' @examples
 ##'
 ##' ## tidy up the source code of image demo
@@ -59,6 +61,9 @@
 ##' ## check the original code here and see the difference
 ##' file.show(x)
 ##' file.show(f)
+##' ## use global options
+##' options(keep.comment = TRUE, keep.blank.line = FALSE)
+##' tidy.source(x)
 ##' ## if you've copied R code into the clipboard
 ##' \dontrun{
 ##' tidy.source("clipboard")
@@ -109,7 +114,7 @@ tidy.source = function(source = "clipboard", keep.comment,
                 begin.comment, text.lines[head.comment], end.comment)
         }
         blank.line = text.lines == ""
-        if (any(blank.line) && !isTRUE(keep.blank.line))
+        if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment,
                 end.comment)
         text.mask = tidy.block(text.lines)
@@ -149,6 +154,7 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' and it can only set font styles for the selected texts.
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @seealso \code{\link{tidy.source}}
+##' @export
 ##' @references
 ##'   \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
 ##' @examples
