@@ -1,61 +1,182 @@
-formatR <- function() {
+##' `Tidy up' R Code and Partially Preserve Comments.
+##' Actually this function has nothing to do with code optimization; it just
+##' returns parsed source code, but some comments can be preserved, which is
+##' different with \code{\link[base]{parse}}. See `Details'.
+##'
+##' This function helps the users to tidy up their source code in a sense that
+##' necessary indents and spaces will be added, etc. See
+##' \code{\link[base]{parse}}. But comments which are in single lines will be
+##' preserved if \code{keep.comment = TRUE} (inline comments will be removed).
+##'
+##' The method to preserve comments is to protect them as strings in disguised
+##' assignments: combine \code{end.comment} to the end of a comment line and
+##' 'assign' the whole line to \code{begin.comment}, so the comment line will
+##' not be removed when parsed. At last, we remove the identifiers
+##' \code{begin.comment} and \code{end.comment}.
+##'
+##' @param source a string: location of the source code (default to be the
+##'   clipboard; this means we can copy the code to clipboard and use
+##'   \code{tidy.souce()} without specifying the argument \code{source})
+##' @param keep.comment logical value: whether to keep comments or not? (TRUE by
+##' default)
+##' @param keep.blank.line logical value: whether to keep blank lines or not?
+##' (FALSE by default)
+##' @param begin.comment,end.comment identifiers to mark the comments
+##' @param output output to the console or a file using
+##'   \code{\link[base]{cat}}?
+##' @param width.cutoff passed to \code{\link[base]{deparse}}: integer in [20,
+##'   500] determining the cutoff at which line-breaking is tried
+##' @param \dots other arguments passed to \code{\link[base]{cat}}, e.g.
+##'   \code{file}
+##' @return A list with components \item{text.tidy}{The parsed code as a
+##'   character vector.} \item{text.mask}{The code containing comments, which
+##'   are masked in assignments.} \item{begin.comment, end.comment}{
+##'   identifiers used to mark the comments }
+##'
+##' @note For Mac users, this function will automatically set \code{source} to
+##'   be \code{pipe("pbpaste")} so that we still don't need to specify this
+##'   argument if we want to rea the code form the clipboard.
+##'
+##' There are hidden options which can control the behaviour of this function:
+##' the argument 'keep.comment' gets value from \code{options('keep.comment')}
+##' by default; and 'keep.blank.line' from \code{options('keep.blank.line')}.
+##' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
+##'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
+##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
+##'   \code{\link[base]{cat}}
+##' @references
+##'   \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+##' @keywords IO
+##' @examples
+##'
+##' ## tidy up the source code of image demo
+##' x = file.path(system.file(package = "graphics"), "demo", "image.R")
+##' # to console
+##' tidy.source(x)
+##' # to a file
+##' f = tempfile()
+##' tidy.source(x, keep.blank.line = TRUE, file = f)
+##' ## check the original code here and see the difference
+##' file.show(x)
+##' file.show(f)
+##' ## if you've copied R code into the clipboard
+##' \dontrun{
+##' tidy.source("clipboard")
+##' ## write into clipboard again
+##' tidy.source("clipboard", file = "clipboard")
+##' }
+##'
+tidy.source = function(source = "clipboard", keep.comment,
+    keep.blank.line, begin.comment, end.comment, output = TRUE,
+    width.cutoff = 0.75 * getOption("width"), ...) {
+    if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
+        source = pipe("pbpaste")
+    }
+    if (missing(keep.comment)) {
+        keep.comment = if (is.null(getOption('keep.comment'))) TRUE else getOption('keep.comment')
+    }
+    if (missing(keep.blank.line)) {
+        keep.blank.line = if (is.null(getOption('keep.blank.line'))) FALSE else getOption('keep.blank.line')
+    }
+    tidy.block = function(block.text) {
+        exprs = base::parse(text = block.text)
+        n = length(exprs)
+        res = character(n)
+        for (i in 1:n) {
+            dep = paste(base::deparse(exprs[i], width.cutoff), collapse = "\n")
+            res[i] = substring(dep, 12, nchar(dep) - 1)
+        }
+        return(res)
+    }
+    text.lines = readLines(source, warn = FALSE)
+    if (isTRUE(keep.comment)) {
+        identifier = function() paste(sample(LETTERS), collapse = "")
+        if (missing(begin.comment))
+            begin.comment = identifier()
+        if (missing(end.comment))
+            end.comment = identifier()
+        text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "",
+            text.lines)
+        while (length(grep(sprintf("%s|%s", begin.comment, end.comment),
+            text.lines))) {
+            begin.comment = identifier()
+            end.comment = identifier()
+        }
+        head.comment = substring(text.lines, 1, 1) == "#"
+        if (any(head.comment)) {
+            text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
+            text.lines[head.comment] = sprintf("%s=\"%s%s\"",
+                begin.comment, text.lines[head.comment], end.comment)
+        }
+        blank.line = text.lines == ""
+        if (any(blank.line) && !isTRUE(keep.blank.line))
+            text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment,
+                end.comment)
+        text.mask = tidy.block(text.lines)
+        text.tidy = gsub(sprintf("%s = \"|%s\"", begin.comment,
+            end.comment), "", text.mask)
+    }
+    else {
+        text.tidy = text.mask = tidy.block(text.lines)
+        begin.comment = end.comment = ""
+    }
+    if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
+    invisible(list(text.tidy = text.tidy, text.mask = text.mask,
+        begin.comment = begin.comment, end.comment = end.comment))
+}
+
+
+##' GUI to format R code.
+##' Create a GUI (via GTK+ by default) to format R code.
+##'
+##' This function calls \code{\link{tidy.source}} to format R code.
+##' Spaces and indent will be added to the code automatically.
+##'
+##' We can either open an R source file or directly write R code in the text
+##' widget. Click the ``convert'' button, and the code will become tidy. See
+##' \code{\link{tidy.source}} for more details.
+##'
+##' @param guiToolkit the GUI toolkit to use
+##' @return Invisible \code{NULL}.
+##' @note Inline comments will be removed, as documented in
+##'   \code{\link{tidy.source}}.
+##'
+##' For the time being, multi-byte characters cannot be handled correctly.
+##'
+##' By default, the interface is based on GTK+ (R package \bold{RGtk2}), but
+##' other options (\bold{tcltk}, \bold{rJava} and \bold{Qt}) are possible too. See the
+##' examples below. Note the ``Font'' button is only for the GTK+ interface
+##' and it can only set font styles for the selected texts.
+##' @author Yihui Xie <\url{http://yihui.name}>
+##' @seealso \code{\link{tidy.source}}
+##' @references
+##'   \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+##' @examples
+##'
+##' \dontrun{
+##'
+##' ## a GUI will show up on loading if one of the gWidgets
+##' ##   toolkit is present (e.g. via library(gWidgetsRGtk2))
+##' library(formatR)
+##'
+##' ## manually call the GUI
+##' formatR()
+##'
+##' ## tcl/tk interface: need gWidgetstcltk package
+##' options(guiToolkit = "tcltk")
+##' formatR()
+##'
+##' ## Java interface: need gWidgetsrJava package
+##' options(guiToolkit = "rJava")
+##' formatR()
+##'
+##' }
+##'
+formatR = function(guiToolkit = 'RGtk2') {
     # TODO: gtext() cannot handle multi-byte characters? encoding problems?
     # I cannot find a solution yet...
-    tidy.source = function(source = "clipboard", keep.comment = TRUE,
-        keep.blank.line = TRUE, begin.comment, end.comment, output = TRUE,
-        width.cutoff = 60L, ...) {
-        if (source == "clipboard" && Sys.info()["sysname"] ==
-            "Darwin") {
-            source = pipe("pbpaste")
-        }
-        tidy.block = function(block.text) {
-            exprs = base::parse(text = block.text)
-            n = length(exprs)
-            res = character(n)
-            for (i in 1:n) {
-                dep = paste(base::deparse(exprs[i], width.cutoff),
-                  collapse = "\n")
-                res[i] = substring(dep, 12, nchar(dep) - 1)
-            }
-            return(res)
-        }
-        text.lines = readLines(source, warn = FALSE)
-        if (keep.comment) {
-            identifier = function() paste(sample(LETTERS), collapse = "")
-            if (missing(begin.comment))
-                begin.comment = identifier()
-            if (missing(end.comment))
-                end.comment = identifier()
-            text.lines = gsub("^[[:space:]]+|[[:space:]]+$",
-                "", text.lines)
-            while (length(grep(sprintf("%s|%s", begin.comment,
-                end.comment), text.lines))) {
-                begin.comment = identifier()
-                end.comment = identifier()
-            }
-            head.comment = substring(text.lines, 1, 1) == "#"
-            if (any(head.comment)) {
-                text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
-                text.lines[head.comment] = sprintf("%s=\"%s%s\"",
-                  begin.comment, text.lines[head.comment], end.comment)
-            }
-            blank.line = text.lines == ""
-            if (any(blank.line) & keep.blank.line)
-                text.lines[blank.line] = sprintf("%s=\"%s\"",
-                  begin.comment, end.comment)
-            text.mask = tidy.block(text.lines)
-            text.tidy = gsub(sprintf("%s = \"|%s\"", begin.comment,
-                end.comment), "", text.mask)
-        }
-        else {
-            text.tidy = text.mask = tidy.block(text.lines)
-            begin.comment = end.comment = ""
-        }
-        if (output)
-            cat(paste(text.tidy, collapse = "\n"), "\n", ...)
-        invisible(list(text.tidy = text.tidy, text.mask = text.mask,
-            begin.comment = begin.comment, end.comment = end.comment))
-    }
+    options(guiToolkit = guiToolkit)
+    stopifnot(require(paste('gWidgets', guiToolkit, sep = ''), character.only = TRUE))
 
     g = ggroup(horizontal = FALSE, container = gwindow("Tidy R Source"))
     g1 = ggroup(container = g, expand = TRUE)
