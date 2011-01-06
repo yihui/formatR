@@ -185,8 +185,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments by + 'comments' to cheat R
-        idx = grepl('^[^#]', textlines)
-        text.lines[idx] = sub("([ ]{2,}#.*)$", " + \"\\1\"", text.lines[idx])
+        text.lines[!head.comment] = sub("([ ]{2,}#.*)$", " + \"\\1\"", text.lines[!head.comment])
         text.mask = tidy.block(text.lines)
         text.tidy = gsub(sprintf("%s = \"|%s\"", begin.comment,
             end.comment), "", text.mask)
