@@ -194,12 +194,10 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' formatR()
 ##'
 ##' ## tcl/tk interface: need gWidgetstcltk package
-##' options(guiToolkit = "tcltk")
-##' formatR()
+##' formatR('tcltk')
 ##'
 ##' ## Java interface: need gWidgetsrJava package
-##' options(guiToolkit = "rJava")
-##' formatR()
+##' formatR('rJava')
 ##'
 ##' }
 ##'
