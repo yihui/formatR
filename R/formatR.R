@@ -277,8 +277,9 @@ formatR = function(guiToolkit = 'RGtk2') {
     gbutton("Convert", container = g2, handler = function(h,
         ...) {
         tidy.opt = tag(txt, "tidy.opt")
-        src = unlist(strsplit(svalue(txt), '\n'))
+        src = svalue(txt)
         Encoding(src) = 'UTF-8'
+        src = unlist(strsplit(src, '\n', fixed = TRUE))
         text.tidy = tidy.source(text = src,
             keep.comment = tidy.opt$keep.comment,
             keep.blank.line = tidy.opt$keep.blank.line,
