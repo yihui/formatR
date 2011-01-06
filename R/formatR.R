@@ -9,11 +9,21 @@
 ##' \code{keep.comment = TRUE}.
 ##'
 ##' The method to preserve comments is to protect them as strings in
-##' disguised assignments: combine \code{end.comment} to the end of a
-##' comment line and 'assign' the whole line to \code{begin.comment},
-##' so the comment line will not be removed when parsed. At last, we
-##' remove the identifiers \code{begin.comment} and
-##' \code{end.comment}.
+##' disguised assignments. For example, there is a single line of
+##' comments in the source code:
+##'
+##' \verb{  # asdf}
+##'
+##' It will be first masked as
+##'
+##' \verb{SOME_IDENTIFIER = "  # asdfANOTHER_IDENTIFIER"}
+##'
+##' which is a legal R expression, so \code{\link[base]{parse}} can
+##' deal with it and will no longer removed the disguised comments.
+##'
+##' In the end the identifiers will be removed to restore the original
+##' comments, i.e. the strings \code{'SOME_IDENTIFIER = "'} and
+##' \code{'ANOTHER_IDENTIFIER"'} are replaced with empty strings.
 ##'
 ##' ``Inline'' comments are identified as ``two or more spaces'' plus
 ##' the hash symbol \code{#} in your source code, e.g. \code{1 + 1  #
@@ -21,6 +31,15 @@
 ##' to your source code, for instance, \code{a = "I'm a string  #yes"}
 ##' does not contain comments, but this function will treat it as if
 ##' it does!
+##'
+##' Inline comments are disguised as \code{1 + 1 + "   ## comments"}
+##' first, then \code{\link[base]{parse}} will deal with this
+##' expression; again, the disguised comments will not be removed. In
+##' the end, inline comments will be freed as well.
+##'
+##' All these special treatments to comments are due to the fact that
+##' \code{\link[base]{parse}} and \code{\link[base]{deparse}} can tidy
+##' the R code at the price of dropping all the comments.
 ##'
 ##' @param source a string: location of the source code (default to be
 ##' the clipboard; this means we can copy the code to clipboard and
@@ -30,7 +49,6 @@
 ##' not? (\code{TRUE} by default)
 ##' @param keep.blank.line logical value: whether to keep blank lines
 ##' or not? (\code{FALSE} by default)
-##' @param begin.comment,end.comment identifiers to mark the comments
 ##' @param output output to the console or a file using
 ##' \code{\link[base]{cat}}?
 ##' @param width.cutoff passed to \code{\link[base]{deparse}}: integer
@@ -94,7 +112,7 @@
 ##' }
 ##'
 tidy.source = function(source = "clipboard", keep.comment,
-    keep.blank.line, begin.comment, end.comment, output = TRUE,
+    keep.blank.line, output = TRUE,
     width.cutoff = 0.75 * getOption("width"), ...) {
     if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
         source = pipe("pbpaste")
@@ -117,18 +135,10 @@ tidy.source = function(source = "clipboard", keep.comment,
     }
     text.lines = readLines(source, warn = FALSE)
     if (isTRUE(keep.comment)) {
-        identifier = function() paste(sample(LETTERS), collapse = "")
-        if (missing(begin.comment))
-            begin.comment = identifier()
-        if (missing(end.comment))
-            end.comment = identifier()
-        text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "",
-            text.lines)
-        while (length(grep(sprintf("%s|%s", begin.comment, end.comment),
-            text.lines))) {
-            begin.comment = identifier()
-            end.comment = identifier()
-        }
+        ## if you have variable names like this in your code, then you really beat me...
+        begin.comment = "BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
+        end.comment = "HaHaHa_EnD_TiDy_IdEnTiFiEr"
+        text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
         head.comment = substring(text.lines, 1, 1) == "#"
         if (any(head.comment)) {
             text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
@@ -137,8 +147,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         blank.line = text.lines == ""
         if (any(blank.line) && isTRUE(keep.blank.line))
-            text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment,
-                end.comment)
+            text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments by + 'comments' to cheat R
         text.lines = sub("([ ]{2,}#.*)$", " + \"\\1\"", text.lines)
         text.mask = tidy.block(text.lines)
