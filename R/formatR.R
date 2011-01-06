@@ -22,19 +22,18 @@
 ##'
 ##' which is a legal R expression, so \code{\link[base]{parse}} can
 ##' deal with it and will no longer remove the disguised comments.
-##'
 ##' In the end the identifiers will be removed to restore the original
-##' comments, i.e. the strings \code{SOME_IDENTIFIER = "} and
-##' \code{ANOTHER_IDENTIFIER"} are replaced with empty strings.
+##' comments, i.e. the strings \code{'SOME_IDENTIFIER = "'} and
+##' \code{'ANOTHER_IDENTIFIER"'} are replaced with empty strings.
 ##'
 ##' ``Inline'' comments are identified as ``two or more spaces'' plus
 ##' the hash symbol \code{#} in your source code, e.g.
 ##'
-##' \verb{1 + 1  #  comments}
+##' \verb{1+1  #  comments}
 ##'
 ##' or
 ##'
-##' \verb{1 + 1    # comments}
+##' \verb{1+1    # comments}
 ##'
 ##' This might be dangerous to your source code, for instance,
 ##'
@@ -43,13 +42,16 @@
 ##' does not contain comments, but this function will treat it as if
 ##' it does!
 ##'
-##' Inline comments are first disguised as
+##' Inline comments are first disguised as a sum with its preceding R
+##' code, which is essentially meaningless but syntactically correct!
+##' For example,
 ##'
-##' \verb{1 + 1 + "   ## comments"}
+##' \verb{1+1 + "   # comments"}
 ##'
 ##' then \code{\link[base]{parse}} will deal with this expression;
 ##' again, the disguised comments will not be removed. In the end,
-##' inline comments will be freed as well.
+##' inline comments will be freed as well (remove the plus sign and
+##' surrounding double quotes).
 ##'
 ##' All these special treatments to comments are due to the fact that
 ##' \code{\link[base]{parse}} and \code{\link[base]{deparse}} can tidy
@@ -105,6 +107,18 @@
 ##' @export
 ##' @examples
 ##'
+##' ## use the 'text' argument
+##' src = c('# a single line of comments is preserved', '1+1', 'if(TRUE){',
+##' paste('x=1  ', '# comments begin with at least 2 spaces!'), '}else{',
+##' "x=2;print('Oh no... ask the right bracket to go away!')}",
+##' '1*3 # this comment will be dropped!')
+##'
+##' ## source code
+##' cat(src, sep = '\n')
+##'
+##' ## the formatted version
+##' tidy.source(text = src)
+##'
 ##' ## tidy up the source code of image demo
 ##' x = file.path(system.file(package = "graphics"), "demo", "image.R")
 ##'
@@ -130,18 +144,6 @@
 ##' tidy.source("clipboard", file = "clipboard")
 ##' }
 ##'
-##'
-##' ## use the 'text' argument
-##' src = c('# a single line of comments is preserved', '1+1', 'if(TRUE){',
-##' paste('x=1  ', '# comments begin with at least 2 spaces!'), '}else{',
-##' "x=2;print('Oh no... ask the right bracket to go away!')}",
-##' '1*3 # this comment will be dropped!')
-##'
-##' ## source code
-##' cat(src, sep = '\n')
-##'
-##' ## the formatted version
-##' tidy.source(text = src)
 ##'
 tidy.source = function(source = "clipboard", keep.comment,
     keep.blank.line, output = TRUE, text = NULL,
