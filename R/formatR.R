@@ -2,6 +2,8 @@
 ##' This function has nothing to do with code optimization; it just
 ##' returns parsed source code, but also tries to preserve comments,
 ##' which is different with \code{\link[base]{parse}}. See `Details'.
+##' (Please read the HTML help page instead of the text help to avoid
+##' confusion)
 ##'
 ##' This function helps the users to tidy up their source code in a
 ##' sense that necessary indents and spaces will be added, etc. See
@@ -19,23 +21,35 @@
 ##' \verb{SOME_IDENTIFIER = "  # asdfANOTHER_IDENTIFIER"}
 ##'
 ##' which is a legal R expression, so \code{\link[base]{parse}} can
-##' deal with it and will no longer removed the disguised comments.
+##' deal with it and will no longer remove the disguised comments.
 ##'
 ##' In the end the identifiers will be removed to restore the original
-##' comments, i.e. the strings \code{'SOME_IDENTIFIER = "'} and
-##' \code{'ANOTHER_IDENTIFIER"'} are replaced with empty strings.
+##' comments, i.e. the strings \code{SOME_IDENTIFIER = "} and
+##' \code{ANOTHER_IDENTIFIER"} are replaced with empty strings.
 ##'
 ##' ``Inline'' comments are identified as ``two or more spaces'' plus
-##' the hash symbol \code{#} in your source code, e.g. \code{1 + 1  #
-##' comments} or \code{1 + 1    ## comments}. This might be dangerous
-##' to your source code, for instance, \code{a = "I'm a string  #yes"}
+##' the hash symbol \code{#} in your source code, e.g.
+##'
+##' \verb{1 + 1  #  comments}
+##'
+##' or
+##'
+##' \verb{1 + 1    # comments}
+##'
+##' This might be dangerous to your source code, for instance,
+##'
+##' \verb{a = "I'm a string   #yes"}
+##'
 ##' does not contain comments, but this function will treat it as if
 ##' it does!
 ##'
-##' Inline comments are disguised as \code{1 + 1 + "   ## comments"}
-##' first, then \code{\link[base]{parse}} will deal with this
-##' expression; again, the disguised comments will not be removed. In
-##' the end, inline comments will be freed as well.
+##' Inline comments are first disguised as
+##'
+##' \verb{1 + 1 + "   ## comments"}
+##'
+##' then \code{\link[base]{parse}} will deal with this expression;
+##' again, the disguised comments will not be removed. In the end,
+##' inline comments will be freed as well.
 ##'
 ##' All these special treatments to comments are due to the fact that
 ##' \code{\link[base]{parse}} and \code{\link[base]{deparse}} can tidy
@@ -51,10 +65,15 @@
 ##' or not? (\code{FALSE} by default)
 ##' @param output output to the console or a file using
 ##' \code{\link[base]{cat}}?
+##' @param text an alternative way to specify the input: if it is
+##' \code{NULL}, the function will read the source code from the
+##' \code{source} argument; alternatively, if \code{text} is a
+##' character vector containing the source code, it will be used as
+##' the input and the \code{source} argument will be ignored
 ##' @param width.cutoff passed to \code{\link[base]{deparse}}: integer
 ##' in [20, 500] determining the cutoff at which line-breaking is
 ##' tried (default to be \code{0.75 * getOption("width")})
-##' @param \dots other arguments passed to \code{\link[base]{cat}},
+##' @param ... other arguments passed to \code{\link[base]{cat}},
 ##' e.g. \code{file}
 ##' @return A list with components \item{text.tidy}{The parsed code as
 ##' a character vector.} \item{text.mask}{The code containing
@@ -111,11 +130,29 @@
 ##' tidy.source("clipboard", file = "clipboard")
 ##' }
 ##'
+##'
+##' ## use the 'text' argument
+##' src = c('# a single line of comments is preserved', '1+1', 'if(TRUE){',
+##' paste('x=1  ', '# comments begin with at least 2 spaces!'), '}else{',
+##' "x=2;print('Oh no... ask the right bracket to go away!')}",
+##' '1*3 # this comment will be dropped!')
+##'
+##' ## source code
+##' cat(src, sep = '\n')
+##'
+##' ## the formatted version
+##' tidy.source(text = src)
+##'
 tidy.source = function(source = "clipboard", keep.comment,
-    keep.blank.line, output = TRUE,
+    keep.blank.line, output = TRUE, text = NULL,
     width.cutoff = 0.75 * getOption("width"), ...) {
-    if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
-        source = pipe("pbpaste")
+    if (is.null(text)) {
+        if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
+            source = pipe("pbpaste")
+        }
+        text.lines = readLines(source, warn = FALSE)
+    } else {
+        text.lines = text
     }
     if (missing(keep.comment)) {
         keep.comment = if (is.null(getOption('keep.comment'))) TRUE else getOption('keep.comment')
@@ -133,7 +170,6 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         return(res)
     }
-    text.lines = readLines(source, warn = FALSE)
     if (isTRUE(keep.comment)) {
         ## if you have variable names like this in your code, then you really beat me...
         begin.comment = "BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
