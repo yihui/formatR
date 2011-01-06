@@ -76,7 +76,9 @@
 ##' in [20, 500] determining the cutoff at which line-breaking is
 ##' tried (default to be \code{0.75 * getOption("width")})
 ##' @param ... other arguments passed to \code{\link[base]{cat}},
-##' e.g. \code{file}
+##' e.g. \code{file} (this can be useful for batch-processing R
+##' scripts, e.g. \code{tidy.source(source = 'input.R', file =
+##' 'output.R')})
 ##' @return A list with components \item{text.tidy}{The parsed code as
 ##' a character vector.} \item{text.mask}{The code containing
 ##' comments, which are masked in assignments.} \item{begin.comment,
