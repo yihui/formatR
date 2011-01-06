@@ -272,21 +272,15 @@ formatR = function(guiToolkit = 'RGtk2') {
     })
     gbutton("Convert", container = g2, handler = function(h,
         ...) {
-        con = tempfile()
-        enc = getOption("encoding")
-        options(encoding = "native.enc")
-        on.exit(options(encoding = enc))
-        originalCode <- svalue(txt)
-        Encoding(originalCode) <- "UTF-8"
-        writeLines(originalCode, con)
         tidy.opt = tag(txt, "tidy.opt")
-        text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment,
-            keep.blank.line = tidy.opt$keep.blank.line, width.cutoff = tidy.opt$width.cutoff,
+        src = unlist(strsplit(svalue(txt), '\n'))
+        Encoding(src) = 'UTF-8'
+        text.tidy = tidy.source(text = src,
+            keep.comment = tidy.opt$keep.comment,
+            keep.blank.line = tidy.opt$keep.blank.line,
+            width.cutoff = tidy.opt$width.cutoff,
             output = FALSE)$text.tidy
-        ## Encoding works on some platforms for multi-byte characters...
-        ## Encoding(text.tidy) = "UTF-8"
         svalue(txt) = text.tidy
-        unlink(con)
     })
     gbutton("Save", container = g2, handler = function(h, ...) {
         s = tag(txt, "src.file")
@@ -303,24 +297,11 @@ formatR = function(guiToolkit = 'RGtk2') {
     })
     gbutton("Execute", container = g2, handler = function(h,
         ...) {
-        con = tempfile()
-        enc = getOption("encoding")
-        options(encoding = "")
-        writeLines(svalue(txt), con)
-        tidy.opt = tag(txt, "tidy.opt")
-        text.tidy = tidy.source(con, keep.comment = tidy.opt$keep.comment,
-            keep.blank.line = tidy.opt$keep.blank.line, width.cutoff = tidy.opt$width.cutoff,
-            output = FALSE)
-        zz = textConnection(text.tidy$text.mask)
-        options(encoding = enc)
-        x = capture.output(source(zz, max.deparse.length = Inf,
-            echo = TRUE))
-        x = gsub(sprintf("%s = \"|%s\"", text.tidy$begin.comment,
-            text.tidy$end.comment), "", x)
-        # try(rm(list = text.tidy$begin.comment, pos = 1))
-        cat(paste(x, collapse = "\n"), "\n")
+        src = svalue(txt)
+        Encoding(src) = 'UTF-8'
+        zz = textConnection(src)
+        source(zz, max.deparse.length = Inf, echo = TRUE)
         close(zz)
-        unlink(con)
     })
     if (getOption("guiToolkit") == "RGtk2") {
         gbutton("Select-font", container = g2, handler = function(h,
