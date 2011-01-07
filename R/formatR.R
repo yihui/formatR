@@ -27,7 +27,8 @@
 ##' \code{'ANOTHER_IDENTIFIER"'} are replaced with empty strings.
 ##'
 ##' ``Inline'' comments are identified as ``two or more spaces'' plus
-##' the hash symbol \code{#} in your source code, e.g.
+##' the hash symbol \code{#} without any following double quotes in
+##' the line, e.g.
 ##'
 ##' \verb{1+1  #  comments}
 ##'
@@ -37,10 +38,13 @@
 ##'
 ##' This might be dangerous to your source code, for instance,
 ##'
-##' \verb{a = "I'm a string   #yes"}
+##' \verb{a = 'I am a string   #yes'}
 ##'
-##' does not contain comments, but this function will treat it as if
-##' it does!
+##' does not contain comments (\code{#} is inside a string), but this
+##' function will treat it as if it does! If you need to use the hash
+##' symbol in a string, you must put it in double quotes, e.g.
+##'
+##' \verb{a = "I am a string   #yes"}
 ##'
 ##' Inline comments are first disguised as a sum with its preceding R
 ##' code, which is essentially meaningless but syntactically correct!
@@ -89,11 +93,11 @@
 ##' @note When \code{keep.comment == TRUE}, \emph{you must not use
 ##' double quotes in your inline comments -- only single quotes are
 ##' allowed!!} For example, the code below will make the function
-##' fail:
+##' discard the comments:
 ##'
 ##' \verb{1 + 1  # here is the "comment"}
 ##'
-##' Instead, you have to write:
+##' Instead, you have to write like this to protect the comments:
 ##'
 ##' \verb{1 + 1  # here is the 'comment'}
 ##'
@@ -113,13 +117,15 @@
 ##' @keywords IO
 ##' @export
 ##' @examples
+##' library(formatR)
 ##'
 ##' ## use the 'text' argument
-##' src = c(' # a single line of comments is preserved',
+##' src = c("    # a single line of comments is preserved",
 ##' '1+1', '  ', 'if(TRUE){',
-##' paste('x=1  ', '# comments begin with at least 2 spaces!'), '}else{',
+##' "x=1  # comments begin with at least 2 spaces!", '}else{',
 ##' "x=2;print('Oh no... ask the right bracket to go away!')}",
-##' '1*3 # this comment will be dropped!')
+##' '1*3 # this comment will be dropped!',
+##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
 ##'
 ##' ## source code
 ##' cat(src, sep = '\n')
@@ -209,11 +215,11 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments by + 'comments' to cheat R
-        text.lines[!head.comment] = sub("([ ]{2,}#.*)$", " + \"\\1\"", text.lines[!head.comment])
+        text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " + \"\\1\"", text.lines[!head.comment])
         text.mask = tidy.block(text.lines)
         text.tidy = gsub(sprintf("%s = \"|%s\"", begin.comment,
             end.comment), "", text.mask)
-        text.tidy = gsub(" \\+[ ]{0,1}[\n ]*\"([ ]{2,}#[^\"]*)\"", "\\1", text.tidy)
+        text.tidy = gsub(" \\+[ ]{0,1}[\n ]*\"([ ]{2,}#[^\"]*)\"$", "\\1", text.tidy)
     }
     else {
         text.tidy = text.mask = tidy.block(text.lines)
