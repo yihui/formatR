@@ -65,6 +65,8 @@
 ##' not? (\code{TRUE} by default)
 ##' @param keep.blank.line logical value: whether to keep blank lines
 ##' or not? (\code{FALSE} by default)
+##' @param keep.space logical: whether to preserve the leading spaces
+##' in the single lines of comments (default \code{FALSE})
 ##' @param output output to the console or a file using
 ##' \code{\link[base]{cat}}?
 ##' @param text an alternative way to specify the input: if it is
@@ -96,9 +98,12 @@
 ##' \verb{1 + 1  # here is the 'comment'}
 ##'
 ##' There are hidden options which can control the behaviour of this
-##' function: the argument \code{keep.comment} gets value from
-##' \code{options('keep.comment')} by default; and
-##' \code{keep.blank.line} from \code{options('keep.blank.line')}.
+##' function: the argument \code{keep.comment} gets its value from
+##' \code{options('keep.comment')} by default;  \code{keep.blank.line}
+##' from \code{options('keep.blank.line')}, and \code{keep.space} from
+##' \code{options('keep.space')}. If these options are \code{NULL},
+##' the default values will be \code{TRUE}, \code{FALSE} and
+##' \code{FALSE} respectively.
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial
 ##' contribution from Yixuan Qiu <\url{http://yixuan.cos.name}>
 ##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
@@ -110,7 +115,8 @@
 ##' @examples
 ##'
 ##' ## use the 'text' argument
-##' src = c('# a single line of comments is preserved', '1+1', 'if(TRUE){',
+##' src = c(' # a single line of comments is preserved',
+##' '1+1', '  ', 'if(TRUE){',
 ##' paste('x=1  ', '# comments begin with at least 2 spaces!'), '}else{',
 ##' "x=2;print('Oh no... ask the right bracket to go away!')}",
 ##' '1*3 # this comment will be dropped!')
@@ -120,6 +126,16 @@
 ##'
 ##' ## the formatted version
 ##' tidy.source(text = src)
+##'
+##' ## other options: preserve leading spaces
+##' tidy.source(text = src, keep.space = TRUE)
+##'
+##' ## preserve blank lines
+##' tidy.source(text = src, keep.blank.line = TRUE)
+##'
+##' ## discard comments!
+##' tidy.source(text = src, keep.comment = FALSE)
+##'
 ##'
 ##' ## tidy up the source code of image demo
 ##' x = file.path(system.file(package = "graphics"), "demo", "image.R")
@@ -148,7 +164,7 @@
 ##'
 ##'
 tidy.source = function(source = "clipboard", keep.comment,
-    keep.blank.line, output = TRUE, text = NULL,
+    keep.blank.line, keep.space, output = TRUE, text = NULL,
     width.cutoff = 0.75 * getOption("width"), ...) {
     if (is.null(text)) {
         if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
@@ -164,6 +180,9 @@ tidy.source = function(source = "clipboard", keep.comment,
     if (missing(keep.blank.line)) {
         keep.blank.line = if (is.null(getOption('keep.blank.line'))) FALSE else getOption('keep.blank.line')
     }
+    if (missing(keep.space)) {
+        keep.space = if (is.null(getOption('keep.space'))) FALSE else getOption('keep.space')
+    }
     tidy.block = function(block.text) {
         exprs = base::parse(text = block.text)
         n = length(exprs)
@@ -178,14 +197,15 @@ tidy.source = function(source = "clipboard", keep.comment,
         ## if you have variable names like this in your code, then you really beat me...
         begin.comment = "BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
         end.comment = "HaHaHa_EnD_TiDy_IdEnTiFiEr"
-        text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
-        head.comment = substring(text.lines, 1, 1) == "#"
+        if (!keep.space)
+            text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
+        head.comment = grepl('^[[:space:]]*#', text.lines)
         if (any(head.comment)) {
             text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
             text.lines[head.comment] = sprintf("%s=\"%s%s\"",
                 begin.comment, text.lines[head.comment], end.comment)
         }
-        blank.line = text.lines == ""
+        blank.line = grepl('^[[:space:]]*$', text.lines)
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments by + 'comments' to cheat R
