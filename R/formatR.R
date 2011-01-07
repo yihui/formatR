@@ -205,7 +205,7 @@ tidy.source = function(source = "clipboard", keep.comment,
 }
 
 
-##' GUI to format R code.
+##' A GUI to format R code.
 ##' Create a GUI (via GTK+ by default) to format R code.
 ##'
 ##' This function calls \code{\link{tidy.source}} to format R code.
@@ -216,16 +216,11 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' \code{\link{tidy.source}} for more details.
 ##'
 ##' @param guiToolkit the GUI toolkit to use
-##' @return Invisible \code{NULL}.
-##' @note Inline comments will be removed, as documented in
-##'   \code{\link{tidy.source}}.
-##'
-##' For the time being, multi-byte characters cannot be handled correctly.
-##'
+##' @return the text widget is returned
+##' @note
 ##' By default, the interface is based on GTK+ (R package \bold{RGtk2}), but
 ##' other options (\bold{tcltk}, \bold{rJava} and \bold{Qt}) are possible too. See the
-##' examples below. Note the ``Font'' button is only for the GTK+ interface
-##' and it can only set font styles for the selected texts.
+##' examples below. Note the ``Font'' button is only for the GTK+ interface.
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @seealso \code{\link{tidy.source}}
 ##' @export
@@ -233,14 +228,25 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##'   \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
 ##' @examples
 ##'
-##' \dontrun{
+##' if (interactive() && require('gWidgetsRGtk2')) {
 ##'
 ##' ## a GUI will show up on loading if one of the gWidgets
 ##' ##   toolkit is present (e.g. via library(gWidgetsRGtk2))
 ##' library(formatR)
 ##'
-##' ## manually call the GUI
-##' formatR()
+##' g = formatR()
+##'
+##' ## we have control over the text widget, e.g. set or get the text
+##'
+##' svalue(g) = c("# a single line of comments is preserved", "1+1",
+##'     "if(TRUE){", paste("x=1 ",
+##'     "# comments begin with at least 2 spaces!"), "}else{",
+##'     "x=2;print('Oh no... ask the right bracket to go away!')}",
+##'     "1*3 # this comment will be dropped!")
+##'
+##' ## click 'Convert' now, and see
+##'
+##' cat(svalue(g), sep = '\n')   # get its value
 ##'
 ##' ## tcl/tk interface: need gWidgetstcltk package
 ##' formatR('tcltk')
@@ -251,8 +257,6 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' }
 ##'
 formatR = function(guiToolkit = 'RGtk2') {
-    # TODO: gtext() cannot handle multi-byte characters? encoding problems?
-    # I cannot find a solution yet...
     options(guiToolkit = guiToolkit)
     stopifnot(require(paste('gWidgets', guiToolkit, sep = ''), character.only = TRUE))
 
@@ -374,5 +378,5 @@ formatR = function(guiToolkit = 'RGtk2') {
             dispose(w)
         })
     })
-    invisible(NULL)
+    invisible(txt)
 }
