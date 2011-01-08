@@ -1,0 +1,26 @@
+		   CHANGES IN formatR VERSION 0.1-7
+
+NEW FEATURES
+
+    o full support to multi-byte characters in the formatR() GUI
+
+    o a new function unmask.source() to obtain the real source code
+  from the masked source
+
+    o a new operator '%InLiNe_IdEnTiFiEr%' designed mainly for
+  pgfSweave (mask the inline comments)
+
+
+		   CHANGES IN formatR VERSION 0.1-6
+
+NEW FEATURES
+
+    o the inline comments will also be preserved in most cases (in
+  earlier versions, only single lines of comments are preserved)
+
+    o tidy.source() gained a new argument 'text' to accept a character
+  vector as the source code
+
+    o multi-byte characters are partially supported in the formatR() GUI
+  now (full support will come in 0.1-7)
+
