@@ -46,16 +46,16 @@
 ##'
 ##' \verb{a = "I am a string   #yes"}
 ##'
-##' Inline comments are first disguised as a sum with its preceding R
-##' code, which is essentially meaningless but syntactically correct!
-##' For example,
+##' Inline comments are first disguised as a weird operation with its
+##' preceding R code, which is essentially meaningless but
+##' syntactically correct!  For example,
 ##'
-##' \verb{1+1 + "   # comments"}
+##' \verb{1+1 %InLiNe_IdEnTiFiEr% "   # comments"}
 ##'
 ##' then \code{\link[base]{parse}} will deal with this expression;
 ##' again, the disguised comments will not be removed. In the end,
-##' inline comments will be freed as well (remove the plus sign and
-##' surrounding double quotes).
+##' inline comments will be freed as well (remove the operator
+##' \code{%InLiNe_IdEnTiFiEr%} and surrounding double quotes).
 ##'
 ##' All these special treatments to comments are due to the fact that
 ##' \code{\link[base]{parse}} and \code{\link[base]{deparse}} can tidy
@@ -125,6 +125,8 @@
 ##' "x=1  # comments begin with at least 2 spaces!", '}else{',
 ##' "x=2;print('Oh no... ask the right bracket to go away!')}",
 ##' '1*3 # this comment will be dropped!',
+##' "2+2+2    # 'short comments'",
+##' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
 ##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
 ##'
 ##' ## source code
@@ -141,6 +143,9 @@
 ##'
 ##' ## discard comments!
 ##' tidy.source(text = src, keep.comment = FALSE)
+##'
+##' ## wanna see the gory truth??
+##' tidy.source(text = src, output = FALSE)$text.mask
 ##'
 ##'
 ##' ## tidy up the source code of image demo
@@ -162,7 +167,7 @@
 ##' tidy.source(x)
 ##'
 ##' ## if you've copied R code into the clipboard
-##' \dontrun{
+##' if (interactive()) {
 ##' tidy.source("clipboard")
 ##' ## write into clipboard again
 ##' tidy.source("clipboard", file = "clipboard")
@@ -215,11 +220,14 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments by + 'comments' to cheat R
-        text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " + \"\\1\"", text.lines[!head.comment])
+        text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " %InLiNe_IdEnTiFiEr% \"\\1\"", text.lines[!head.comment])
         text.mask = tidy.block(text.lines)
         text.tidy = gsub(sprintf("%s = \"|%s\"", begin.comment,
             end.comment), "", text.mask)
-        text.tidy = gsub(" \\+[ ]{0,1}[\n ]*\"([ ]{2,}#[^\"]*)\"$", "\\1", text.tidy)
+        ## if the comments were separated into the next line, then remove '\n' after
+        ##   the identifier first to move the comments back to the same line
+        text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1",
+                        gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
     }
     else {
         text.tidy = text.mask = tidy.block(text.lines)
@@ -405,4 +413,31 @@ formatR = function(guiToolkit = 'RGtk2') {
         })
     })
     invisible(txt)
+}
+
+
+##' A weird operator for internal use only.
+##' This operator is almost meaningless; it is used to mask the inline comments.
+##'
+##' @name %InLiNe_IdEnTiFiEr%
+##' @rdname InLiNe_IdEnTiFiEr
+##' @usage x %InLiNe_IdEnTiFiEr% y
+##' @param x the argument before the operator
+##' @param y the argument after the operator
+##' @return \code{x} (i.e. this operator always returns the object on
+##' the left-hand-side)
+##' @author Yihui Xie <\url{http://yihui.name}>
+##' @seealso \code{\link{tidy.source}}
+##' @export "%InLiNe_IdEnTiFiEr%"
+##' @examples
+##' ## we can use it with *anything*
+##'
+##' 1 %InLiNe_IdEnTiFiEr% 2
+##'
+##' 1:10 %InLiNe_IdEnTiFiEr% "asdf"
+##'
+##' lm %InLiNe_IdEnTiFiEr% 'garbage'
+##'
+"%InLiNe_IdEnTiFiEr%" <- function(x, y) {
+    x
 }
