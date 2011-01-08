@@ -2,8 +2,6 @@
 ##' This function has nothing to do with code optimization; it just
 ##' returns parsed source code, but also tries to preserve comments,
 ##' which is different with \code{\link[base]{parse}}. See `Details'.
-##' (Please read the HTML help page instead of the text help to avoid
-##' confusion)
 ##'
 ##' This function helps the users to tidy up their source code in a
 ##' sense that necessary indents and spaces will be added, etc. See
@@ -13,12 +11,10 @@
 ##' The method to preserve comments is to protect them as strings in
 ##' disguised assignments. For example, there is a single line of
 ##' comments in the source code:
-##'
-##' \verb{  # asdf}
+##' \preformatted{  # asdf}
 ##'
 ##' It will be first masked as
-##'
-##' \verb{SOME_IDENTIFIER = "  # asdfANOTHER_IDENTIFIER"}
+##' \preformatted{SOME_IDENTIFIER = "  # asdfANOTHER_IDENTIFIER"}
 ##'
 ##' which is a legal R expression, so \code{\link[base]{parse}} can
 ##' deal with it and will no longer remove the disguised comments.
@@ -29,28 +25,23 @@
 ##' ``Inline'' comments are identified as ``two or more spaces'' plus
 ##' the hash symbol \code{#} without any following double quotes in
 ##' the line, e.g.
-##'
-##' \verb{1+1  #  comments}
+##' \preformatted{1+1  #  comments}
 ##'
 ##' or
-##'
-##' \verb{1+1    # comments}
+##' \preformatted{1+1    # comments}
 ##'
 ##' This might be dangerous to your source code, for instance,
-##'
-##' \verb{a = 'I am a string   #yes'}
+##' \preformatted{a = 'I am a string   #yes'}
 ##'
 ##' does not contain comments (\code{#} is inside a string), but this
 ##' function will treat it as if it does! If you need to use the hash
 ##' symbol in a string, you must put it in double quotes, e.g.
-##'
-##' \verb{a = "I am a string   #yes"}
+##' \preformatted{a = "I am a string   #yes"}
 ##'
 ##' Inline comments are first disguised as a weird operation with its
 ##' preceding R code, which is essentially meaningless but
 ##' syntactically correct!  For example,
-##'
-##' \verb{1+1 %InLiNe_IdEnTiFiEr% "   # comments"}
+##' \preformatted{1+1 %InLiNe_IdEnTiFiEr% "   # comments"}
 ##'
 ##' then \code{\link[base]{parse}} will deal with this expression;
 ##' again, the disguised comments will not be removed. In the end,
@@ -87,19 +78,17 @@
 ##' 'output.R')})
 ##' @return A list with components \item{text.tidy}{The parsed code as
 ##' a character vector.} \item{text.mask}{The code containing
-##' comments, which are masked in assignments.} \item{begin.comment,
-##' end.comment}{ identifiers used to mark the comments }
+##' comments, which are masked in assignments.}
+##' \item{begin.comment, end.comment}{ identifiers used to mark the comments }
 ##'
 ##' @note When \code{keep.comment == TRUE}, \emph{you must not use
 ##' double quotes in your inline comments -- only single quotes are
 ##' allowed!!} For example, the code below will make the function
 ##' discard the comments:
-##'
-##' \verb{1 + 1  # here is the "comment"}
+##' \preformatted{1 + 1  # here is the "comment"}
 ##'
 ##' Instead, you have to write like this to protect the comments:
-##'
-##' \verb{1 + 1  # here is the 'comment'}
+##' \preformatted{1 + 1  # here is the 'comment'}
 ##'
 ##' There are hidden options which can control the behaviour of this
 ##' function: the argument \code{keep.comment} gets its value from
@@ -113,12 +102,11 @@
 ##' comments in whole lines or after \emph{complete} R
 ##' expressions. Here are some examples which could make
 ##' \code{\link{tidy.source}} fail:
+##' \preformatted{if (TRUE) {  ## comments right after a curly brace } }
 ##'
-##' \verb{if (TRUE) {  ## comments right after a curly brace } }
+##' \preformatted{1 + 2 +   ## comments after an incomplete line
 ##'
-##' \verb{1 + 2 +   ## comments after an incomplete line
-##'
-##' 3 + 4}
+##'   3 + 4}
 ##'
 ##' }
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial
