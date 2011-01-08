@@ -108,6 +108,19 @@
 ##' \code{options('keep.space')}. If these options are \code{NULL},
 ##' the default values will be \code{TRUE}, \code{FALSE} and
 ##' \code{FALSE} respectively.
+##'
+##' \subsection{Warning}{ The best strategy to avoid failure is to put
+##' comments in whole lines or after \emph{complete} R
+##' expressions. Here are some examples which could make
+##' \code{\link{tidy.source}} fail:
+##'
+##' \verb{if (TRUE) {  ## comments right after a curly brace } }
+##'
+##' \verb{1 + 2 +   ## comments after an incomplete line
+##'
+##' 3 + 4}
+##'
+##' }
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial
 ##' contribution from Yixuan Qiu <\url{http://yixuan.cos.name}>
 ##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
@@ -219,15 +232,10 @@ tidy.source = function(source = "clipboard", keep.comment,
         blank.line = grepl('^[[:space:]]*$', text.lines)
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
-        ## replace end-of-line comments by + 'comments' to cheat R
+        ## replace end-of-line comments to cheat R
         text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " %InLiNe_IdEnTiFiEr% \"\\1\"", text.lines[!head.comment])
         text.mask = tidy.block(text.lines)
-        text.tidy = gsub(sprintf("%s = \"|%s\"", begin.comment,
-            end.comment), "", text.mask)
-        ## if the comments were separated into the next line, then remove '\n' after
-        ##   the identifier first to move the comments back to the same line
-        text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1",
-                        gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
+        text.tidy = unmask.source(text.mask)
     }
     else {
         text.tidy = text.mask = tidy.block(text.lines)
@@ -238,6 +246,39 @@ tidy.source = function(source = "clipboard", keep.comment,
         begin.comment = begin.comment, end.comment = end.comment))
 }
 
+##' Restore the real source code from the masked text.
+##'
+##'
+##' @param text.mask the masked source code
+##' @return the real source code (a character vector)
+##' @author Yihui Xie <\url{http://yihui.name}>
+##' @export
+##' @examples
+##' library(formatR)
+##'
+##' src = c("    # a single line of comments is preserved",
+##' '1+1', '  ', 'if(TRUE){',
+##' "x=1  # comments begin with at least 2 spaces!", '}else{',
+##' "x=2;print('Oh no... ask the right bracket to go away!')}",
+##' '1*3 # this comment will be dropped!',
+##' "2+2+2    # 'short comments'",
+##' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
+##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
+##'
+##' x = tidy.source(text = src, output = FALSE)$text.mask
+##'
+##' cat(x, sep = '\n')
+##'
+##' cat(unmask.source(x), sep = '\n')
+##'
+unmask.source = function(text.mask) {
+    text.tidy = gsub("BeGiN_TiDy_IdEnTiFiEr_HaHaHa = \"|HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
+    ## if the comments were separated into the next line, then remove '\n' after
+    ##   the identifier first to move the comments back to the same line
+    text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1", #
+    gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
+    text.tidy
+}
 
 ##' A GUI to format R code.
 ##' Create a GUI (via GTK+ by default) to format R code.
