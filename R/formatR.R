@@ -76,10 +76,11 @@
 ##' e.g. \code{file} (this can be useful for batch-processing R
 ##' scripts, e.g. \code{tidy.source(source = 'input.R', file =
 ##' 'output.R')})
-##' @return A list with components \item{text.tidy}{The parsed code as
-##' a character vector.} \item{text.mask}{The code containing
-##' comments, which are masked in assignments.}
-##' \item{begin.comment, end.comment}{ identifiers used to mark the comments }
+##' @return A list with components \item{text.tidy}{The reformatted
+##' code as a character vector.} \item{text.mask}{The code containing
+##' comments, which are masked in assignments or with the weird
+##' operator.}  \item{begin.comment,end.comment}{ identifiers used to
+##' mark the comments }
 ##'
 ##' @note When \code{keep.comment == TRUE}, \emph{you must not use
 ##' double quotes in your inline comments -- only single quotes are
