@@ -14,13 +14,13 @@
 ##' \preformatted{  # asdf}
 ##'
 ##' It will be first masked as
-##' \preformatted{SOME_IDENTIFIER = "  # asdfANOTHER_IDENTIFIER"}
+##' \preformatted{.SOME_IDENTIFIER = "  # asdf.ANOTHER_IDENTIFIER"}
 ##'
 ##' which is a legal R expression, so \code{\link[base]{parse}} can
 ##' deal with it and will no longer remove the disguised comments.
 ##' In the end the identifiers will be removed to restore the original
-##' comments, i.e. the strings \code{'SOME_IDENTIFIER = "'} and
-##' \code{'ANOTHER_IDENTIFIER"'} are replaced with empty strings.
+##' comments, i.e. the strings \code{'.SOME_IDENTIFIER = "'} and
+##' \code{'.ANOTHER_IDENTIFIER"'} are replaced with empty strings.
 ##'
 ##' ``Inline'' comments are identified as ``two or more spaces'' plus
 ##' the hash symbol \code{#} without any following double quotes in
@@ -208,8 +208,8 @@ tidy.source = function(source = "clipboard", keep.comment,
     }
     if (isTRUE(keep.comment)) {
         ## if you have variable names like this in your code, then you really beat me...
-        begin.comment = "BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
-        end.comment = "HaHaHa_EnD_TiDy_IdEnTiFiEr"
+        begin.comment = ".BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
+        end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
         if (!keep.space)
             text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
         head.comment = grepl('^[[:space:]]*#', text.lines)
@@ -261,10 +261,10 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' cat(unmask.source(x), sep = '\n')
 ##'
 unmask.source = function(text.mask) {
-    text.tidy = gsub("BeGiN_TiDy_IdEnTiFiEr_HaHaHa = \"|HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
+    text.tidy = gsub("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa = \"|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
     ## if the comments were separated into the next line, then remove '\n' after
     ##   the identifier first to move the comments back to the same line
-    text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1", #
+    text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1",
     gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
     text.tidy
 }
