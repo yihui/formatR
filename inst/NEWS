@@ -1,3 +1,11 @@
+		   CHANGES IN formatR VERSION 0.1-8
+
+NEW FEATURES
+
+    o new functions parse.tidy() and deparse.tidy() for the package
+  pgfSweave to help tidy the source code in Sweave
+
+
 		   CHANGES IN formatR VERSION 0.1-7
 
 NEW FEATURES
