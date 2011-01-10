@@ -99,6 +99,9 @@
 ##' the default values will be \code{TRUE}, \code{FALSE} and
 ##' \code{FALSE} respectively.
 ##'
+##' Also note that if \code{keep.space} is \code{FALSE}, single lines
+##' of long comments will be wrapped into shorter ones automatically.
+##'
 ##' \subsection{Warning}{ The best strategy to avoid failure is to put
 ##' comments in whole lines or after \emph{complete} R
 ##' expressions. Here are some examples which could make
@@ -127,9 +130,10 @@
 ##' "x=1  # comments begin with at least 2 spaces!", '}else{',
 ##' "x=2;print('Oh no... ask the right bracket to go away!')}",
 ##' '1*3 # this comment will be dropped!',
-##' "2+2+2    # 'short comments'",
+##' "2+2+2    # 'short comments'", "   ",
 ##' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
-##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
+##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line",
+##' paste("## here is a", paste(rep("long", 20), collapse = ' '), "comment"))
 ##'
 ##' ## source code
 ##' cat(src, sep = '\n')
@@ -215,9 +219,23 @@ tidy.source = function(source = "clipboard", keep.comment,
         head.comment = grepl('^[[:space:]]*#', text.lines)
         if (any(head.comment)) {
             text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
-            text.lines[head.comment] = sprintf("%s=\"%s%s\"",
-                begin.comment, text.lines[head.comment], end.comment)
         }
+        ## wrap long comments if you do not want to preserve leading spaces
+        if (!keep.space) {
+            head.idx = which(head.comment)
+            k = 0 # k records how far the wrapped comments have pushed the index
+            for (i in head.idx) {
+                j = i + k               # j records the real index
+                tmp = strwrap(text.lines[j], width = width.cutoff, prefix = "# ",
+                              exdent = 2, initial = '')
+                text.lines[j] = tmp[1]
+                if (length(tmp) > 1) text.lines = append(text.lines, tmp[-1], j)
+                k = k + length(tmp) - 1
+            }
+            head.comment = grepl('^[[:space:]]*#', text.lines)
+        }
+        text.lines[head.comment] = sprintf("%s=\"%s%s\"",
+                begin.comment, text.lines[head.comment], end.comment)
         blank.line = grepl('^[[:space:]]*$', text.lines)
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)

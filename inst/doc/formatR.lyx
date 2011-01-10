@@ -1,4 +1,4 @@
-#LyX 1.6.8 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -206,6 +206,27 @@ options(keep.blank.line = FALSE)
 \end_layout
 
 \begin_layout Standard
+The option 
+\family typewriter
+width
+\family default
+ will affect the width of the output, e.g.
+ we can specify a narrow width:
+\end_layout
+
+\begin_layout Scrap
+<<width-spec>>=
+\end_layout
+
+\begin_layout Scrap
+options(width = 60)
+\end_layout
+
+\begin_layout Scrap
+@
+\end_layout
+
+\begin_layout Standard
 Here are some examples taken from the help page:
 \end_layout
 
@@ -222,31 +243,29 @@ library(formatR)
 \end_layout
 
 \begin_layout Scrap
-src = c("    # a single line of comments is preserved", 
+src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){"
+, 
 \end_layout
 
 \begin_layout Scrap
-    "1+1", "  ", "if(TRUE){", "x=1  # comments begin with at least 2 spaces!",
- 
-\end_layout
-
-\begin_layout Scrap
-    "}else{", "x=2;print('Oh no...
+    "x=1  # comments begin with at least 2 spaces!", "}else{", "x=2;print('Oh
+ no...
  ask the right bracket to go away!')}", 
 \end_layout
 
 \begin_layout Scrap
     "1*3 # this comment will be dropped!", "2+2+2    # 'short comments'",
+ "   ", "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
  
 \end_layout
 
 \begin_layout Scrap
-    "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments", 
+    "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a
+ long line", paste("## here is a", 
 \end_layout
 
 \begin_layout Scrap
-    "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a
- long line")
+        paste(rep("long", 20), collapse = " "), "comment"))
 \end_layout
 
 \begin_layout Scrap

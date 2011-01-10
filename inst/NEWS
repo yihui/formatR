@@ -1,3 +1,12 @@
+		   CHANGES IN formatR VERSION 0.1-9
+
+NEW FEATURES
+
+    o tidy.source() can wrap long comments into shorter ones now (this
+  only applies to the whole lines of comments; the inline comments
+  will not be wrapped since it is tricky to do so)
+
+
 		   CHANGES IN formatR VERSION 0.1-8
 
 NEW FEATURES
