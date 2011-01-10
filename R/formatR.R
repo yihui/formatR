@@ -529,3 +529,35 @@ parse.tidy = function(text, ...) {
 deparse.tidy = function(expr, ...) {
     unmask.source(paste(base::deparse(expr, ...), collapse = '\n'))
 }
+
+##' Format the R scripts under a directory.
+##'
+##' This function first look for all the R scripts under a directory
+##' (using the pattern \code{"\\\\.[RrSsQq]$"}), then uses
+##' \code{\link{tidy.source}} to tidy these scripts. The original
+##' scripts will be overwritten with formatted code. You may need to
+##' back up the original directory first if you do not fully
+##' understand the tricks \code{\link{tidy.source}} is using.
+##' @param path the directory
+##' @param recursive whether to recursively look for R scripts under \code{path}
+##' @param ... other arguments to be passed to \code{\link{tidy.source}}
+##' @return NULL
+##' @author Yihui Xie <\url{http://yihui.name}>
+##' @seealso \code{\link{tidy.source}}
+##' @export
+##' @examples
+##' library(formatR)
+##'
+##' if (interactive()) {
+##' path = tempdir()
+##' file.copy(system.file('demo', package = 'base'), path, recursive=TRUE)
+##' tidy.dir(path, recursive=TRUE)
+##' }
+##'
+tidy.dir = function(path = '.', recursive = FALSE, ...) {
+    flist = list.files(path, pattern = '\\.[RrSsQq]$', full.names = TRUE, recursive = recursive)
+    for (f in flist) {
+        message('tidying ', f)
+        tidy.source(f, file = f, ...)
+    }
+}
