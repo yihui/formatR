@@ -1,0 +1,24 @@
+chunk: usage-tidy-source
+chunkprefix: formatR-usage-tidy-source
+fig:
+cacheDB:
+time: 2011-01-09 18:53:35
+
+chunk: setup
+chunkprefix: formatR-setup
+fig:
+cacheDB:
+time: 2011-01-09 18:53:36
+
+chunk: tidy-source-ex
+chunkprefix: formatR-tidy-source-ex
+fig:
+cacheDB:
+time: 2011-01-09 18:53:36
+
+chunk: lyx-doc
+chunkprefix: formatR-lyx-doc
+fig:
+cacheDB:
+time: 2011-01-09 18:53:37
+

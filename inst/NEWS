@@ -5,6 +5,11 @@ NEW FEATURES
     o new functions parse.tidy() and deparse.tidy() for the package
   pgfSweave to help tidy the source code in Sweave
 
+    o a new function tidy.dir() to format all the R scripts under a
+  directory
+
+    o added a package vignette
+
 
 		   CHANGES IN formatR VERSION 0.1-7
 
