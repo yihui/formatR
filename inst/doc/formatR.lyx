@@ -1,4 +1,4 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.8 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -219,7 +219,7 @@ width
 \end_layout
 
 \begin_layout Scrap
-options(width = 60)
+options(width = 80)
 \end_layout
 
 \begin_layout Scrap
@@ -243,8 +243,8 @@ library(formatR)
 \end_layout
 
 \begin_layout Scrap
-src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){"
-, 
+src = c("    # a single line of comments is preserved", "1+1", "if(TRUE){",
+ 
 \end_layout
 
 \begin_layout Scrap
@@ -256,6 +256,21 @@ src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){"
 \begin_layout Scrap
     "1*3 # this comment will be dropped!", "2+2+2    # 'short comments'",
  "   ", "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
+ 
+\end_layout
+
+\begin_layout Scrap
+    "
+\backslash
+t
+\backslash
+t## tabs/spaces before comments: use keep.space=TRUE to keep them", 
+\end_layout
+
+\begin_layout Scrap
+    "'a character string with 
+\backslash
+t in it'", "# note tabs will be converted to spaces when keep.space=TRUE",
  
 \end_layout
 
@@ -295,7 +310,7 @@ tidy.source(text = src, keep.space = TRUE)
 \end_layout
 
 \begin_layout Scrap
-## preserve blank lines: note the third line!
+## preserve blank lines: note the 11th line!
 \end_layout
 
 \begin_layout Scrap

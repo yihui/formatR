@@ -2,29 +2,29 @@ chunk: usage-tidy-source
 chunkprefix: formatR-usage-tidy-source
 fig:
 cacheDB:
-time: 2011-01-10 12:54:21
+time: 2011-01-11 22:46:43
 
 chunk: setup
 chunkprefix: formatR-setup
 fig:
 cacheDB:
-time: 2011-01-10 12:54:21
+time: 2011-01-11 22:46:43
 
 chunk: width-spec
 chunkprefix: formatR-width-spec
 fig:
 cacheDB:
-time: 2011-01-10 12:54:21
+time: 2011-01-11 22:46:43
 
 chunk: tidy-source-ex
 chunkprefix: formatR-tidy-source-ex
 fig:
 cacheDB:
-time: 2011-01-10 12:54:21
+time: 2011-01-11 22:46:43
 
 chunk: lyx-doc
 chunkprefix: formatR-lyx-doc
 fig:
 cacheDB:
-time: 2011-01-10 12:54:21
+time: 2011-01-11 22:46:45
 

@@ -21,6 +21,13 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
 \usepackage{tikz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\rmdefault}{ppl}
+\renewcommand{\sfdefault}{aess}
+\renewcommand{\ttdefault}{aett}
+%\VignetteIndexEntry{formatR: Format R Code Automatically}
+
 \newcommand{\hlnumber}[1]{\textcolor[rgb]{0.0823529411764706,0.0784313725490196,0.709803921568627}{#1}}%
 \newcommand{\hlfunctioncall}[1]{\textcolor[rgb]{1,0,0}{#1}}%
 \newcommand{\hlstring}[1]{\textcolor[rgb]{0.6,0.6,1}{#1}}%
@@ -384,17 +391,6 @@
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,0}{\bf{#1}}}
 \newcommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0.51}{#1}}
 
-\usepackage[nogin,noae]{Sweave}
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,numbers=left,baselinestretch=1}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{baselinestretch=1}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl,numbers=left,baselinestretch=1}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-\renewcommand{\rmdefault}{ppl}
-\renewcommand{\sfdefault}{aess}
-\renewcommand{\ttdefault}{aett}
-%\VignetteIndexEntry{formatR: Format R Code Automatically}
-
 \usepackage[nogin]{Sweave}
 
 \makeatother
@@ -444,7 +440,6 @@ NULL
 \end{Soutput}
 
 \end{Schunk}
-
 \end{par}
 There are three options which can affect the final output: \texttt{keep.comment},
 \texttt{keep.blank.line} and \texttt{keep.space}. They are explained
@@ -458,18 +453,16 @@ the option like this:
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}
-
 \end{par}
 The option \texttt{width} will affect the width of the output, e.g.
 we can specify a narrow width:
 \begin{par}
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{options}\hlkeyword{(}\hlargument{width}{\ }\hlargument{=}{\ }\hlnumber{60}\hlkeyword{)}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{options}\hlkeyword{(}\hlargument{width}{\ }\hlargument{=}{\ }\hlnumber{80}\hlkeyword{)}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}
-
 \end{par}
 Here are some examples taken from the help page:
 \begin{par}
@@ -479,22 +472,24 @@ Here are some examples taken from the help page:
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }use{\ }the{\ }\usebox{\hlnormalsizeboxsinglequote}text\usebox{\hlnormalsizeboxsinglequote}{\ }argument}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }use{\ }the{\ }\usebox{\hlnormalsizeboxsinglequote}text\usebox{\hlnormalsizeboxsinglequote}{\ }argument}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlsymbol{src}{\ }\hlassignement{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{\ }{\ }{\ }{\ }\usebox{\hlnormalsizeboxhash}{\ }a{\ }single{\ }line{\ }of{\ }comments{\ }is{\ }preserved"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"1+1"}\hlkeyword{,}{\ }\hlstring{"{\ }{\ }"}\hlkeyword{,}{\ }\hlstring{"if(TRUE)\usebox{\hlnormalsizeboxopenbrace}"}\hlkeyword{,}{\ }\hlstring{"x=1{\ }{\ }\usebox{\hlnormalsizeboxhash}{\ }comments{\ }begin{\ }with{\ }at{\ }least{\ }2{\ }spaces!"}\hlkeyword{,}\hspace*{\fill}\\
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlsymbol{src}{\ }\hlassignement{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{\ }{\ }{\ }{\ }\usebox{\hlnormalsizeboxhash}{\ }a{\ }single{\ }line{\ }of{\ }comments{\ }is{\ }preserved"}\hlkeyword{,}{\ }\hlstring{"1+1"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"if(TRUE)\usebox{\hlnormalsizeboxopenbrace}"}\hlkeyword{,}{\ }\hlstring{"x=1{\ }{\ }\usebox{\hlnormalsizeboxhash}{\ }comments{\ }begin{\ }with{\ }at{\ }least{\ }2{\ }spaces!"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"\usebox{\hlnormalsizeboxclosebrace}else\usebox{\hlnormalsizeboxopenbrace}"}\hlkeyword{,}{\ }\hlstring{"x=2;print(\usebox{\hlnormalsizeboxsinglequote}Oh{\ }no...{\ }ask{\ }the{\ }right{\ }bracket{\ }to{\ }go{\ }away!\usebox{\hlnormalsizeboxsinglequote})\usebox{\hlnormalsizeboxclosebrace}"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"1*3{\ }\usebox{\hlnormalsizeboxhash}{\ }this{\ }comment{\ }will{\ }be{\ }dropped!"}\hlkeyword{,}{\ }\hlstring{"2+2+2{\ }{\ }{\ }{\ }\usebox{\hlnormalsizeboxhash}{\ }\usebox{\hlnormalsizeboxsinglequote}short{\ }comments\usebox{\hlnormalsizeboxsinglequote}"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"{\ }{\ }{\ }"}\hlkeyword{,}{\ }\hlstring{"lm(y\urltilda{}x1+x2){\ }{\ }\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }only{\ }\usebox{\hlnormalsizeboxsinglequote}single{\ }quotes\usebox{\hlnormalsizeboxsinglequote}{\ }are{\ }allowed{\ }in{\ }comments"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"\usebox{\hlnormalsizeboxbackslash}t\usebox{\hlnormalsizeboxbackslash}t\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }tabs/spaces{\ }before{\ }comments:{\ }use{\ }keep.space=TRUE{\ }to{\ }keep{\ }them"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"\usebox{\hlnormalsizeboxsinglequote}a{\ }character{\ }string{\ }with{\ }\usebox{\hlnormalsizeboxbackslash}t{\ }in{\ }it\usebox{\hlnormalsizeboxsinglequote}"}\hlkeyword{,}{\ }\hlstring{"\usebox{\hlnormalsizeboxhash}{\ }note{\ }tabs{\ }will{\ }be{\ }converted{\ }to{\ }spaces{\ }when{\ }keep.space=TRUE"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlstring{"1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1{\ }{\ }\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }comments{\ }after{\ }a{\ }long{\ }line"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }here{\ }is{\ }a"}\hlkeyword{,}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{rep}\hlkeyword{(}\hlstring{"long"}\hlkeyword{,}{\ }\hlnumber{20}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{collapse}{\ }\hlargument{=}{\ }\hlstring{"{\ }"}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"comment"}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }here{\ }is{\ }a"}\hlkeyword{,}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{rep}\hlkeyword{(}\hlstring{"long"}\hlkeyword{,}{\ }\hlnumber{20}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{collapse}{\ }\hlargument{=}{\ }\hlstring{"{\ }"}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlstring{"comment"}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }source{\ }code}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }source{\ }code}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
@@ -505,7 +500,6 @@ Here are some examples taken from the help page:
 \begin{Soutput}
     # a single line of comments is preserved
 1+1
-  
 if(TRUE){
 x=1  # comments begin with at least 2 spaces!
 }else{
@@ -514,11 +508,14 @@ x=2;print('Oh no... ask the right bracket to go away!')}
 2+2+2    # 'short comments'
    
 lm(y~x1+x2)  ### only 'single quotes' are allowed in comments
+		## tabs/spaces before comments: use keep.space=TRUE to keep them
+'a character string with 	 in it'
+# note tabs will be converted to spaces when keep.space=TRUE
 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line
 ## here is a long long long long long long long long long long long long long long long long long long long long comment
 \end{Soutput}
 \ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }formatted{\ }version}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }formatted{\ }version}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
@@ -537,15 +534,19 @@ if (TRUE) {
 1 * 3
 2 + 2 + 2    # 'short comments'
 lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
-1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1  ## comments after a long line
-## here is a long long long long long long
-#   long long long long long long long long
-#   long long long long long long comment 
+## tabs/spaces before comments: use keep.space=TRUE to keep
+#   them
+"a character string with \t in it"
+# note tabs will be converted to spaces when
+#   keep.space=TRUE
+1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
+    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1  ## comments after a long line
+## here is a long long long long long long long long long
+#   long long long long long long long long long long long
+#   comment 
 \end{Soutput}
 \ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }other{\ }options:{\ }preserve{\ }leading{\ }spaces}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }other{\ }options:{\ }preserve{\ }leading{\ }spaces}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
@@ -564,13 +565,15 @@ if (TRUE) {
 1 * 3
 2 + 2 + 2    # 'short comments'
 lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
-1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1  ## comments after a long line
+		## tabs/spaces before comments: use keep.space=TRUE to keep them
+"a character string with 	 in it"
+# note tabs will be converted to spaces when keep.space=TRUE
+1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
+    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1  ## comments after a long line
 ## here is a long long long long long long long long long long long long long long long long long long long long comment 
 \end{Soutput}
 \ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }preserve{\ }blank{\ }lines:{\ }note{\ }the{\ }third{\ }line!}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }preserve{\ }blank{\ }lines:{\ }note{\ }the{\ }11th{\ }line!}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
@@ -580,7 +583,6 @@ lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
 \hlstd{}\begin{Soutput}
 # a single line of comments is preserved
 1 + 1
-
 if (TRUE) {
     x = 1  # comments begin with at least 2 spaces!
 } else {
@@ -591,15 +593,19 @@ if (TRUE) {
 2 + 2 + 2    # 'short comments'
 
 lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
-1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1  ## comments after a long line
-## here is a long long long long long long
-#   long long long long long long long long
-#   long long long long long long comment 
+## tabs/spaces before comments: use keep.space=TRUE to keep
+#   them
+"a character string with \t in it"
+# note tabs will be converted to spaces when
+#   keep.space=TRUE
+1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
+    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1  ## comments after a long line
+## here is a long long long long long long long long long
+#   long long long long long long long long long long long
+#   comment 
 \end{Soutput}
 \ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }discard{\ }comments!}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }discard{\ }comments!}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
@@ -617,13 +623,12 @@ if (TRUE) {
 1 * 3
 2 + 2 + 2
 lm(y ~ x1 + x2)
-1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
-    1 + 1 + 1 
+"a character string with \t in it"
+1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
+    1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 
 \end{Soutput}
 
 \end{Schunk}
-
 \end{par}
 
 \section{The GUI: \emph{formatR()}}
@@ -682,7 +687,6 @@ which can be found here:
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}
-
 \end{par}
 Read this blog entry for details and how to reproduce the vignette:
 \url{http://yihui.name/en/?p=602}.
