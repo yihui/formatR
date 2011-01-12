@@ -101,6 +101,9 @@
 ##'
 ##' Also note that if \code{keep.space} is \code{FALSE}, single lines
 ##' of long comments will be wrapped into shorter ones automatically.
+##' Otherwise, long comments will not be wrapped, so they may exceed
+##' the page margin, and \code{\\\\t} will be replaced with
+##' \code{\\t}.
 ##'
 ##' \subsection{Warning}{ The best strategy to avoid failure is to put
 ##' comments in whole lines or after \emph{complete} R
@@ -133,6 +136,9 @@
 ##' "2+2+2    # 'short comments'", "   ",
 ##' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
 ##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line",
+##' "\t\t## tabs/spaces before comments: use keep.space=TRUE to keep them",
+##' "'a character string with \t in it'",
+##' "# note tabs will be converted to spaces when keep.space = TRUE",
 ##' paste("## here is a", paste(rep("long", 20), collapse = ' '), "comment"))
 ##'
 ##' ## source code
@@ -242,7 +248,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         ## replace end-of-line comments to cheat R
         text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " %InLiNe_IdEnTiFiEr% \"\\1\"", text.lines[!head.comment])
         text.mask = tidy.block(text.lines)
-        text.tidy = unmask.source(text.mask)
+        text.tidy = unmask.source(text.mask, replace.tab = keep.space)
     }
     else {
         text.tidy = text.mask = tidy.block(text.lines)
@@ -257,6 +263,7 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##'
 ##'
 ##' @param text.mask the masked source code
+##' @param replace.tab whether to replace \code{\\\\t} with \code{\\t}
 ##' @return the real source code (a character vector)
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @export
@@ -278,13 +285,13 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##'
 ##' cat(unmask.source(x), sep = '\n')
 ##'
-unmask.source = function(text.mask) {
+unmask.source = function(text.mask, replace.tab = FALSE) {
     text.tidy = gsub("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa = \"|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
     ## if the comments were separated into the next line, then remove '\n' after
     ##   the identifier first to move the comments back to the same line
     text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1",
     gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
-    text.tidy
+    if (replace.tab) gsub('\\\\t', '\t', text.tidy) else text.tidy
 }
 
 ##' A GUI to format R code.

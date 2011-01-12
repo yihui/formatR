@@ -6,6 +6,11 @@ NEW FEATURES
   only applies to the whole lines of comments; the inline comments
   will not be wrapped since it is tricky to do so)
 
+MINOR CHANGES
+
+    o '\t' will be parsed to ' ' when 'keep.space' is TRUE in
+  tidy.source() (this might be undesirable, though)
+
 
 		   CHANGES IN formatR VERSION 0.1-8
 
