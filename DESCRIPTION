@@ -2,7 +2,7 @@ Package: formatR
 Type: Package
 Title: Format R Code Automatically
 Version: 0.1-9
-Date: 2011-01-12
+Date: 2011-01-16
 Author: Yihui Xie
 Maintainer: Yihui Xie <xie@yihui.name>
 Description: This package provides a function tidy.source() and
