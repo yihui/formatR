@@ -1,9 +1,11 @@
-\documentclass{article}
+\documentclass[english]{article}
 \usepackage{ae,aecompl}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
+\usepackage{babel}
+
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage[authoryear]{natbib}
@@ -20,7 +22,7 @@
 \providecommand{\LyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
-\usepackage{tikz}
+\newenvironment{dummy}{\par}{\par}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \renewcommand{\rmdefault}{ppl}
@@ -392,12 +394,12 @@
 \newcommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0.51}{#1}}
 
 \usepackage[nogin]{Sweave}
+\usepackage{tikz}
 
 \makeatother
 
 \pgfrealjobname{formatR}
 \begin{document}
-
 
 \title{\textbf{formatR}: Format R Code Automatically}
 
@@ -421,7 +423,7 @@ users tidy (reformat) their source code. Features include:
 
 The main function is \emph{tidy.source()}, which can take a file as
 input, parse it and write the formatted code to the console or a file. 
-\begin{par}
+\begin{dummy}
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{library}\hlkeyword{(}\hlsymbol{formatR}\hlkeyword{)}\mbox{}
@@ -440,32 +442,32 @@ NULL
 \end{Soutput}
 
 \end{Schunk}
-\end{par}
+\end{dummy}
 There are three options which can affect the final output: \texttt{keep.comment},
 \texttt{keep.blank.line} and \texttt{keep.space}. They are explained
 in the help page; see \texttt{?tidy.source}. For example, if we do
 not want to keep the blank lines in the code, we can first specify
 the option like this:
-\begin{par}
+\begin{dummy}
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{options}\hlkeyword{(}\hlargument{keep.blank.line}{\ }\hlargument{=}{\ }\hlnumber{FALSE}\hlkeyword{)}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}
-\end{par}
+\end{dummy}
 The option \texttt{width} will affect the width of the output, e.g.
 we can specify a narrow width:
-\begin{par}
+\begin{dummy}
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{options}\hlkeyword{(}\hlargument{width}{\ }\hlargument{=}{\ }\hlnumber{80}\hlkeyword{)}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}
-\end{par}
+\end{dummy}
 Here are some examples taken from the help page:
-\begin{par}
+\begin{dummy}
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{library}\hlkeyword{(}\hlsymbol{formatR}\hlkeyword{)}\mbox{}
@@ -629,7 +631,7 @@ lm(y ~ x1 + x2)
 \end{Soutput}
 
 \end{Schunk}
-\end{par}
+\end{dummy}
 
 \section{The GUI: \emph{formatR()}}
 
@@ -673,6 +675,30 @@ The tricks used in this packages are very dirty. There might be dangers
 in using the functions in \textbf{formatR}. Please read the documentation
 carefully to know exactly what kinds of comments could be preserved.
 
+A known issue is that when we write comments in a string (i.e. the
+comments are not real comments but a part of the string) which is
+broken into several lines, \textbf{formatR} might not work correctly.
+For example, the code below will make \textbf{formatR} fail:
+\begin{dummy}
+\begin{Schunk}
+\begin{Soutput}
+mod = "1+1
+## comments here can bring troubles
+2+2"
+\end{Soutput}
+
+\end{Schunk}
+\end{dummy}
+We need to write like this:
+\begin{dummy}
+\hspace*{\fill}\\
+\hlstd{}\ttfamily\noindent
+\hlprompt{{\ }}\hlsymbol{mod}{\ }\hlassignement{=}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"1+1"}\hlkeyword{,}{\ }\hlstring{"\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }comments{\ }here{\ }can{\ }bring{\ }troubles"}\hlkeyword{,}{\ }\hlstring{"2+2"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlprompt{{\ }}{\ }{\ }{\ }{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"\usebox{\hlnormalsizeboxbackslash}n"}\hlkeyword{)}\mbox{}
+\normalfont
+\hspace*{\fill}\\
+\hlstd{}
+\end{dummy}
 
 \section*{About this vignette}
 
@@ -680,19 +706,18 @@ You might be curious about how this vignette was generated, because
 it looks different from other Sweave-based vignettes. The answer is
 \textbf{pgfSweave} \citep{pgfSweave}. The real vignette is in \LyX{},
 which can be found here:
-\begin{par}
+\begin{dummy}
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{system.file}\hlkeyword{(}\hlstring{"doc"}\hlkeyword{,}{\ }\hlstring{"formatR.lyx"}\hlkeyword{,}{\ }\hlargument{package}{\ }\hlargument{=}{\ }\hlstring{"formatR"}\hlkeyword{)}\mbox{}
+\hlprompt{{\ }}\hlfunctioncall{system.file}\hlkeyword{(}\hlstring{"doc"}\hlkeyword{,}{\ }\hlstring{"formatR.lyx"}\hlkeyword{,}{\ }\hlargument{package}{\ }\hlargument{=}{\ }\hlstring{"formatR"}\hlkeyword{)}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}
-\end{par}
+\end{dummy}
 Read this blog entry for details and how to reproduce the vignette:
 \url{http://yihui.name/en/?p=602}.
 
 \bibliographystyle{jss}
 \bibliography{formatR}
-
 
 \end{document}

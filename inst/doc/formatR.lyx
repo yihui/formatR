@@ -1,4 +1,4 @@
-#LyX 1.6.8 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -10,6 +10,7 @@
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
 
 \usepackage[nogin]{Sweave}
+\usepackage{tikz}
 \end_preamble
 \use_default_options true
 \language english
@@ -487,6 +488,59 @@ formatR
 .
  Please read the documentation carefully to know exactly what kinds of comments
  could be preserved.
+\end_layout
+
+\begin_layout Standard
+A known issue is that when we write comments in a string (i.e.
+ the comments are not real comments but a part of the string) which is broken
+ into several lines, 
+\series bold
+formatR
+\series default
+ might not work correctly.
+ For example, the code below will make 
+\series bold
+formatR
+\series default
+ fail:
+\end_layout
+
+\begin_layout Scrap
+<<fail-code,echo=FALSE>>=
+\end_layout
+
+\begin_layout Scrap
+cat('mod = "1+1
+\backslash
+n## comments here can bring troubles
+\backslash
+n2+2"')
+\end_layout
+
+\begin_layout Scrap
+options(prompt=' ',continue=' ')
+\end_layout
+
+\begin_layout Scrap
+@
+\end_layout
+
+\begin_layout Standard
+We need to write like this:
+\end_layout
+
+\begin_layout Scrap
+<<fail-correction,eval=FALSE>>=
+\end_layout
+
+\begin_layout Scrap
+mod = paste("1+1","## comments here can bring troubles","2+2",sep='
+\backslash
+n')
+\end_layout
+
+\begin_layout Scrap
+@
 \end_layout
 
 \begin_layout Section*
