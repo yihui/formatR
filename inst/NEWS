@@ -1,3 +1,10 @@
+		   CHANGES IN formatR VERSION 0.2-0
+
+NEW FEATURES
+
+    o a new function usage() to print the formatted usage of a function
+
+
 		   CHANGES IN formatR VERSION 0.1-9
 
 NEW FEATURES
