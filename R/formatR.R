@@ -225,6 +225,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         head.comment = grepl('^[[:space:]]*#', text.lines)
         if (any(head.comment)) {
             text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
+            text.lines[head.comment] = gsub("\\", "\\\\", text.lines[head.comment], fixed = TRUE)
         }
         ## wrap long comments if you do not want to preserve leading spaces
         if (!keep.space) {
@@ -286,6 +287,8 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' cat(unmask.source(x), sep = '\n')
 ##'
 unmask.source = function(text.mask, replace.tab = FALSE) {
+    idx = grepl('\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa = ', text.mask)
+    text.mask[idx] = gsub('\\\\', '\\', text.mask[idx], fixed = TRUE)
     text.tidy = gsub("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa = \"|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
     ## if the comments were separated into the next line, then remove '\n' after
     ##   the identifier first to move the comments back to the same line
