@@ -583,6 +583,6 @@ tidy.dir = function(path = '.', recursive = FALSE, ...) {
     flist = list.files(path, pattern = '\\.[RrSsQq]$', full.names = TRUE, recursive = recursive)
     for (f in flist) {
         message('tidying ', f)
-        tidy.source(f, file = f, ...)
+        try(tidy.source(f, file = f, ...))
     }
 }
