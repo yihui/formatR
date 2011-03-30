@@ -1,8 +1,4 @@
-		   CHANGES IN formatR VERSION 0.2-0
-
-NEW FEATURES
-
-    o a new function usage() to print the formatted usage of a function
+		   CHANGES IN formatR VERSION 0.2-1
 
 MINOR CHANGES
 
@@ -11,6 +7,13 @@ MINOR CHANGES
   to format the roxygen comments since we usually write comments like
   "##' @author Someone \email{}" but "\e" is not a legal character in
   R (this will lead to errors in earlier versions of this package)
+
+
+		   CHANGES IN formatR VERSION 0.2-0
+
+NEW FEATURES
+
+    o a new function usage() to print the formatted usage of a function
 
 
 		   CHANGES IN formatR VERSION 0.1-9
