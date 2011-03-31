@@ -30,7 +30,7 @@ usage = function(FUN, class = NULL, w = 0.77) {
     }
     x = paste(fn, substring(paste(capture.output(str(args(FUN))),
         collapse = ""), 9), sep = "")
-    tidy.res = tidy.source(text = x, out = FALSE, keep.blank.line = FALSE,
+    tidy.res = tidy.source(text = x, output = FALSE, keep.blank.line = FALSE,
         width.cutoff = w * getOption("width"))
     cat(tidy.res$text.tidy, "\n")
 }
