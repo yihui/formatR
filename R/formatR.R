@@ -109,12 +109,13 @@
 ##' comments in whole lines or after \emph{complete} R
 ##' expressions. Here are some examples which could make
 ##' \code{\link{tidy.source}} fail:
-##' \preformatted{if (TRUE) {  ## comments right after a curly brace } }
 ##'
 ##' \preformatted{1 + 2 +   ## comments after an incomplete line
 ##'
 ##'   3 + 4}
 ##'
+##' And the comments right after the curly brace will be discarded:
+##' \preformatted{if (TRUE) {  ## comments right after a curly brace } }
 ##' }
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial
 ##' contribution from Yixuan Qiu <\url{http://yixuan.cos.name}>
@@ -248,6 +249,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments to cheat R
+        text.lines[!head.comment] = sub("\\{[ ]*#[^\"]*", "{", text.lines[!head.comment])
         text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " %InLiNe_IdEnTiFiEr% \"\\1\"", text.lines[!head.comment])
         text.mask = tidy.block(text.lines)
         text.tidy = unmask.source(text.mask, replace.tab = keep.space)
