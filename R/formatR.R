@@ -103,7 +103,7 @@
 ##' of long comments will be wrapped into shorter ones automatically.
 ##' Otherwise, long comments will not be wrapped, so they may exceed
 ##' the page margin, and \code{\\\\t} will be replaced with
-##' \code{\\t}.
+##' \code{\\t}. Roxygen comments will not be wrapped in any case.
 ##'
 ##' \subsection{Warning}{ The best strategy to avoid failure is to put
 ##' comments in whole lines or after \emph{complete} R
@@ -229,7 +229,8 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         ## wrap long comments if you do not want to preserve leading spaces
         if (!keep.space) {
-            head.idx = which(head.comment)
+            ## don't wrap roxygen comments
+            head.idx = which(head.comment & !grepl("^[[:space:]]*#*#'", text.lines))
             k = 0 # k records how far the wrapped comments have pushed the index
             for (i in head.idx) {
                 j = i + k               # j records the real index
