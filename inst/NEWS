@@ -9,7 +9,8 @@ MINOR CHANGES
 
     o fixed a minor problem in the function usage() (out --> output)
 
-    o comments after { will be discarded
+    o comments after { will be moved to the next line (in previous
+  versions, these comments will cause errors)
 
 
 		   CHANGES IN formatR VERSION 0.2-1
