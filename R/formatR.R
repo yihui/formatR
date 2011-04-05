@@ -243,8 +243,10 @@ tidy.source = function(source = "clipboard", keep.comment,
                 j = i + k               # j records the real index
                 tmp = strwrap(text.lines[j], width = width.cutoff, prefix = "# ",
                               exdent = 2, initial = '')
-                text.lines[j] = tmp[1]
-                if (length(tmp) > 1) text.lines = append(text.lines, tmp[-1], j)
+                if (length(tmp) > 1) {
+                    text.lines[j] = tmp[1]
+                    text.lines = append(text.lines, tmp[-1], j)
+                }
                 k = k + length(tmp) - 1
             }
             head.comment = grepl('^[[:space:]]*#', text.lines)
