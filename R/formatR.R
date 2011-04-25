@@ -1,4 +1,4 @@
-##' `Tidy up' R code and try to preserve comments.
+##' `Tidy up' R code while preserving comments.
 ##' This function has nothing to do with code optimization; it just
 ##' returns parsed source code, but also tries to preserve comments,
 ##' which is different with \code{\link[base]{parse}}. See `Details'.
@@ -14,34 +14,25 @@
 ##' \preformatted{  # asdf}
 ##'
 ##' It will be first masked as
-##' \preformatted{.SOME_IDENTIFIER = "  # asdf.ANOTHER_IDENTIFIER"}
+##' \preformatted{.SOME_IDENTIFIER <- "  # asdf.ANOTHER_IDENTIFIER"}
 ##'
 ##' which is a legal R expression, so \code{\link[base]{parse}} can
 ##' deal with it and will no longer remove the disguised comments.
 ##' In the end the identifiers will be removed to restore the original
-##' comments, i.e. the strings \code{'.SOME_IDENTIFIER = "'} and
+##' comments, i.e. the strings \code{'.SOME_IDENTIFIER <- "'} and
 ##' \code{'.ANOTHER_IDENTIFIER"'} are replaced with empty strings.
 ##'
-##' ``Inline'' comments are identified as ``two or more spaces'' plus
-##' the hash symbol \code{#} without any following double quotes in
-##' the line, e.g.
+##' ``Inline'' comments are handled differently: two spaces will be added
+##' before the hash symbol \code{#}, e.g.
+##' \preformatted{1+1#  comments}
+##'
+##' will become
 ##' \preformatted{1+1  #  comments}
-##'
-##' or
-##' \preformatted{1+1    # comments}
-##'
-##' This might be dangerous to your source code, for instance,
-##' \preformatted{a = 'I am a string   #yes'}
-##'
-##' does not contain comments (\code{#} is inside a string), but this
-##' function will treat it as if it does! If you need to use the hash
-##' symbol in a string, you must put it in double quotes, e.g.
-##' \preformatted{a = "I am a string   #yes"}
 ##'
 ##' Inline comments are first disguised as a weird operation with its
 ##' preceding R code, which is essentially meaningless but
 ##' syntactically correct!  For example,
-##' \preformatted{1+1 %InLiNe_IdEnTiFiEr% "   # comments"}
+##' \preformatted{1+1 %InLiNe_IdEnTiFiEr% "#  comments"}
 ##'
 ##' then \code{\link[base]{parse}} will deal with this expression;
 ##' again, the disguised comments will not be removed. In the end,
@@ -62,6 +53,8 @@
 ##' or not? (\code{FALSE} by default)
 ##' @param keep.space logical: whether to preserve the leading spaces
 ##' in the single lines of comments (default \code{FALSE})
+##' @param replace.assign logical: whether to replace the assign
+##' operator \code{=} with \code{<-}
 ##' @param output output to the console or a file using
 ##' \code{\link[base]{cat}}?
 ##' @param text an alternative way to specify the input: if it is
@@ -82,13 +75,12 @@
 ##' operator.}  \item{begin.comment,end.comment}{ identifiers used to
 ##' mark the comments }
 ##'
-##' @note When \code{keep.comment == TRUE}, \emph{you must not use
-##' double quotes in your inline comments -- only single quotes are
-##' allowed!!} For example, the code below will make the function
-##' discard the comments:
+##' @note When \code{keep.comment == TRUE}, \emph{all your double
+##' quotes in the comments will be replaced by single quotes!!} For
+##' example,
 ##' \preformatted{1 + 1  # here is the "comment"}
 ##'
-##' Instead, you have to write like this to protect the comments:
+##' will become
 ##' \preformatted{1 + 1  # here is the 'comment'}
 ##'
 ##' There are hidden options which can control the behaviour of this
@@ -137,9 +129,9 @@
 ##' ## use the 'text' argument
 ##' src = c("    # a single line of comments is preserved",
 ##' '1+1', '  ', 'if(TRUE){',
-##' "x=1  # comments begin with at least 2 spaces!", '}else{',
+##' "x=1  # inline comments", '}else{',
 ##' "x=2;print('Oh no... ask the right bracket to go away!')}",
-##' '1*3 # this comment will be dropped!',
+##' '1*3 # one space before this comment will become two!',
 ##' "2+2+2    # 'short comments'", "   ",
 ##' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
 ##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line",
@@ -194,7 +186,7 @@
 ##'
 ##'
 tidy.source = function(source = "clipboard", keep.comment,
-    keep.blank.line, keep.space, output = TRUE, text = NULL,
+    keep.blank.line, keep.space, replace.assign, output = TRUE, text = NULL,
     width.cutoff = 0.75 * getOption("width"), ...) {
     if (is.null(text)) {
         if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
@@ -204,6 +196,10 @@ tidy.source = function(source = "clipboard", keep.comment,
     } else {
         text.lines = text
     }
+    if (identical(text.lines, '')) {
+        if (output) cat('\n', ...)
+        return('')
+    }
     if (missing(keep.comment)) {
         keep.comment = if (is.null(getOption('keep.comment'))) TRUE else getOption('keep.comment')
     }
@@ -212,6 +208,9 @@ tidy.source = function(source = "clipboard", keep.comment,
     }
     if (missing(keep.space)) {
         keep.space = if (is.null(getOption('keep.space'))) FALSE else getOption('keep.space')
+    }
+    if (missing(replace.assign)) {
+        replace.assign = if (is.null(getOption('replace.assign'))) FALSE else getOption('replace.assign')
     }
     tidy.block = function(block.text) {
         exprs = base::parse(text = block.text)
@@ -251,15 +250,28 @@ tidy.source = function(source = "clipboard", keep.comment,
             }
             head.comment = grepl('^[[:space:]]*#', text.lines)
         }
-        text.lines[head.comment] = sprintf("%s=\"%s%s\"",
+        text.lines[head.comment] = sprintf("%s<-\"%s%s\"",
                 begin.comment, text.lines[head.comment], end.comment)
         blank.line = grepl('^[[:space:]]*$', text.lines)
         if (any(blank.line) && isTRUE(keep.blank.line))
-            text.lines[blank.line] = sprintf("%s=\"%s\"", begin.comment, end.comment)
+            text.lines[blank.line] = sprintf("%s<-\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments to cheat R
-        text.lines[!head.comment] = sub("\\{[ ]*(#[^\"]*)$", sprintf("{\n%s=\"%s%s\"",
-                  begin.comment, '\\1', end.comment), text.lines[!head.comment])
-        text.lines[!head.comment] = sub("([ ]{2,}#[^\"]*)$", " %InLiNe_IdEnTiFiEr% \"\\1\"", text.lines[!head.comment])
+        out = subset(attr(parser(text = text.lines), 'data'), terminal)
+        if (nrow(out) > 0) {
+            if (replace.assign) {
+                out$text[out$token.desc=='EQ_ASSIGN'] = '<-'
+            }
+            ## is inline comment?
+            idx1 = c(FALSE, diff(out$line1)==0) & (out$token.desc=='COMMENT')
+            ## is last line '{'?
+            idx2 = c(FALSE, (out$text == '{')[-length(idx1)])
+            out$text[idx1] = gsub('"', "'", out$text[idx1])
+            idx = idx1 & (!idx2)
+            out$text[idx] = sprintf(' %%InLiNe_IdEnTiFiEr%% "%s"', out$text[idx])
+            idx = idx1 & idx2
+            out$text[idx] = sprintf('%s<-\"%s%s\"', begin.comment, out$text[idx], end.comment)
+            text.lines = tapply(out$text, out$line1, paste, collapse='')
+        }
         text.mask = tidy.block(text.lines)
         text.tidy = unmask.source(text.mask, replace.tab = keep.space)
     }
@@ -285,9 +297,8 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##'
 ##' src = c("    # a single line of comments is preserved",
 ##' '1+1', '  ', 'if(TRUE){',
-##' "x=1  # comments begin with at least 2 spaces!", '}else{',
+##' "x=1  # inline comments!", '}else{',
 ##' "x=2;print('Oh no... ask the right bracket to go away!')}",
-##' '1*3 # this comment will be dropped!',
 ##' "2+2+2    # 'short comments'",
 ##' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
 ##' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
@@ -299,13 +310,13 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' cat(unmask.source(x), sep = '\n')
 ##'
 unmask.source = function(text.mask, replace.tab = FALSE) {
-    idx = grepl('\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa = ', text.mask)
+    idx = grepl('\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa <- ', text.mask)
     text.mask[idx] = gsub('\\\\', '\\', text.mask[idx], fixed = TRUE)
-    text.tidy = gsub("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa = \"|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
+    text.tidy = gsub("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa <- \"|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
     ## if the comments were separated into the next line, then remove '\n' after
     ##   the identifier first to move the comments back to the same line
-    text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]{2,}#[^\"]*)\"", "\\1",
-    gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
+    text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]*#[^\"]*)\"", "  \\1",
+                     gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
     if (replace.tab) gsub('\\\\t', '\t', text.tidy) else text.tidy
 }
 

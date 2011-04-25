@@ -11,6 +11,7 @@ Description: This package provides a function tidy.source() and
 	     to the code automatically, and comments will be preserved
 	     under certain conditions, so that R code will be more
 	     human-readable and tidy.
+Depends: parser
 Suggests: gWidgetsRGtk2
 License: GPL-2 | GPL-3
 URL: http://yihui.name
