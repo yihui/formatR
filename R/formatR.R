@@ -86,10 +86,11 @@
 ##' There are hidden options which can control the behaviour of this
 ##' function: the argument \code{keep.comment} gets its value from
 ##' \code{options('keep.comment')} by default;  \code{keep.blank.line}
-##' from \code{options('keep.blank.line')}, and \code{keep.space} from
-##' \code{options('keep.space')}. If these options are \code{NULL},
-##' the default values will be \code{TRUE}, \code{FALSE} and
-##' \code{FALSE} respectively.
+##' from \code{options('keep.blank.line')}, \code{keep.space} from
+##' \code{options('keep.space')}, and \code{replace.assign} from
+##' \code{options('replace.assign')}. If these options are
+##' \code{NULL}, the default values will be \code{TRUE}, \code{FALSE},
+##' \code{FALSE} and \code{FALSE} respectively.
 ##'
 ##' Also note that if \code{keep.space} is \code{FALSE}, single lines
 ##' of long comments will be wrapped into shorter ones automatically.

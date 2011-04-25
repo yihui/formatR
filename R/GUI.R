@@ -33,9 +33,9 @@
 ##'
 ##' svalue(g) = c("# a single line of comments is preserved", "1+1",
 ##'     "if(TRUE){", paste("x=1 ",
-##'     "# comments begin with at least 2 spaces!"), "}else{",
+##'     "# inline comments!"), "}else{",
 ##'     "x=2;print('Oh no... ask the right bracket to go away!')}",
-##'     "1*3 # this comment will be dropped!")
+##'     "1*3 # another inline comment")
 ##'
 ##' ## click 'Convert' now, and see
 ##'
@@ -43,9 +43,6 @@
 ##'
 ##' ## tcl/tk interface: need gWidgetstcltk package
 ##' formatR('tcltk')
-##'
-##' ## Java interface: need gWidgetsrJava package
-##' formatR('rJava')
 ##'
 ##' }
 ##'
