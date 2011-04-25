@@ -1,16 +1,14 @@
-#LyX 2.0.0beta4 created this file. For more info see http://www.lyx.org/
-\lyxformat 412
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass article
 \begin_preamble
+\usepackage{ae}
 \renewcommand{\rmdefault}{ppl}
 \renewcommand{\sfdefault}{aess}
 \renewcommand{\ttdefault}{aett}
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
-
-\usepackage[nogin]{Sweave}
-\usepackage{tikz}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -80,6 +78,7 @@ pgfsweave
 \tracking_changes false
 \output_changes false
 \html_math_output 0
+\html_css_as_file 0
 \html_be_strict false
 \end_header
 
@@ -175,24 +174,24 @@ tidy.source()
  
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<usage-tidy-source>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 library(formatR)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 args(tidy.source)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
 \begin_layout Standard
-There are three options which can affect the final output: 
+There are four options which can affect the final output: 
 \family typewriter
 keep.comment
 \family default
@@ -200,9 +199,13 @@ keep.comment
 \family typewriter
 keep.blank.line
 \family default
- and 
+, 
 \family typewriter
 keep.space
+\family default
+ and 
+\family typewriter
+replace.assign
 \family default
 .
  They are explained in the help page; see 
@@ -211,18 +214,18 @@ keep.space
 \family default
 .
  For example, if we do not want to keep the blank lines in the code, we
- can first specify the option like this:
+ can first specify a global option like this:
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<setup>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 options(keep.blank.line = FALSE)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
@@ -235,15 +238,15 @@ width
  we can specify a narrow width:
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<width-spec>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 options(width = 85)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
@@ -251,36 +254,35 @@ options(width = 85)
 Here are some examples taken from the help page:
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<tidy-source-ex>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 library(formatR)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 ## use the 'text' argument
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 src = c("    # a single line of comments is preserved", "1+1", "if(TRUE){",
  
 \end_layout
 
-\begin_layout Scrap
-    "x=1  # comments begin with at least 2 spaces!", "}else{", "x=2;print('Oh
- no...
+\begin_layout Chunk
+    "x=1  # inline comments", "}else{", "x=2;print('Oh no...
  ask the right bracket to go away!')}", 
 \end_layout
 
-\begin_layout Scrap
-    "1*3 # this comment will be dropped!", "2+2+2    # 'short comments'",
- "   ", "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
- 
+\begin_layout Chunk
+    "1*3 # one space before this comment will become two!", "2+2+2    #
+ 'short comments'", "   ", "lm(y~x1+x2)  ### only 'single quotes' are allowed
+ in comments", 
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
     "
 \backslash
 t
@@ -288,65 +290,65 @@ t
 t## tabs/spaces before comments: use keep.space=TRUE to keep them", 
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
     "'a character string with 
 \backslash
 t in it'", "# note tabs will be converted to spaces when keep.space=TRUE",
  
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
     "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a
  long line", paste("## here is a", 
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
         paste(rep("long", 20), collapse = " "), "comment"))
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 ## source code
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 cat(src, sep = "
 \backslash
 n")
 \end_layout
 
-\begin_layout Scrap
-## the formatted version
+\begin_layout Chunk
+## the formatted version (with '=' replace by '<-')
 \end_layout
 
-\begin_layout Scrap
-tidy.source(text = src)
+\begin_layout Chunk
+tidy.source(text = src, replace.assign=TRUE)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 ## other options: preserve leading spaces
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 tidy.source(text = src, keep.space = TRUE)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 ## preserve blank lines: note the 11th line!
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 tidy.source(text = src, keep.blank.line = TRUE)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 ## discard comments!
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 tidy.source(text = src, keep.comment = FALSE)
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
@@ -525,11 +527,11 @@ formatR
  fail:
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<fail-code,echo=FALSE>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 cat('mod = "1+1
 \backslash
 n## comments here can bring troubles
@@ -537,11 +539,11 @@ n## comments here can bring troubles
 n2+2"')
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 options(prompt=' ',continue=' ')
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
@@ -549,17 +551,17 @@ options(prompt=' ',continue=' ')
 We need to write like this:
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<fail-correction,eval=FALSE>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 mod = paste("1+1","## comments here can bring troubles","2+2",sep='
 \backslash
 n')
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
@@ -585,15 +587,15 @@ key "pgfSweave"
  The real vignette is in LyX, which can be found here:
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 <<lyx-doc, eval=FALSE>>=
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 system.file('doc', 'formatR.lyx', package='formatR')
 \end_layout
 
-\begin_layout Scrap
+\begin_layout Chunk
 @
 \end_layout
 
