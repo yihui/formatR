@@ -59,7 +59,7 @@ formatR = function(guiToolkit = 'RGtk2') {
     tag(txt, "font.attr") = c(family = "monospace", size = "medium",
         weight = "light")
     tag(txt, "tidy.opt") = list(keep.comment = TRUE, keep.blank.line = TRUE,
-        width.cutoff = 60)
+        keep.space = FALSE, replace.assign = FALSE, width.cutoff = 60)
     gbutton("Open", container = g2, handler = function(h, ...) {
         s = gfile("Open R Source")
         if (!is.na(s)) {
@@ -77,6 +77,8 @@ formatR = function(guiToolkit = 'RGtk2') {
         text.tidy = tidy.source(text = src,
             keep.comment = tidy.opt$keep.comment,
             keep.blank.line = tidy.opt$keep.blank.line,
+            keep.space = tidy.opt$keep.space,
+            replace.assign = tidy.opt$replace.assign,
             width.cutoff = tidy.opt$width.cutoff,
             output = FALSE)$text.tidy
         svalue(txt) = text.tidy
@@ -146,7 +148,15 @@ formatR = function(guiToolkit = 'RGtk2') {
             container = tbl))
         r.kb = gradio(c("TRUE", "FALSE"), which(as.logical(tidy.opt$keep.blank.line) ==
             c(TRUE, FALSE)), horizontal = TRUE, container = gf.kb)
-        tbl[3, 1, expand = TRUE] = (gf.wi <- gframe("Text Width",
+        tbl[3, 1, expand = TRUE] = (gf.ks <- gframe("Keep Spaces?",
+            container = tbl))
+        r.ks = gradio(c("TRUE", "FALSE"), which(as.logical(tidy.opt$keep.space) ==
+            c(TRUE, FALSE)), horizontal = TRUE, container = gf.ks)
+        tbl[4, 1, expand = TRUE] = (gf.ra <- gframe("Replace '=' with '<-' in assigning operations?",
+            container = tbl))
+        r.ra = gradio(c("TRUE", "FALSE"), which(as.logical(tidy.opt$replace.assign) ==
+            c(TRUE, FALSE)), horizontal = TRUE, container = gf.ra)
+        tbl[5, 1, expand = TRUE] = (gf.wi <- gframe("Text Width",
             container = tbl))
         r.wi = gedit(as.character(tidy.opt$width.cutoff), container = gf.wi,
             coerce.with = as.integer)
@@ -158,8 +168,10 @@ formatR = function(guiToolkit = 'RGtk2') {
                   "Error", icon = "error")
             else {
                 tag(txt, "tidy.opt") = list(keep.comment = as.logical(svalue(r.kc)),
-                  keep.blank.line = as.logical(svalue(r.kb)),
-                  width.cutoff = svalue(r.wi))
+                   keep.blank.line = as.logical(svalue(r.kb)),
+                   keep.space = as.logical(svalue(r.ks)),
+                   replace.assign = as.logical(svalue(r.ra)),
+                   width.cutoff = svalue(r.wi))
                 dispose(w)
             }
         })
