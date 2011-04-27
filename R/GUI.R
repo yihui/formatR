@@ -81,7 +81,10 @@ formatR = function(guiToolkit = 'RGtk2') {
             replace.assign = tidy.opt$replace.assign,
             width.cutoff = tidy.opt$width.cutoff,
             output = FALSE)$text.tidy
+        Encoding(text.tidy) = 'UTF-8'
+        enc = options(encoding = "UTF-8")
         svalue(txt) = text.tidy
+        options(enc)
     })
     gbutton("Save", container = g2, handler = function(h, ...) {
         s = tag(txt, "src.file")
