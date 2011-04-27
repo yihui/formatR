@@ -257,7 +257,9 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (any(blank.line) && isTRUE(keep.blank.line))
             text.lines[blank.line] = sprintf("%s<-\"%s\"", begin.comment, end.comment)
         ## replace end-of-line comments to cheat R
+        enc = options(encoding = "native.enc")
         out = attr(parser(text = text.lines), 'data')
+        options(enc)
         out = subset(out, out$terminal)
         if (nrow(out) > 0) {
             if (replace.assign) {
