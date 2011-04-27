@@ -2,6 +2,17 @@
 
 NEW FEATURES
 
+    o formatR now uses the parser package to parse inline comments,
+  which can guarantee that these comments will be correctly parsed (no
+  longer uses the 'unsafe' regular expressions to parse comments, so
+  forget about the previous rules of writing comments -- just write
+  comments with an arbitrary number of spaces before # as you wish)
+
+    o the use of parser also enabled a new feature: '=' can be
+  replaced with '<-' wherever appropriate (for example, '=' in
+  function arguments will not be replaced; only thoese equal signs
+  which are used to assigning purposes can be replaced)
+
     o long roxygen comments will not be wrapped (i.e. comments begin
   with #' or ##')
 
