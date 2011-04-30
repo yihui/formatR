@@ -274,7 +274,7 @@ tidy.source = function(source = "clipboard", keep.comment,
             out$text[idx] = sprintf(' %%InLiNe_IdEnTiFiEr%% "%s"', out$text[idx])
             idx = idx1 & idx2
             out$text[idx] = sprintf('%s<-\"%s%s\"', begin.comment, out$text[idx], end.comment)
-            text.lines = tapply(out$text, out$line1, paste, collapse='')
+            text.lines = tapply(out$text, out$line1, paste, collapse=' ')
         }
         text.mask = tidy.block(text.lines)
         text.tidy = unmask.source(text.mask, replace.tab = keep.space)
