@@ -377,7 +377,6 @@
  {hyperref}
 \hypersetup{
  pdfstartview=FitH}
-\usepackage{breakurl}
 
 \makeatletter
 
@@ -672,12 +671,12 @@ interface (see Figure \ref{fig:GUI}).
 
 \begin{figure}
 \begin{centering}
-\includegraphics[width=0.85\linewidth]{formatR-GUI-1.eps}\medskip{}
+\includegraphics[width=0.85\linewidth]{formatR-GUI-1.png}\medskip{}
 
 \par\end{centering}
 
 \begin{centering}
-\includegraphics[width=0.85\linewidth]{formatR-GUI-2.eps}
+\includegraphics[width=0.85\linewidth]{formatR-GUI-2.png}
 \par\end{centering}
 
 \caption{The graphical interface to format R code. Top: the original code;
