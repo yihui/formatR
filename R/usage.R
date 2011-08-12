@@ -1,6 +1,6 @@
-##' Show the usage of a function.
-##' Print the usage of a function in a formatted way.
+##' Show the usage of a function
 ##'
+##' Print the usage of a function in a formatted way.
 ##' @param FUN the function
 ##' @param class provide the class to which the function is applied if
 ##' \code{FUN} is a S3 generic function
@@ -22,7 +22,6 @@
 ##'
 ##' # narrower output
 ##' usage(barplot, "default", 0.75)
-##'
 usage = function(FUN, class = NULL, w = 0.77) {
     fn = as.character(substitute(FUN))
     if (!is.null(class)) {

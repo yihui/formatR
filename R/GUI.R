@@ -1,26 +1,26 @@
-##' A GUI to format R code.
+##' A GUI to format R code
+##'
 ##' Create a GUI (via GTK+ by default) to format R code.
 ##'
 ##' This function calls \code{\link{tidy.source}} to format R code.
 ##' Spaces and indent will be added to the code automatically.
 ##'
-##' We can either open an R source file or directly write R code in the text
-##' widget. Click the ``convert'' button, and the code will become tidy. See
-##' \code{\link{tidy.source}} for more details.
+##' We can either open an R source file or directly write R code in
+##' the text widget. Click the ``convert'' button, and the code will
+##' become tidy. See \code{\link{tidy.source}} for more details.
 ##'
 ##' @param guiToolkit the GUI toolkit to use
 ##' @return the text widget is returned
-##' @note
-##' By default, the interface is based on GTK+ (R package \bold{RGtk2}), but
-##' other options (\bold{tcltk}, \bold{rJava} and \bold{Qt}) are possible too. See the
-##' examples below. Note the ``Font'' button is only for the GTK+ interface.
+##' @note By default, the interface is based on GTK+ (R package
+##' \bold{RGtk2}), but other options (\bold{tcltk}, \bold{rJava} and
+##' \bold{Qt}) are possible too. See the examples below. Note the
+##' ``Font'' button is only for the GTK+ interface.
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @seealso \code{\link{tidy.source}}
 ##' @export
 ##' @references
-##'   \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+##' \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
 ##' @examples
-##'
 ##' if (interactive() && require('gWidgetsRGtk2')) {
 ##'
 ##' ## a GUI will show up on loading if one of the gWidgets
@@ -45,7 +45,6 @@
 ##' formatR('tcltk')
 ##'
 ##' }
-##'
 formatR = function(guiToolkit = 'RGtk2') {
     options(guiToolkit = guiToolkit)
     stopifnot(require(paste('gWidgets', guiToolkit, sep = ''), character.only = TRUE))

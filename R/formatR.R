@@ -1,4 +1,5 @@
-##' `Tidy up' R code while preserving comments.
+##' `Tidy up' R code while preserving comments
+##'
 ##' This function has nothing to do with code optimization; it just
 ##' returns parsed source code, but also tries to preserve comments,
 ##' which is different with \code{\link[base]{parse}}. See `Details'.
@@ -14,13 +15,14 @@
 ##' \preformatted{  # asdf}
 ##'
 ##' It will be first masked as
-##' \preformatted{.SOME_IDENTIFIER <- "  # asdf.ANOTHER_IDENTIFIER"}
+##'
+##' \preformatted{.IDENTIFIER1 <- "  # asdf.IDENTIFIER2"}
 ##'
 ##' which is a legal R expression, so \code{\link[base]{parse}} can
-##' deal with it and will no longer remove the disguised comments.
-##' In the end the identifiers will be removed to restore the original
-##' comments, i.e. the strings \code{'.SOME_IDENTIFIER <- "'} and
-##' \code{'.ANOTHER_IDENTIFIER"'} are replaced with empty strings.
+##' deal with it and will no longer remove the disguised comments.  In
+##' the end the identifiers will be removed to restore the original
+##' comments, i.e. the strings \code{'.IDENTIFIER1 <- "'} and
+##' \code{'.IDENTIFIER2"'} are replaced with empty strings.
 ##'
 ##' ``Inline'' comments are handled differently: two spaces will be added
 ##' before the hash symbol \code{#}, e.g.
@@ -32,12 +34,12 @@
 ##' Inline comments are first disguised as a weird operation with its
 ##' preceding R code, which is essentially meaningless but
 ##' syntactically correct!  For example,
-##' \preformatted{1+1 %InLiNe_IdEnTiFiEr% "#  comments"}
+##' \preformatted{1+1 \%InLiNe_IdEnTiFiEr\% "#  comments"}
 ##'
 ##' then \code{\link[base]{parse}} will deal with this expression;
 ##' again, the disguised comments will not be removed. In the end,
 ##' inline comments will be freed as well (remove the operator
-##' \code{%InLiNe_IdEnTiFiEr%} and surrounding double quotes).
+##' \code{\%InLiNe_IdEnTiFiEr\%} and surrounding double quotes).
 ##'
 ##' All these special treatments to comments are due to the fact that
 ##' \code{\link[base]{parse}} and \code{\link[base]{deparse}} can tidy
@@ -78,10 +80,11 @@
 ##' @note When \code{keep.comment == TRUE}, \emph{all your double
 ##' quotes in the comments will be replaced by single quotes!!} For
 ##' example,
-##' \preformatted{1 + 1  # here is the "comment"}
+##'
+##' \preformatted{1 + 1  # here is "comment"}
 ##'
 ##' will become
-##' \preformatted{1 + 1  # here is the 'comment'}
+##' \preformatted{1 + 1  # here is 'comment'}
 ##'
 ##' There are hidden options which can control the behaviour of this
 ##' function: the argument \code{keep.comment} gets its value from
@@ -98,24 +101,28 @@
 ##' the page margin, and \code{\\\\t} will be replaced with
 ##' \code{\\t}. Roxygen comments will not be wrapped in any case.
 ##'
-##' \subsection{Warning}{ The best strategy to avoid failure is to put
+##' @section Warning: The best strategy to avoid failure is to put
 ##' comments in whole lines or after \emph{complete} R
 ##' expressions. Here are some examples which could make
 ##' \code{\link{tidy.source}} fail:
-##' \preformatted{1 + 2 +   ## comments after an incomplete line
+##'
+##' \preformatted{1 + 2 +## comments after an incomplete line
+##'
 ##'   3 + 4}
 ##'
 ##' And the comments right after the curly brace will be moved to the
 ##' next line, e.g.
-##' \preformatted{if (TRUE) {  ## comments right after a curly brace
+##'
+##' \preformatted{if (TRUE) {## comments
 ##' }}
 ##'
 ##' will become
 ##' \preformatted{if (TRUE) {
-##'     ## comments right after a curly brace
+##'
+##'     ## comments
+##'
 ##' }}
 ##'
-##' }
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial
 ##' contribution from Yixuan Qiu <\url{http://yixuan.cos.name}>
 ##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
@@ -184,8 +191,6 @@
 ##' ## write into clipboard again
 ##' tidy.source("clipboard", file = "clipboard")
 ##' }
-##'
-##'
 tidy.source = function(source = "clipboard", keep.comment,
     keep.blank.line, keep.space, replace.assign, output = TRUE, text = NULL,
     width.cutoff = 0.75 * getOption("width"), ...) {
@@ -288,9 +293,9 @@ tidy.source = function(source = "clipboard", keep.comment,
         begin.comment = begin.comment, end.comment = end.comment))
 }
 
-##' Restore the real source code from the masked text.
+##' Restore the real source code from the masked text
 ##'
-##'
+##' Remove the masks from the code to restore the real code.
 ##' @param text.mask the masked source code
 ##' @param replace.tab whether to replace \code{\\\\t} with \code{\\t}
 ##' @return the real source code (a character vector)
@@ -312,7 +317,6 @@ tidy.source = function(source = "clipboard", keep.comment,
 ##' cat(x, sep = '\n')
 ##'
 ##' cat(unmask.source(x), sep = '\n')
-##'
 unmask.source = function(text.mask, replace.tab = FALSE) {
     idx = grepl('\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa <- ', text.mask)
     text.mask[idx] = gsub('\\\\', '\\', text.mask[idx], fixed = TRUE)
@@ -325,10 +329,12 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
 }
 
 
-##' A weird operator for internal use only.
-##' This operator is almost meaningless; it is used to mask the inline comments.
+##' A weird operator for internal use only
 ##'
-##' @name %InLiNe_IdEnTiFiEr%
+##' This operator is almost meaningless; it is used to mask the inline
+##' comments.
+##'
+##' @name \%InLiNe_IdEnTiFiEr\%
 ##' @rdname InLiNe_IdEnTiFiEr
 ##' @usage x %InLiNe_IdEnTiFiEr% y
 ##' @param x the argument before the operator
@@ -353,12 +359,19 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
 
 
 
-##' Modified versions of parse() and deparse().
+##' Modified versions of parse() and deparse()
 ##'
-##' the source code is masked to preserve comments, then this function
-##' uses \code{\link[base]{parse}} to return the parsed but
-##' unevaluated expressions in a list.
+##' These two functions parse and deparse the masked source code.
 ##'
+##' For \code{\link{parse.tidy}}, the source code is masked to
+##' preserve comments, then this function uses
+##' \code{\link[base]{parse}} to return the parsed but unevaluated
+##' expressions in a list.
+##'
+##' For \code{\link{deparse.tidy}}, it uses
+##' \code{\link[base]{deparse}} to turn the unevaluated (and masked)
+##' expressions into character strings; the masks will be removed to
+##' restore the real source code. See \code{\link{unmask.source}}.
 ##' @param text the source code as a character string to be passed to
 ##' \code{\link{tidy.source}}
 ##' @param ... for \code{\link{parse.tidy}}: other arguments to be passed to
@@ -395,12 +408,6 @@ parse.tidy = function(text, ...) {
     tidy.res = tidy.source(text = text, output = FALSE, ...)
     base::parse(text = tidy.res$text.mask)
 }
-
-##' Modified versions of parse() and deparse()
-##'
-##' it uses \code{\link[base]{deparse}} to turn the unevaluated (and
-##' masked) expressions into character strings; the masks will be
-##' removed to restore the real source code. See \code{\link{unmask.source}}.
 ##' @param expr the unevaluated expressions (ideally as results from
 ##' \code{\link{parse.tidy}})
 ##' @rdname parse.tidy
@@ -409,7 +416,7 @@ deparse.tidy = function(expr, ...) {
     unmask.source(paste(base::deparse(expr, ...), collapse = '\n'))
 }
 
-##' Format the R scripts under a directory.
+##' Format the R scripts under a directory
 ##'
 ##' This function first look for all the R scripts under a directory
 ##' (using the pattern \code{"\\\\.[RrSsQq]$"}), then uses
@@ -418,8 +425,10 @@ deparse.tidy = function(expr, ...) {
 ##' back up the original directory first if you do not fully
 ##' understand the tricks \code{\link{tidy.source}} is using.
 ##' @param path the directory
-##' @param recursive whether to recursively look for R scripts under \code{path}
-##' @param ... other arguments to be passed to \code{\link{tidy.source}}
+##' @param recursive whether to recursively look for R scripts under
+##' \code{path}
+##' @param ... other arguments to be passed to
+##' \code{\link{tidy.source}}
 ##' @return NULL
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @seealso \code{\link{tidy.source}}
@@ -427,12 +436,9 @@ deparse.tidy = function(expr, ...) {
 ##' @examples
 ##' library(formatR)
 ##'
-##' if (interactive()) {
 ##' path = tempdir()
 ##' file.copy(system.file('demo', package = 'base'), path, recursive=TRUE)
 ##' tidy.dir(path, recursive=TRUE)
-##' }
-##'
 tidy.dir = function(path = '.', recursive = FALSE, ...) {
     flist = list.files(path, pattern = '\\.[RrSsQq]$', full.names = TRUE, recursive = recursive)
     for (f in flist) {
