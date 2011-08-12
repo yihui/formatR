@@ -1,0 +1,8 @@
+export(deparse.tidy)
+export(formatR)
+export("%InLiNe_IdEnTiFiEr%")
+export(parse.tidy)
+export(tidy.dir)
+export(tidy.source)
+export(unmask.source)
+export(usage)
