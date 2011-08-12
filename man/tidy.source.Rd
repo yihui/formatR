@@ -143,7 +143,9 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
   And the comments right after the curly brace will be
   moved to the next line, e.g.
 
-  \preformatted{if (TRUE) {## comments }}
+  \preformatted{if (TRUE) {## comments
+
+  }}
 
   will become \preformatted{if (TRUE) {
 
@@ -210,6 +212,10 @@ if (interactive()) {
     ## write into clipboard again
     tidy.source("clipboard", file = "clipboard")
 }
+
+## the if-else structure
+tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", 
+    "## comments", "} else 2}"))
 }
 \author{
   Yihui Xie <\url{http://yihui.name}> with substantial

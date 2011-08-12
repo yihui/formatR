@@ -114,6 +114,7 @@
 ##' next line, e.g.
 ##'
 ##' \preformatted{if (TRUE) {## comments
+##'
 ##' }}
 ##'
 ##' will become
@@ -191,6 +192,9 @@
 ##' ## write into clipboard again
 ##' tidy.source("clipboard", file = "clipboard")
 ##' }
+##'
+##' ## the if-else structure
+##' tidy.source(text=c('{if(TRUE)1 else 2; if(FALSE){1+1',"## comments",'} else 2}'))
 tidy.source = function(source = "clipboard", keep.comment,
     keep.blank.line, keep.space, replace.assign, output = TRUE, text = NULL,
     width.cutoff = 0.75 * getOption("width"), ...) {
@@ -325,6 +329,8 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
     ##   the identifier first to move the comments back to the same line
     text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]*#[^\"]*)\"", "  \\1",
                      gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
+    ## move 'else ...' back to the last line
+    text.tidy = gsub('\n[[:space:]]*else', ' else', text.tidy)
     if (replace.tab) gsub('\\\\t', '\t', text.tidy) else text.tidy
 }
 
