@@ -10,6 +10,9 @@ NEW FEATURES
 
   {'this is a BAD style of R programming'}
 
+  o tidy.source() reports the line number when errors occur, which can
+  help users detect the problem in the R code more quickly (thanks,
+  Hadley Wickham)
 
 
 		   CHANGES IN formatR VERSION 0.2-3

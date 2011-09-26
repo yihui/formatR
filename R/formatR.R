@@ -190,6 +190,7 @@ tidy.source = function(source = "clipboard", keep.comment,
             text.lines[head.comment] = gsub("\"", "'", text.lines[head.comment])
             text.lines[head.comment] = gsub("\\", "\\\\", text.lines[head.comment], fixed = TRUE)
         }
+        m = seq_along(text.lines) # map between new row indices to old indices
         ## wrap long comments if you do not want to preserve leading spaces
         if (!keep.space) {
             ## don't wrap roxygen comments
@@ -202,6 +203,7 @@ tidy.source = function(source = "clipboard", keep.comment,
                 if (length(tmp) > 1) {
                     text.lines[j] = tmp[1]
                     text.lines = append(text.lines, tmp[-1], j)
+                    m = append(m, rep(j, length(tmp) - 1), j)
                 }
                 k = k + length(tmp) - 1
             }
@@ -223,8 +225,21 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         ## replace end-of-line comments to cheat R
         enc = options(encoding = "native.enc")
-        out = attr(parser(text = text.lines), 'data')
+        out = try(attr(parser(text = text.lines), 'data'), silent = TRUE)
         options(enc)
+        if (inherits(out, 'try-error')) {
+            ## line number where errors occur
+            n = as.numeric(tail(strsplit(strsplit(out, '\n')[[1]][2], ':')[[1]], 2)[1])
+            r = (-3:3) + m[n]; r = r[r > 0 & r <= length(text)]
+            s = paste(rep('#', .75 * getOption('width')), collapse = '')
+            message('Unable to parse the R code! ',
+                    'The error is likely to come from line ', m[n],
+                    '; \nthe surrounding lines are:\n', s, '\n',
+                    paste(text[r], collapse = '\n'), '\n', s, '\n',
+                    'See the Warning section in help(tidy.source) for possible reasons',
+                    '\n')
+            stop(out)
+        }
         out = subset(out, out$terminal)
         if (nrow(out) > 0) {
             if (replace.assign) {
