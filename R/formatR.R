@@ -258,8 +258,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         text.mask = tidy.block(text.lines)
         text.tidy = unmask.source(text.mask, replace.tab = keep.space)
-    }
-    else {
+    } else {
         text.tidy = text.mask = tidy.block(text.lines)
         begin.comment = end.comment = ""
     }
