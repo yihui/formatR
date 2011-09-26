@@ -263,8 +263,17 @@ tidy.source = function(source = "clipboard", keep.comment,
         text.lines[head.comment] = sprintf("%s<-\"%s%s\"",
                 begin.comment, text.lines[head.comment], end.comment)
         blank.line = grepl('^[[:space:]]*$', text.lines)
-        if (any(blank.line) && isTRUE(keep.blank.line))
+        if (any(blank.line) && isTRUE(keep.blank.line)) {
+            ## no blank lines before an 'else' statement!
+            else.line = grep('^[[:space:]]*else(\\W|)', text.lines)
+            for (i in else.line) {
+                j = i - 1
+                while (blank.line[j]) {
+                    blank.line[j] = FALSE; j = j - 1  # search backwards & rm blank lines
+                }
+            }
             text.lines[blank.line] = sprintf("%s<-\"%s\"", begin.comment, end.comment)
+        }
         ## replace end-of-line comments to cheat R
         enc = options(encoding = "native.enc")
         out = attr(parser(text = text.lines), 'data')
