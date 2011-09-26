@@ -110,6 +110,14 @@
 ##'
 ##'   3 + 4}
 ##'
+##' The same is true for blank lines, e.g.
+##'
+##' \preformatted{
+##' if (TRUE)
+##'
+##' {'this is a BAD style of R programming!'}
+##' }
+##'
 ##' And the comments right after the curly brace will be moved to the
 ##' next line, e.g.
 ##'

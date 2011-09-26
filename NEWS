@@ -1,3 +1,17 @@
+		   CHANGES IN formatR VERSION 0.2-4
+
+NEW FEATURES
+
+  o the empty lines before 'else' will be removed even if
+  keep.blank.line = TRUE; it is ill-advised to use blank lines among
+  incomplete code chunks, e.g. 
+
+  if (TRUE)
+
+  {'this is a BAD style of R programming'}
+
+
+
 		   CHANGES IN formatR VERSION 0.2-3
 
 NEW FEATURES
