@@ -150,10 +150,9 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
             source = pipe("pbpaste")
         }
-        text.lines = readLines(source, warn = FALSE)
-    } else {
-        text.lines = text
+        text = readLines(source, warn = FALSE)
     }
+    text.lines = text
     if (identical(text.lines, '')) {
         if (output) cat('\n', ...)
         return('')
