@@ -102,7 +102,7 @@
 ##' \code{\\t}. Roxygen comments will not be wrapped in any case.
 ##'
 ##' @section Warning: The best strategy to avoid failure is to put
-##' comments in whole lines or after \emph{complete} R
+##' comments in complete lines or after \emph{complete} R
 ##' expressions. Here are some examples which could make
 ##' \code{\link{tidy.source}} fail:
 ##'
@@ -117,6 +117,8 @@
 ##'
 ##' {'this is a BAD style of R programming!'}
 ##' }
+##'
+##' There should not be a blank line after the \code{if} statement.
 ##'
 ##' And the comments right after the curly brace will be moved to the
 ##' next line, e.g.
