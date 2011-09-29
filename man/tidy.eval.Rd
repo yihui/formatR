@@ -5,8 +5,8 @@
 tidy.eval(source = "clipboard", ..., file = "", prefix = "## ")
 }
 \arguments{
-  \item{the}{input filename (by default the clipboard; see
-  \code{\link{tidy.source}})}
+  \item{source}{the input filename (by default the
+  clipboard; see \code{\link{tidy.source}})}
 
   \item{...}{other arguments passed to
   \code{\link{tidy.source}}}

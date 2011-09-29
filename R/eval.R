@@ -3,7 +3,7 @@
 ##' This function is designed to insert the output of each chunk of R
 ##' code into the source code without really breaking the source code,
 ##' since the output is masked in comments.
-##' @param the input filename (by default the clipboard; see
+##' @param source the input filename (by default the clipboard; see
 ##' \code{\link{tidy.source}})
 ##' @param ... other arguments passed to \code{\link{tidy.source}}
 ##' @param file the file to write by \code{\link[base]{cat}}; by
