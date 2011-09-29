@@ -19,7 +19,7 @@ License: GPL-2 | GPL-3
 URL: http://yihui.name
 BugReports: https://github.com/yihui/formatR/issues
 Collate:
-    'formatR.R'
+    'tidy.R'
     'GUI.R'
     'usage.R'
     'zzz.R'
