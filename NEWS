@@ -2,6 +2,9 @@
 
 NEW FEATURES
 
+  o a new function tidy.eval(): evaluate R code and insert the output
+  masked in comments (following ##)
+
   o the empty lines before 'else' will be removed even if
   keep.blank.line = TRUE; it is ill-advised to use blank lines among
   incomplete code chunks, e.g. 
