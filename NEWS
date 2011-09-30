@@ -12,6 +12,11 @@ NEW FEATURES
   o a wiki is set up as the manual for formatR:
   https://github.com/yihui/formatR/wiki
 
+MINOR CHANGES
+
+  o keep.blank.line is TRUE by default now (was FALSE in previous
+  versions), i.e. blank lines are preserved by default
+
 
 		   CHANGES IN formatR VERSION 0.2-4
 
