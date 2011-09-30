@@ -9,4 +9,5 @@ To install from CRAN, use
 To install from GitHub, use
 
     install.packages('devtools')
+    library(devtools)
     install_github('formatR', 'yihui')
