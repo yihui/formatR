@@ -20,8 +20,8 @@
 ##' @export
 ##' @references
 ##' \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
-##' @examples
-##' if (interactive() && require('gWidgetsRGtk2')) {
+##' @examples \dontrun{
+##' library('gWidgetsRGtk2')
 ##'
 ##' ## a GUI will show up on loading if one of the gWidgets
 ##' ##   toolkit is present (e.g. via library(gWidgetsRGtk2))
