@@ -5,6 +5,13 @@ SIGNIFICANT CHANGES
   o the function formatR() was renamed to tidy.gui() which is a more
   meaningful name since it is used to create a GUI
 
+NEW FEATURES
+
+  o usage() will tell if the function is S3
+
+  o a wiki is set up as the manual for formatR:
+  https://github.com/yihui/formatR/wiki
+
 
 		   CHANGES IN formatR VERSION 0.2-4
 
