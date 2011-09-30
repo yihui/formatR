@@ -17,13 +17,14 @@ tidy.dir(path = ".", recursive = FALSE, ...)
   NULL
 }
 \description{
-  This function first look for all the R scripts under a
+  This function first looks for all the R scripts under a
   directory (using the pattern \code{"\\\\.[RrSsQq]$"}),
   then uses \code{\link{tidy.source}} to tidy these
   scripts. The original scripts will be overwritten with
-  formatted code. You may need to back up the original
-  directory first if you do not fully understand the tricks
-  \code{\link{tidy.source}} is using.
+  reformatted code if reformatting was successful. You may
+  need to back up the original directory first if you do
+  not fully understand the tricks \code{\link{tidy.source}}
+  is using.
 }
 \examples{
 library(formatR)

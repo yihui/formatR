@@ -38,3 +38,6 @@ tidy.eval(source = file.path(system.file(package = "stats"),
 \author{
   Yihui Xie <\url{http://yihui.name}>
 }
+\references{
+  \url{https://github.com/yihui/formatR/wiki/}
+}
