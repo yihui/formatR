@@ -1,3 +1,11 @@
+		   CHANGES IN formatR VERSION 0.3-0
+
+SIGNIFICANT CHANGES
+
+  o the function formatR() was renamed to tidy.gui() which is a more
+  meaningful name since it is used to create a GUI
+
+
 		   CHANGES IN formatR VERSION 0.2-4
 
 NEW FEATURES
