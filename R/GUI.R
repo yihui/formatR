@@ -27,7 +27,7 @@
 ##' ##   toolkit is present (e.g. via library(gWidgetsRGtk2))
 ##' library(formatR)
 ##'
-##' g = formatR()
+##' g = tidy.gui()
 ##'
 ##' ## we have control over the text widget, e.g. set or get the text
 ##'
@@ -42,10 +42,10 @@
 ##' cat(svalue(g), sep = '\n')   # get its value
 ##'
 ##' ## tcl/tk interface: need gWidgetstcltk package
-##' formatR('tcltk')
+##' tidy.gui('tcltk')
 ##'
 ##' }
-formatR = function(guiToolkit = 'RGtk2') {
+tidy.gui = function(guiToolkit = 'RGtk2') {
     options(guiToolkit = guiToolkit)
     stopifnot(require(paste('gWidgets', guiToolkit, sep = ''), character.only = TRUE))
 
