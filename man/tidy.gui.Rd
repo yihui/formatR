@@ -61,7 +61,8 @@ tidy.gui("tcltk")
   Yihui Xie <\url{http://yihui.name}>
 }
 \references{
-  \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+  \url{https://github.com/yihui/formatR/wiki/}
+  (screenshots)
 }
 \seealso{
   \code{\link{tidy.source}}

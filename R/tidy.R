@@ -5,9 +5,8 @@
 ##' which is different with \code{\link[base]{parse}}. See `Details'.
 ##'
 ##' This function helps the users to tidy up their source code in a
-##' sense that necessary indents and spaces will be added, etc. See
-##' \code{\link[base]{parse}}. But comments will be preserved if
-##' \code{keep.comment = TRUE}.
+##' sense that necessary indents and spaces will be added, but
+##' comments will be preserved if \code{keep.comment = TRUE}.
 ##'
 ##' The method to preserve comments is to protect them as strings in
 ##' disguised assignments. For example, there is a single line of
@@ -24,8 +23,8 @@
 ##' comments, i.e. the strings \code{'.IDENTIFIER1 <- "'} and
 ##' \code{'.IDENTIFIER2"'} are replaced with empty strings.
 ##'
-##' ``Inline'' comments are handled differently: two spaces will be added
-##' before the hash symbol \code{#}, e.g.
+##' ``Inline'' comments are handled differently: two spaces will be
+##' added before the hash symbol \code{#}, e.g.
 ##' \preformatted{1+1#  comments}
 ##'
 ##' will become
@@ -44,19 +43,18 @@
 ##' All these special treatments to comments are due to the fact that
 ##' \code{\link[base]{parse}} and \code{\link[base]{deparse}} can tidy
 ##' the R code at the price of dropping all the comments.
-##'
-##' @param source a string: location of the source code (default to be
-##' the clipboard; this means we can copy the code to clipboard and
-##' use \code{tidy.souce()} without specifying the argument
-##' \code{source})
-##' @param keep.comment logical value: whether to keep comments or
-##' not? (\code{TRUE} by default)
-##' @param keep.blank.line logical value: whether to keep blank lines
-##' or not? (\code{FALSE} by default)
-##' @param keep.space logical: whether to preserve the leading spaces
-##' in the single lines of comments (default \code{FALSE})
-##' @param replace.assign logical: whether to replace the assign
-##' operator \code{=} with \code{<-}
+##' @param source a character string: location of the source code
+##' (default to be the clipboard; this means we can copy the code to
+##' clipboard and use \code{tidy.souce()} without specifying the
+##' argument \code{source})
+##' @param keep.comment whether to keep comments (\code{TRUE} by
+##' default)
+##' @param keep.blank.line whether to keep blank lines (\code{TRUE} by
+##' default)
+##' @param keep.space whether to preserve the leading spaces in the
+##' single lines of comments (default \code{FALSE})
+##' @param replace.assign whether to replace the assign operator
+##' \code{=} with \code{<-}
 ##' @param output output to the console or a file using
 ##' \code{\link[base]{cat}}?
 ##' @param text an alternative way to specify the input: if it is
@@ -71,12 +69,11 @@
 ##' e.g. \code{file} (this can be useful for batch-processing R
 ##' scripts, e.g. \code{tidy.source(source = 'input.R', file =
 ##' 'output.R')})
-##' @return A list with components \item{text.tidy}{The reformatted
-##' code as a character vector.} \item{text.mask}{The code containing
+##' @return A list with components \item{text.tidy}{the reformatted
+##' code as a character vector} \item{text.mask}{the code containing
 ##' comments, which are masked in assignments or with the weird
-##' operator.}  \item{begin.comment,end.comment}{ identifiers used to
-##' mark the comments }
-##'
+##' operator} \item{begin.comment,end.comment}{identifiers used to
+##' mark the comments}
 ##' @note When \code{keep.comment == TRUE}, \emph{all your double
 ##' quotes in the comments will be replaced by single quotes!!} For
 ##' example,
@@ -86,13 +83,13 @@
 ##' will become
 ##' \preformatted{1 + 1  # here is 'comment'}
 ##'
-##' There are hidden options which can control the behaviour of this
-##' function: the argument \code{keep.comment} gets its value from
+##' There are global options which can override some arguments: the
+##' argument \code{keep.comment} gets its value from
 ##' \code{options('keep.comment')} by default;  \code{keep.blank.line}
 ##' from \code{options('keep.blank.line')}, \code{keep.space} from
 ##' \code{options('keep.space')}, and \code{replace.assign} from
 ##' \code{options('replace.assign')}. If these options are
-##' \code{NULL}, the default values will be \code{TRUE}, \code{FALSE},
+##' \code{NULL}, the default values will be \code{TRUE}, \code{TRUE},
 ##' \code{FALSE} and \code{FALSE} respectively.
 ##'
 ##' Also note that if \code{keep.space} is \code{FALSE}, single lines
@@ -101,45 +98,13 @@
 ##' the page margin, and \code{\\\\t} will be replaced with
 ##' \code{\\t}. Roxygen comments will not be wrapped in any case.
 ##'
-##' @section Warning: The best strategy to avoid failure is to put
-##' comments in complete lines or after \emph{complete} R
-##' expressions. Here are some examples which could make
-##' \code{\link{tidy.source}} fail:
-##'
-##' \preformatted{1 + 2 +## comments after an incomplete line
-##'
-##'   3 + 4}
-##'
-##' The same is true for blank lines, e.g.
-##'
-##' \preformatted{
-##' if (TRUE)
-##'
-##' {'this is a BAD style of R programming!'}
-##' }
-##'
-##' There should not be a blank line after the \code{if} statement.
-##'
-##' And the comments right after the curly brace will be moved to the
-##' next line, e.g.
-##'
-##' \preformatted{if (TRUE) {## comments
-##'
-##' }}
-##'
-##' will become
-##' \preformatted{if (TRUE) {
-##'
-##'     ## comments
-##'
-##' }}
-##'
+##' Be sure to read the reference to know other limitations.
 ##' @author Yihui Xie <\url{http://yihui.name}> with substantial
 ##' contribution from Yixuan Qiu <\url{http://yixuan.cos.name}>
 ##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
 ##' \code{\link[base]{cat}}
-##' @references
-##' \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+##' @references \url{https://github.com/yihui/formatR/wiki/} (an
+##' introduction to this package, with examples and further notes)
 ##' @keywords IO
 ##' @export
 ##' @example inst/examples/tidy.source.R

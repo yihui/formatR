@@ -18,8 +18,8 @@
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @seealso \code{\link{tidy.source}}
 ##' @export
-##' @references
-##' \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+##' @references \url{https://github.com/yihui/formatR/wiki/}
+##' (screenshots)
 ##' @examples \dontrun{
 ##' library('gWidgetsRGtk2')
 ##'

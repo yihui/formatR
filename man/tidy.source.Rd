@@ -7,23 +7,22 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
         getOption("width"), ...)
 }
 \arguments{
-  \item{source}{a string: location of the source code
-  (default to be the clipboard; this means we can copy the
-  code to clipboard and use \code{tidy.souce()} without
+  \item{source}{a character string: location of the source
+  code (default to be the clipboard; this means we can copy
+  the code to clipboard and use \code{tidy.souce()} without
   specifying the argument \code{source})}
 
-  \item{keep.comment}{logical value: whether to keep
-  comments or not? (\code{TRUE} by default)}
+  \item{keep.comment}{whether to keep comments (\code{TRUE}
+  by default)}
 
-  \item{keep.blank.line}{logical value: whether to keep
-  blank lines or not? (\code{FALSE} by default)}
+  \item{keep.blank.line}{whether to keep blank lines
+  (\code{TRUE} by default)}
 
-  \item{keep.space}{logical: whether to preserve the
-  leading spaces in the single lines of comments (default
-  \code{FALSE})}
+  \item{keep.space}{whether to preserve the leading spaces
+  in the single lines of comments (default \code{FALSE})}
 
-  \item{replace.assign}{logical: whether to replace the
-  assign operator \code{=} with \code{<-}}
+  \item{replace.assign}{whether to replace the assign
+  operator \code{=} with \code{<-}}
 
   \item{output}{output to the console or a file using
   \code{\link[base]{cat}}?}
@@ -47,12 +46,12 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
   'output.R')})}
 }
 \value{
-  A list with components \item{text.tidy}{The reformatted
-  code as a character vector.} \item{text.mask}{The code
+  A list with components \item{text.tidy}{the reformatted
+  code as a character vector} \item{text.mask}{the code
   containing comments, which are masked in assignments or
-  with the weird operator.}
-  \item{begin.comment,end.comment}{ identifiers used to
-  mark the comments }
+  with the weird operator}
+  \item{begin.comment,end.comment}{identifiers used to mark
+  the comments}
 }
 \description{
   This function has nothing to do with code optimization;
@@ -63,8 +62,8 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
 \details{
   This function helps the users to tidy up their source
   code in a sense that necessary indents and spaces will be
-  added, etc. See \code{\link[base]{parse}}. But comments
-  will be preserved if \code{keep.comment = TRUE}.
+  added, but comments will be preserved if
+  \code{keep.comment = TRUE}.
 
   The method to preserve comments is to protect them as
   strings in disguised assignments. For example, there is a
@@ -113,15 +112,15 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
 
   will become \preformatted{1 + 1 # here is 'comment'}
 
-  There are hidden options which can control the behaviour
-  of this function: the argument \code{keep.comment} gets
-  its value from \code{options('keep.comment')} by default;
+  There are global options which can override some
+  arguments: the argument \code{keep.comment} gets its
+  value from \code{options('keep.comment')} by default;
   \code{keep.blank.line} from
   \code{options('keep.blank.line')}, \code{keep.space} from
   \code{options('keep.space')}, and \code{replace.assign}
   from \code{options('replace.assign')}. If these options
   are \code{NULL}, the default values will be \code{TRUE},
-  \code{FALSE}, \code{FALSE} and \code{FALSE} respectively.
+  \code{TRUE}, \code{FALSE} and \code{FALSE} respectively.
 
   Also note that if \code{keep.space} is \code{FALSE},
   single lines of long comments will be wrapped into
@@ -129,38 +128,6 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
   not be wrapped, so they may exceed the page margin, and
   \code{\\\\t} will be replaced with \code{\\t}. Roxygen
   comments will not be wrapped in any case.
-}
-\section{Warning}{
-  The best strategy to avoid failure is to put comments in
-  complete lines or after \emph{complete} R expressions.
-  Here are some examples which could make
-  \code{\link{tidy.source}} fail:
-
-  \preformatted{1 + 2 +## comments after an incomplete line
-
-  3 + 4}
-
-  The same is true for blank lines, e.g.
-
-  \preformatted{ if (TRUE)
-
-  {'this is a BAD style of R programming!'} }
-
-  There should not be a blank line after the \code{if}
-  statement.
-
-  And the comments right after the curly brace will be
-  moved to the next line, e.g.
-
-  \preformatted{if (TRUE) {## comments
-
-  }}
-
-  will become \preformatted{if (TRUE) {
-
-  ## comments
-
-  }}
 }
 \examples{
 library(formatR)
@@ -232,7 +199,9 @@ tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1",
   <\url{http://yixuan.cos.name}>
 }
 \references{
-  \url{http://yihui.name/en/2010/04/formatr-farewell-to-ugly-r-code/}
+  \url{https://github.com/yihui/formatR/wiki/} (an
+  introduction to this package, with examples and further
+  notes)
 }
 \seealso{
   \code{\link[base]{parse}}, \code{\link[base]{deparse}},
