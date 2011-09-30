@@ -194,7 +194,7 @@ tidy.source = function(source = "clipboard", keep.comment,
             r = (-3:3) + m[n]; r = r[r > 0 & r <= length(text)]
             s = paste(rep('#', .75 * getOption('width')), collapse = '')
             message('Unable to parse the R code! ',
-                    'The error is likely to come from line ', m[n],
+                    'The error most likely came from line ', m[n],
                     '; \nthe surrounding lines are:\n', s, '\n',
                     paste(text[r], collapse = '\n'), '\n', s, '\n',
                     'See the Warning section in help(tidy.source) for possible reasons',
@@ -355,12 +355,13 @@ deparse.tidy = function(expr, ...) {
 
 ##' Format the R scripts under a directory
 ##'
-##' This function first look for all the R scripts under a directory
+##' This function first looks for all the R scripts under a directory
 ##' (using the pattern \code{"\\\\.[RrSsQq]$"}), then uses
 ##' \code{\link{tidy.source}} to tidy these scripts. The original
-##' scripts will be overwritten with formatted code. You may need to
-##' back up the original directory first if you do not fully
-##' understand the tricks \code{\link{tidy.source}} is using.
+##' scripts will be overwritten with reformatted code if reformatting
+##' was successful. You may need to back up the original directory
+##' first if you do not fully understand the tricks
+##' \code{\link{tidy.source}} is using.
 ##' @param path the directory
 ##' @param recursive whether to recursively look for R scripts under
 ##' \code{path}

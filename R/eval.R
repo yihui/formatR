@@ -13,6 +13,7 @@
 ##' screen or written in a file).
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @export
+##' @references \url{https://github.com/yihui/formatR/wiki/}
 ##' @examples library(formatR)
 ##' ## evaluate simple code as a character vector
 ##' tidy.eval(text = c('a<-1+1;a','matrix(rnorm(10),5)'))
