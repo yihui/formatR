@@ -1,8 +1,8 @@
-\name{formatR}
-\alias{formatR}
+\name{tidy.gui}
+\alias{tidy.gui}
 \title{A GUI to format R code}
 \usage{
-formatR(guiToolkit = "RGtk2")
+tidy.gui(guiToolkit = "RGtk2")
 }
 \arguments{
   \item{guiToolkit}{the GUI toolkit to use}
@@ -31,29 +31,30 @@ formatR(guiToolkit = "RGtk2")
   GTK+ interface.
 }
 \examples{
-if (interactive() && require("gWidgetsRGtk2")) {
-    
-    ## a GUI will show up on loading if one of the gWidgets
-    ##   toolkit is present (e.g. via library(gWidgetsRGtk2))
-    library(formatR)
-    
-    g = formatR()
-    
-    ## we have control over the text widget, e.g. set or get
-    #   the text
-    
-    svalue(g) = c("# a single line of comments is preserved", 
-        "1+1", "if(TRUE){", paste("x=1 ", "# inline comments!"), 
-        "}else{", "x=2;print('Oh no... ask the right bracket to go away!')}", 
-        "1*3 # another inline comment")
-    
-    ## click 'Convert' now, and see
-    
-    cat(svalue(g), sep = "\n")  # get its value
-    
-    ## tcl/tk interface: need gWidgetstcltk package
-    formatR("tcltk")
-    
+\dontrun{
+library("gWidgetsRGtk2")
+
+## a GUI will show up on loading if one of the gWidgets
+##   toolkit is present (e.g. via library(gWidgetsRGtk2))
+library(formatR)
+
+g = tidy.gui()
+
+## we have control over the text widget, e.g. set or get
+#   the text
+
+svalue(g) = c("# a single line of comments is preserved", 
+    "1+1", "if(TRUE){", paste("x=1 ", "# inline comments!"), 
+    "}else{", "x=2;print('Oh no... ask the right bracket to go away!')}", 
+    "1*3 # another inline comment")
+
+## click 'Convert' now, and see
+
+cat(svalue(g), sep = "\n")  # get its value
+
+## tcl/tk interface: need gWidgetstcltk package
+tidy.gui("tcltk")
+
 }
 }
 \author{
