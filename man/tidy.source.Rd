@@ -128,6 +128,8 @@ tidy.source(source = "clipboard", keep.comment, keep.blank.line,
   not be wrapped, so they may exceed the page margin, and
   \code{\\\\t} will be replaced with \code{\\t}. Roxygen
   comments will not be wrapped in any case.
+
+  Be sure to read the reference to know other limitations.
 }
 \examples{
 library(formatR)
