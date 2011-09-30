@@ -157,18 +157,14 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (output) cat('\n', ...)
         return('')
     }
-    if (missing(keep.comment)) {
-        keep.comment = if (is.null(getOption('keep.comment'))) TRUE else getOption('keep.comment')
-    }
-    if (missing(keep.blank.line)) {
-        keep.blank.line = if (is.null(getOption('keep.blank.line'))) FALSE else getOption('keep.blank.line')
-    }
-    if (missing(keep.space)) {
-        keep.space = if (is.null(getOption('keep.space'))) FALSE else getOption('keep.space')
-    }
-    if (missing(replace.assign)) {
-        replace.assign = if (is.null(getOption('replace.assign'))) FALSE else getOption('replace.assign')
-    }
+    if (missing(keep.comment))
+        if (is.null(keep.comment <- getOption('keep.comment'))) keep.comment = TRUE
+    if (missing(keep.blank.line))
+        if (is.null(keep.blank.line <- getOption('keep.blank.line'))) keep.blank.line = TRUE
+    if (missing(keep.space))
+        if (is.null(keep.space <- getOption('keep.space'))) keep.space = FALSE
+    if (missing(replace.assign))
+        if (is.null(replace.assign <- getOption('replace.assign'))) replace.assign = FALSE
     tidy.block = function(block.text) {
         exprs = base::parse(text = block.text)
         n = length(exprs)
@@ -209,8 +205,8 @@ tidy.source = function(source = "clipboard", keep.comment,
             }
             head.comment = grepl('^[[:space:]]*#', text.lines)
         }
-        text.lines[head.comment] = sprintf("%s<-\"%s%s\"",
-                begin.comment, text.lines[head.comment], end.comment)
+        text.lines[head.comment] =
+            sprintf("%s<-\"%s%s\"", begin.comment, text.lines[head.comment], end.comment)
         blank.line = grepl('^[[:space:]]*$', text.lines)
         if (any(blank.line) && isTRUE(keep.blank.line)) {
             ## no blank lines before an 'else' statement!
@@ -264,7 +260,7 @@ tidy.source = function(source = "clipboard", keep.comment,
     }
     if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
     invisible(list(text.tidy = text.tidy, text.mask = text.mask,
-        begin.comment = begin.comment, end.comment = end.comment))
+                   begin.comment = begin.comment, end.comment = end.comment))
 }
 
 ##' Restore the real source code from the masked text
