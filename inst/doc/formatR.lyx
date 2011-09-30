@@ -1,5 +1,5 @@
 #LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+\lyxformat 415
 \begin_document
 \begin_header
 \textclass article
@@ -9,15 +9,16 @@
 \renewcommand{\sfdefault}{aess}
 \renewcommand{\ttdefault}{aett}
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
+\usepackage{Sweave}
 \end_preamble
 \options nogin
 \use_default_options true
 \begin_modules
-pgfsweave
+sweave
 \end_modules
 \maintain_unincluded_children false
 \language english
-\language_package default
+\language_package none
 \inputencoding auto
 \fontencoding global
 \font_roman ae
@@ -54,6 +55,7 @@ pgfsweave
 \use_esint 1
 \use_mhchem 1
 \use_mathdots 1
+\use_undertilde 1
 \cite_engine natbib_authoryear
 \use_bibtopic false
 \use_indices false
@@ -144,29 +146,32 @@ key "formatR"
 \end_inset
 
  was designed to help users tidy (reformat) their source code.
- Features include:
+ This vignette serves as a showcase of the function 
+\emph on
+tidy.source()
+\emph default
+, and a broader introduction can be found in 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/yihui/formatR/wiki/
 \end_layout
 
-\begin_layout Enumerate
-automatically add spaces and indent where appropriate;
-\end_layout
+\end_inset
 
-\begin_layout Enumerate
-preserve comments while tidying the code;
-\end_layout
-
-\begin_layout Enumerate
-can use a GUI to format the code too;
+.
 \end_layout
 
 \begin_layout Section
-The command line: 
+The workhorse 
 \emph on
 tidy.source()
 \end_layout
 
 \begin_layout Standard
-The main function is 
+The main function in this package is 
 \emph on
 tidy.source()
 \emph default
@@ -184,7 +189,7 @@ library(formatR)
 \end_layout
 
 \begin_layout Chunk
-args(tidy.source)
+usage(tidy.source)
 \end_layout
 
 \begin_layout Chunk
@@ -223,7 +228,7 @@ replace.assign
 \end_layout
 
 \begin_layout Chunk
-options(keep.blank.line = FALSE)
+options(keep.blank.line = TRUE) # not really need to do so; default is TRUE
 \end_layout
 
 \begin_layout Chunk
@@ -308,7 +313,15 @@ t in it'", "# note tabs will be converted to spaces when keep.space=TRUE",
 \end_layout
 
 \begin_layout Chunk
-## source code
+@
+\end_layout
+
+\begin_layout Subsection*
+Source code
+\end_layout
+
+\begin_layout Chunk
+<<source-code>>=
 \end_layout
 
 \begin_layout Chunk
@@ -318,7 +331,21 @@ n")
 \end_layout
 
 \begin_layout Chunk
-## the formatted version (with '=' replace by '<-')
+@
+\end_layout
+
+\begin_layout Subsection*
+Format and replace 
+\family typewriter
+=
+\family default
+ with 
+\family typewriter
+<-
+\end_layout
+
+\begin_layout Chunk
+<<tidy-replace-assign>>=
 \end_layout
 
 \begin_layout Chunk
@@ -326,7 +353,15 @@ tidy.source(text = src, replace.assign=TRUE)
 \end_layout
 
 \begin_layout Chunk
-## other options: preserve leading spaces
+@
+\end_layout
+
+\begin_layout Subsection*
+Preserve leading spaces
+\end_layout
+
+\begin_layout Chunk
+<<leading-spaces>>=
 \end_layout
 
 \begin_layout Chunk
@@ -334,15 +369,35 @@ tidy.source(text = src, keep.space = TRUE)
 \end_layout
 
 \begin_layout Chunk
-## preserve blank lines: note the 11th line!
+@
+\end_layout
+
+\begin_layout Subsection*
+Discard blank lines
 \end_layout
 
 \begin_layout Chunk
-tidy.source(text = src, keep.blank.line = TRUE)
+<<blank-lines>>=
 \end_layout
 
 \begin_layout Chunk
-## discard comments!
+## note the 11th line (was a blank line)!
+\end_layout
+
+\begin_layout Chunk
+tidy.source(text = src, keep.blank.line = FALSE)
+\end_layout
+
+\begin_layout Chunk
+@
+\end_layout
+
+\begin_layout Subsection*
+Discard comments
+\end_layout
+
+\begin_layout Chunk
+<<discard-comments>>=
 \end_layout
 
 \begin_layout Chunk
@@ -351,96 +406,6 @@ tidy.source(text = src, keep.comment = FALSE)
 
 \begin_layout Chunk
 @
-\end_layout
-
-\begin_layout Section
-The GUI: 
-\emph on
-formatR()
-\end_layout
-
-\begin_layout Standard
-We can either use the command line version (
-\emph on
-tidy.source()
-\emph default
-) or the GUI version to format the code: 
-\emph on
-formatR()
-\emph default
- is a function which depends the 
-\series bold
-gWidgets
-\series default
- package to create a graphical interface (see Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:GUI"
-
-\end_inset
-
-).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename formatR-GUI-1.png
-	width 85line%
-
-\end_inset
-
-
-\begin_inset VSpace medskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename formatR-GUI-2.png
-	width 85line%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-The graphical interface to format R code.
- Top: the original code; bottom: the formatted code after clicking the 
-\family sans
-Convert
-\family default
- button.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:GUI"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -496,74 +461,6 @@ tidy
 TRUE
 \family default
  (just like the code in this vignette).
-\end_layout
-
-\begin_layout Section
-Further notes
-\end_layout
-
-\begin_layout Standard
-The tricks used in this packages are very dirty.
- There might be dangers in using the functions in 
-\series bold
-formatR
-\series default
-.
- Please read the documentation carefully to know exactly what kinds of comments
- could be preserved.
-\end_layout
-
-\begin_layout Standard
-A known issue is that when we write comments in a string (i.e.
- the comments are not real comments but a part of the string) which is broken
- into several lines, 
-\series bold
-formatR
-\series default
- might not work correctly.
- For example, the code below will make 
-\series bold
-formatR
-\series default
- fail:
-\end_layout
-
-\begin_layout Chunk
-<<fail-code,echo=FALSE>>=
-\end_layout
-
-\begin_layout Chunk
-cat('mod = "1+1
-\backslash
-n## comments here can bring troubles
-\backslash
-n2+2"')
-\end_layout
-
-\begin_layout Chunk
-options(prompt=' ',continue=' ')
-\end_layout
-
-\begin_layout Chunk
-@
-\end_layout
-
-\begin_layout Standard
-We need to write like this:
-\end_layout
-
-\begin_layout Chunk
-<<fail-correction,eval=FALSE>>=
-\end_layout
-
-\begin_layout Chunk
-mod = paste("1+1","## comments here can bring troubles","2+2",sep='
-\backslash
-n')
-\end_layout
-
-\begin_layout Chunk
-@
 \end_layout
 
 \begin_layout Section*

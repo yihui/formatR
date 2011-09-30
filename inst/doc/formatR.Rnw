@@ -369,7 +369,6 @@
 \usepackage{geometry}
 \geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
 \usepackage{url}
-\usepackage{graphicx}
 \usepackage[authoryear]{natbib}
 \usepackage[unicode=true,pdfusetitle,
  bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=1,
@@ -386,33 +385,6 @@
   {LyX}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
-%\usepackage{Sweave}
-\ifdefined\Sinput
-\else
-\IfFileExists{Sweave.sty}{
-  \usepackage{Sweave}
-}{
-  \usepackage{graphicx,fancyvrb}
-  \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl}
-  \DefineVerbatimEnvironment{Soutput}{Verbatim}{}
-  \DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
-  \newenvironment{Schunk}{}{}
-  \newcommand{\Sconcordance}[1]{%
-    \ifx\pdfoutput\undefined%
-      \csname newcount\endcsname\pdfoutput\fi%
-      \ifcase\pdfoutput\special{##1}%
-    \else%
-      \begingroup%
-      \pdfcompresslevel=0%
-      \immediate\pdfobj stream{##1}%
-      \pdfcatalog{/SweaveConcordance \the\pdflastobj\space 0 R}%
-      \endgroup%
-    \fi}
-}
-\fi
-\usepackage{tikz}
-%% \usetikzlibrary{external}
-%% \tikzexternalize[mode=list and make]
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
@@ -421,11 +393,12 @@
 \renewcommand{\sfdefault}{aess}
 \renewcommand{\ttdefault}{aett}
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
+\usepackage{Sweave}
 
 \makeatother
 
 \begin{document}
-%\selectlanguage{english}
+
 
 \title{\textbf{formatR}: Format R Code Automatically}
 
@@ -438,17 +411,16 @@
 
 
 The package \textbf{formatR} \citep{formatR} was designed to help
-users tidy (reformat) their source code. Features include:
-\begin{enumerate}
-\item automatically add spaces and indent where appropriate;
-\item preserve comments while tidying the code;
-\item can use a GUI to format the code too;
-\end{enumerate}
+users tidy (reformat) their source code. This vignette serves as a
+showcase of the function \emph{tidy.source()}, and a broader introduction
+can be found in \url{https://github.com/yihui/formatR/wiki/}.
 
-\section{The command line: \emph{tidy.source()}}
 
-The main function is \emph{tidy.source()}, which can take a file as
-input, parse it and write the formatted code to the console or a file. 
+\section{The workhorse \emph{tidy.source()}}
+
+The main function in this package is \emph{tidy.source()}, which can
+take a file as input, parse it and write the formatted code to the
+console or a file. 
 
 \begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
@@ -456,15 +428,14 @@ input, parse it and write the formatted code to the console or a file.
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{args}\hlkeyword{(}\hlsymbol{tidy.source}\hlkeyword{)}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{usage}\hlkeyword{(}\hlsymbol{tidy.source}\hlkeyword{)}\mbox{}
 \normalfont
 
 \end{Hinput}
 \begin{Soutput}
-function (source = "clipboard", keep.comment, keep.blank.line, 
+tidy.source(source = "clipboard", keep.comment, keep.blank.line, 
     keep.space, replace.assign, output = TRUE, text = NULL, width.cutoff = 0.75 * 
         getOption("width"), ...) 
-NULL
 \end{Soutput}
 
 \end{Schunk}
@@ -477,7 +448,7 @@ can first specify a global option like this:
 
 \begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{options}\hlkeyword{(}\hlargument{keep.blank.line}{\ }\hlargument{=}{\ }\hlnumber{FALSE}\hlkeyword{)}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{options}\hlkeyword{(}\hlargument{keep.blank.line}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }not{\ }really{\ }need{\ }to{\ }do{\ }so;{\ }default{\ }is{\ }TRUE}\mbox{}
 \normalfont
 
 
@@ -518,12 +489,16 @@ Here are some examples taken from the help page:
 \hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }here{\ }is{\ }a"}\hlkeyword{,}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{rep}\hlkeyword{(}\hlstring{"long"}\hlkeyword{,}{\ }\hlnumber{20}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{collapse}{\ }\hlargument{=}{\ }\hlstring{"{\ }"}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}\hlprompt{+{\ }}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlstring{"comment"}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
-\hspace*{\fill}\\
-\hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }source{\ }code}\mbox{}
-\normalfont
-\hspace*{\fill}\\
-\hlstd{}\ttfamily\noindent
+
+
+\end{Hinput}
+\end{Schunk}
+
+
+\subsection*{Source code}
+
+\begin{Schunk}
+\begin{Hinput}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{cat}\hlkeyword{(}\hlsymbol{src}\hlkeyword{,}{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"\usebox{\hlnormalsizeboxbackslash}n"}\hlkeyword{)}\mbox{}
 \normalfont
 
@@ -545,11 +520,14 @@ lm(y~x1+x2)  ### only 'single quotes' are allowed in comments
 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line
 ## here is a long long long long long long long long long long long long long long long long long long long long comment
 \end{Soutput}
+
+\end{Schunk}
+
+
+\subsection*{Format and replace \texttt{=} with \texttt{<-}}
+
+\begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }formatted{\ }version{\ }(with{\ }\usebox{\hlnormalsizeboxsinglequote}=\usebox{\hlnormalsizeboxsinglequote}{\ }replace{\ }by{\ }\usebox{\hlnormalsizeboxsinglequote}\usebox{\hlnormalsizeboxlessthan}-\usebox{\hlnormalsizeboxsinglequote})}\mbox{}
-\normalfont
-\hspace*{\fill}\\
-\hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{tidy.source}\hlkeyword{(}\hlargument{text}{\ }\hlargument{=}{\ }\hlsymbol{src}\hlkeyword{,}{\ }\hlargument{replace.assign}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
 \normalfont
 
@@ -565,6 +543,7 @@ if (TRUE) {
 }
 1 * 3  # one space before this comment will become two!
 2 + 2 + 2  # 'short comments'
+
 lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
 ## tabs/spaces before comments: use keep.space=TRUE to keep
 #   them
@@ -575,11 +554,14 @@ lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
 ## here is a long long long long long long long long long long
 #   long long long long long long long long long long comment 
 \end{Soutput}
+
+\end{Schunk}
+
+
+\subsection*{Preserve leading spaces}
+
+\begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }other{\ }options:{\ }preserve{\ }leading{\ }spaces}\mbox{}
-\normalfont
-\hspace*{\fill}\\
-\hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{tidy.source}\hlkeyword{(}\hlargument{text}{\ }\hlargument{=}{\ }\hlsymbol{src}\hlkeyword{,}{\ }\hlargument{keep.space}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
 \normalfont
 
@@ -595,6 +577,7 @@ if (TRUE) {
 }
 1 * 3  # one space before this comment will become two!
 2 + 2 + 2  # 'short comments'
+
 lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
 		## tabs/spaces before comments: use keep.space=TRUE to keep them
 "a character string with 	 in it"
@@ -603,12 +586,19 @@ lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
     1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1  ## comments after a long line
 ## here is a long long long long long long long long long long long long long long long long long long long long comment 
 \end{Soutput}
+
+\end{Schunk}
+
+
+\subsection*{Discard blank lines}
+
+\begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }preserve{\ }blank{\ }lines:{\ }note{\ }the{\ }11th{\ }line!}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }note{\ }the{\ }11th{\ }line{\ }(was{\ }a{\ }blank{\ }line)!}\mbox{}
 \normalfont
 \hspace*{\fill}\\
 \hlstd{}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{tidy.source}\hlkeyword{(}\hlargument{text}{\ }\hlargument{=}{\ }\hlsymbol{src}\hlkeyword{,}{\ }\hlargument{keep.blank.line}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{tidy.source}\hlkeyword{(}\hlargument{text}{\ }\hlargument{=}{\ }\hlsymbol{src}\hlkeyword{,}{\ }\hlargument{keep.blank.line}{\ }\hlargument{=}{\ }\hlnumber{FALSE}\hlkeyword{)}\mbox{}
 \normalfont
 
 \end{Hinput}
@@ -623,7 +613,6 @@ if (TRUE) {
 }
 1 * 3  # one space before this comment will become two!
 2 + 2 + 2  # 'short comments'
-
 lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
 ## tabs/spaces before comments: use keep.space=TRUE to keep
 #   them
@@ -634,11 +623,14 @@ lm(y ~ x1 + x2)  ### only 'single quotes' are allowed in comments
 ## here is a long long long long long long long long long long
 #   long long long long long long long long long long comment 
 \end{Soutput}
+
+\end{Schunk}
+
+
+\subsection*{Discard comments}
+
+\begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
-\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }discard{\ }comments!}\mbox{}
-\normalfont
-\hspace*{\fill}\\
-\hlstd{}\ttfamily\noindent
 \hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{tidy.source}\hlkeyword{(}\hlargument{text}{\ }\hlargument{=}{\ }\hlsymbol{src}\hlkeyword{,}{\ }\hlargument{keep.comment}{\ }\hlargument{=}{\ }\hlnumber{FALSE}\hlkeyword{)}\mbox{}
 \normalfont
 
@@ -662,29 +654,6 @@ lm(y ~ x1 + x2)
 \end{Schunk}
 
 
-\section{The GUI: \emph{formatR()}}
-
-We can either use the command line version (\emph{tidy.source()})
-or the GUI version to format the code: \emph{formatR()} is a function
-which depends the \textbf{gWidgets} package to create a graphical
-interface (see Figure \ref{fig:GUI}).
-
-\begin{figure}
-\begin{centering}
-\includegraphics[width=0.85\linewidth]{formatR-GUI-1.png}\medskip{}
-
-\par\end{centering}
-
-\begin{centering}
-\includegraphics[width=0.85\linewidth]{formatR-GUI-2.png}
-\par\end{centering}
-
-\caption{The graphical interface to format R code. Top: the original code;
-bottom: the formatted code after clicking the \textsf{Convert} button.\label{fig:GUI}}
-\end{figure}
-
-
-
 \section{Applications}
 
 This package has been used in a few other R packages. For example,
@@ -696,39 +665,6 @@ when the Sweave option \texttt{tidy} is \texttt{TRUE} (just like the
 code in this vignette).
 
 
-\section{Further notes}
-
-The tricks used in this packages are very dirty. There might be dangers
-in using the functions in \textbf{formatR}. Please read the documentation
-carefully to know exactly what kinds of comments could be preserved.
-
-A known issue is that when we write comments in a string (i.e. the
-comments are not real comments but a part of the string) which is
-broken into several lines, \textbf{formatR} might not work correctly.
-For example, the code below will make \textbf{formatR} fail:
-
-\begin{Schunk}
-\begin{Soutput}
-mod = "1+1
-## comments here can bring troubles
-2+2"
-\end{Soutput}
-
-\end{Schunk}
-
-We need to write like this:
-
-\begin{Schunk}
-\begin{Hinput}\ttfamily\noindent
-\hlprompt{{\ }}\hlsymbol{mod}{\ }\hlassignement{=}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"1+1"}\hlkeyword{,}{\ }\hlstring{"\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }comments{\ }here{\ }can{\ }bring{\ }troubles"}\hlkeyword{,}{\ }\hlstring{"2+2"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}\hlprompt{{\ }}{\ }{\ }{\ }{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"\usebox{\hlnormalsizeboxbackslash}n"}\hlkeyword{)}\mbox{}
-\normalfont
-
-
-\end{Hinput}
-\end{Schunk}
-
-
 \section*{About this vignette}
 
 You might be curious about how this vignette was generated, because
@@ -738,7 +674,7 @@ which can be found here:
 
 \begin{Schunk}
 \begin{Hinput}\ttfamily\noindent
-\hlprompt{{\ }}\hlfunctioncall{system.file}\hlkeyword{(}\hlstring{"doc"}\hlkeyword{,}{\ }\hlstring{"formatR.lyx"}\hlkeyword{,}{\ }\hlargument{package}{\ }\hlargument{=}{\ }\hlstring{"formatR"}\hlkeyword{)}\mbox{}
+\hlprompt{\usebox{\hlnormalsizeboxgreaterthan}{\ }}\hlfunctioncall{system.file}\hlkeyword{(}\hlstring{"doc"}\hlkeyword{,}{\ }\hlstring{"formatR.lyx"}\hlkeyword{,}{\ }\hlargument{package}{\ }\hlargument{=}{\ }\hlstring{"formatR"}\hlkeyword{)}\mbox{}
 \normalfont
 
 
