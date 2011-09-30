@@ -11,3 +11,5 @@ To install from GitHub, use
     install.packages('devtools')
     library(devtools)
     install_github('formatR', 'yihui')
+
+See the Wiki for usage https://github.com/yihui/formatR/wiki
