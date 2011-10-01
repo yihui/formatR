@@ -1,4 +1,4 @@
-		   CHANGES IN formatR VERSION 0.3-0
+		   CHANGES IN formatR VERSION 0.3-1
 
 SIGNIFICANT CHANGES
 
@@ -11,6 +11,9 @@ NEW FEATURES
 
   o a wiki is set up as the manual for formatR:
   https://github.com/yihui/formatR/wiki
+
+  o tidy.eval() can evaluate the code in a specified environment now;
+  see the 'envir' argument
 
 MINOR CHANGES
 
