@@ -2,7 +2,8 @@
 \alias{tidy.eval}
 \title{Evaluate the R code and mask the output by a prefix}
 \usage{
-tidy.eval(source = "clipboard", ..., file = "", prefix = "## ")
+tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", 
+    envir = .GlobalEnv)
 }
 \arguments{
   \item{source}{the input filename (by default the
@@ -15,6 +16,11 @@ tidy.eval(source = "clipboard", ..., file = "", prefix = "## ")
   by default the output is printed on screen}
 
   \item{prefix}{the prefix to mask the output}
+
+  \item{envir}{the environment in which to evaluate the
+  code (by default the global environment; if we do not
+  want to mess up with the global environment, we can set
+  \code{envir = NULL} or \code{envir = new.env()})}
 }
 \value{
   Evaluated R code with corresponding output (printed on
