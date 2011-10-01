@@ -1,6 +1,6 @@
 \name{tidy.eval}
 \alias{tidy.eval}
-\title{Evaluate the R code and mask the output by a prefix}
+\title{Evaluate R code and mask the output by a prefix}
 \usage{
 tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", 
     envir = .GlobalEnv)

@@ -1,4 +1,4 @@
-##' Evaluate the R code and mask the output by a prefix
+##' Evaluate R code and mask the output by a prefix
 ##'
 ##' This function is designed to insert the output of each chunk of R
 ##' code into the source code without really breaking the source code,
