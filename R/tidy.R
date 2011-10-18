@@ -186,6 +186,7 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         ## replace end-of-line comments to cheat R
         enc = options(encoding = "native.enc")
+        require('parser')
         out = try(attr(parser(text = text.lines), 'data'), silent = TRUE)
         options(enc)
         if (inherits(out, 'try-error')) {
