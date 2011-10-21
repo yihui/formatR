@@ -1,3 +1,11 @@
+		   CHANGES IN formatR VERSION 0.3-2
+
+MINOR CHANGES
+
+  o the parser package is imported (in previous versions formatR
+  depends on parser); thanks, Romain Francois
+
+
 		   CHANGES IN formatR VERSION 0.3-1
 
 SIGNIFICANT CHANGES
@@ -30,7 +38,7 @@ NEW FEATURES
 
   o the empty lines before 'else' will be removed even if
   keep.blank.line = TRUE; it is ill-advised to use blank lines among
-  incomplete code chunks, e.g. 
+  incomplete code chunks, e.g.
 
   if (TRUE)
 

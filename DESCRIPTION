@@ -11,8 +11,8 @@ Description: This package provides a function tidy.source()
     indent will be added to the code automatically, and
     comments will be preserved under certain conditions, so
     that R code will be more human-readable and tidy.
-Depends:
-    parser
+Imports:
+    parser (>= 0.0-14)
 Suggests:
     gWidgetsRGtk2
 License: GPL-2 | GPL-3

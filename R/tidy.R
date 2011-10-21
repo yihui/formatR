@@ -106,6 +106,7 @@
 ##' @references \url{https://github.com/yihui/formatR/wiki/} (an
 ##' introduction to this package, with examples and further notes)
 ##' @keywords IO
+##' @importFrom parser parser
 ##' @export
 ##' @example inst/examples/tidy.source.R
 tidy.source = function(source = "clipboard", keep.comment,
@@ -186,7 +187,6 @@ tidy.source = function(source = "clipboard", keep.comment,
         }
         ## replace end-of-line comments to cheat R
         enc = options(encoding = "native.enc")
-        require('parser')
         out = try(attr(parser(text = text.lines), 'data'), silent = TRUE)
         options(enc)
         if (inherits(out, 'try-error')) {
