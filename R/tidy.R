@@ -272,7 +272,6 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
 ##' This operator is almost meaningless; it is used to mask the inline
 ##' comments.
 ##'
-##' @name \%InLiNe_IdEnTiFiEr\%
 ##' @rdname InLiNe_IdEnTiFiEr
 ##' @usage x %InLiNe_IdEnTiFiEr% y
 ##' @param x the argument before the operator
