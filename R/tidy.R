@@ -281,6 +281,7 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @seealso \code{\link{tidy.source}}
 ##' @export "%InLiNe_IdEnTiFiEr%"
+##' @keywords internal
 ##' @examples
 ##' ## we can use it with *anything*
 ##'
