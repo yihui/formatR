@@ -320,6 +320,7 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
 ##' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
 ##' \code{\link{tidy.source}}
 ##' @export
+##' @keywords internal
 ##' @examples
 ##' src = c("    # a single line of comments is preserved",
 ##' '1+1', '  ', 'if(TRUE){',
@@ -346,6 +347,7 @@ parse.tidy = function(text, ...) {
 ##' \code{\link{parse.tidy}})
 ##' @rdname parse.tidy
 ##' @export
+##' @keywords internal
 deparse.tidy = function(expr, ...) {
     unmask.source(paste(base::deparse(expr, ...), collapse = '\n'))
 }
