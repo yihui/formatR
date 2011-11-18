@@ -34,3 +34,4 @@ cat(unmask.source(x), sep = "\\n")
 \author{
   Yihui Xie <\url{http://yihui.name}>
 }
+\keyword{internal}

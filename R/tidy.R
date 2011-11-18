@@ -233,6 +233,7 @@ tidy.source =
 ##' @return the real source code (a character vector)
 ##' @author Yihui Xie <\url{http://yihui.name}>
 ##' @export
+##' @keywords internal
 ##' @examples
 ##' library(formatR)
 ##'
