@@ -109,9 +109,13 @@
 ##' @importFrom parser parser
 ##' @export
 ##' @example inst/examples/tidy.source.R
-tidy.source = function(source = "clipboard", keep.comment,
-    keep.blank.line, keep.space, replace.assign, output = TRUE, text = NULL,
-    width.cutoff = 0.75 * getOption("width"), ...) {
+tidy.source =
+    function(source = "clipboard", keep.comment = getOption('keep.comment', TRUE),
+             keep.blank.line = getOption('keep.blank.line', TRUE),
+             keep.space = getOption('keep.space', FALSE),
+             replace.assign = getOption('replace.assign', FALSE),
+             output = TRUE, text = NULL,
+             width.cutoff = 0.75 * getOption("width"), ...) {
     if (is.null(text)) {
         if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
             source = pipe("pbpaste")
@@ -123,14 +127,6 @@ tidy.source = function(source = "clipboard", keep.comment,
         if (output) cat('\n', ...)
         return('')
     }
-    if (missing(keep.comment))
-        if (is.null(keep.comment <- getOption('keep.comment'))) keep.comment = TRUE
-    if (missing(keep.blank.line))
-        if (is.null(keep.blank.line <- getOption('keep.blank.line'))) keep.blank.line = TRUE
-    if (missing(keep.space))
-        if (is.null(keep.space <- getOption('keep.space'))) keep.space = FALSE
-    if (missing(replace.assign))
-        if (is.null(replace.assign <- getOption('replace.assign'))) replace.assign = FALSE
     tidy.block = function(block.text) {
         exprs = base::parse(text = block.text)
         n = length(exprs)
