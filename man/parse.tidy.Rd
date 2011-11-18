@@ -67,3 +67,4 @@ deparse.tidy(expr, width.cutoff = 50)
   \code{\link[base]{parse}}, \code{\link[base]{deparse}},
   \code{\link{tidy.source}}
 }
+\keyword{internal}

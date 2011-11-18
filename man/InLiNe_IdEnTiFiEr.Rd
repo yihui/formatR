@@ -32,3 +32,4 @@ lm \%InLiNe_IdEnTiFiEr\% "garbage"
 \seealso{
   \code{\link{tidy.source}}
 }
+\keyword{internal}
