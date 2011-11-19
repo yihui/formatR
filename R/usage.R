@@ -26,6 +26,7 @@ usage = function(FUN, width = 0.77) {
     res = capture.output(do.call(argsAnywhere, list(fn)))
     if (identical(res, 'NULL')) return()
     res[1] = substring(res[1], 9)  # rm 'function ' in the beginning
+    isS3 = FALSE
     if (grepl('.', fn, fixed = TRUE)) {
         n = length(parts <- strsplit(fn, '.', fixed = TRUE)[[1]])
         for (i in 2:n) {
@@ -38,9 +39,12 @@ usage = function(FUN, width = 0.77) {
                 header = if (cl == 'default')
                     '## Default S3 method:' else sprintf("## S3 method for class '%s'", cl)
                 res = c(header, res)
+                isS3 = TRUE
+                break
             }
         }
-    } else res[1] = paste(fn, res[1])
+    }
+    if (!isS3) res[1] = paste(fn, res[1])
     if ((n <- length(res)) > 1 && res[n] == 'NULL') res = res[-n]  # rm last element 'NULL'
     tidy.res =
         tidy.source(text = res, output = FALSE, width.cutoff = width * getOption("width"))
