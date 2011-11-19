@@ -1,29 +1,23 @@
 #LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 415
+\lyxformat 417
 \begin_document
 \begin_header
 \textclass article
 \begin_preamble
-\usepackage{ae}
-\renewcommand{\rmdefault}{ppl}
-\renewcommand{\sfdefault}{aess}
-\renewcommand{\ttdefault}{aett}
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
-\usepackage{Sweave}
 \end_preamble
-\options nogin
 \use_default_options true
 \begin_modules
-sweave
+knitr
 \end_modules
 \maintain_unincluded_children false
 \language english
 \language_package none
 \inputencoding auto
 \fontencoding global
-\font_roman ae
-\font_sans default
-\font_typewriter default
+\font_roman palatino
+\font_sans lmss
+\font_typewriter lmtt
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
@@ -87,6 +81,22 @@ sweave
 
 \begin_body
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% 
+\backslash
+SweaveOpts{comment=}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Title
 
 \series bold
@@ -112,20 +122,6 @@ type "mailto:"
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex Sweave Options
-status open
-
-\begin_layout Plain Layout
-
-tidy=TRUE
 \end_layout
 
 \end_inset
@@ -180,20 +176,33 @@ tidy.source()
  
 \end_layout
 
-\begin_layout Chunk
-<<usage-tidy-source>>=
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<usage-tidy-source,comment=##>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 library(formatR)
 \end_layout
 
-\begin_layout Chunk
-usage(tidy.source)
+\begin_layout Plain Layout
+
+usage(tidy.source, width = .73)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -223,16 +232,28 @@ replace.assign
  can first specify a global option like this:
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<setup>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 options(keep.blank.line = TRUE) # not really need to do so; default is TRUE
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -244,51 +265,74 @@ width
  we can specify a narrow width:
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<width-spec>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 options(width = 85)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 Here are some examples taken from the help page:
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<tidy-source-ex>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 library(formatR)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 ## use the 'text' argument
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 src = c("    # a single line of comments is preserved", "1+1", "if(TRUE){",
  
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
     "x=1  # inline comments", "}else{", "x=2;print('Oh no...
  ask the right bracket to go away!')}", 
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
     "1*3 # one space before this comment will become two!", "2+2+2    #
  'short comments'", "   ", "lm(y~x1+x2)  ### only 'single quotes' are allowed
  in comments", 
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
     "
 \backslash
 t
@@ -296,42 +340,63 @@ t
 t## tabs/spaces before comments: use keep.space=TRUE to keep them", 
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
     "'a character string with 
 \backslash
 t in it'", "# note tabs will be converted to spaces when keep.space=TRUE",
  
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
     "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a
  long line", paste("## here is a", 
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
         paste(rep("long", 20), collapse = " "), "comment"))
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
 Source code
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<source-code>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 cat(src, sep = "
 \backslash
 n")
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
@@ -344,68 +409,117 @@ Format and replace
 <-
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<tidy-replace-assign>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 tidy.source(text = src, replace.assign=TRUE)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
 Preserve leading spaces
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<leading-spaces>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 tidy.source(text = src, keep.space = TRUE)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
 Discard blank lines
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<blank-lines>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 ## note the 11th line (was a blank line)!
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 tidy.source(text = src, keep.blank.line = FALSE)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
 Discard comments
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<discard-comments>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 tidy.source(text = src, keep.comment = FALSE)
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -472,12 +586,12 @@ You might be curious about how this vignette was generated, because it looks
  different from other Sweave-based vignettes.
  The answer is 
 \series bold
-pgfSweave
+knitr
 \series default
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "pgfSweave"
+key "knitr"
 
 \end_inset
 
@@ -485,26 +599,42 @@ key "pgfSweave"
  The real vignette is in LyX, which can be found here:
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 <<lyx-doc, eval=FALSE>>=
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 system.file('doc', 'formatR.lyx', package='formatR')
 \end_layout
 
-\begin_layout Chunk
+\begin_layout Plain Layout
+
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-Read this blog entry for details and how to reproduce the vignette: 
+Instructions on how to use 
+\series bold
+knitr
+\series default
+ with LyX can be found at 
 \begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
-http://yihui.name/en/?p=602
+https://github.com/yihui/lyx
 \end_layout
 
 \end_inset
