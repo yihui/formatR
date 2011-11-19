@@ -1,3 +1,17 @@
+		   CHANGES IN formatR VERSION 0.3-3
+
+MINOR CHANGES
+
+  o functions unmask.source(), parse.tidy(), deparse.tidy() and the
+  operator %InLiNe_IdEnTiFiEr% were marked as `internal' in
+  documentation
+
+  o the vignette is processed by the knitr package
+
+  o fixed a buglet in usage() so it can process functions with dots
+  correctly
+
+
 		   CHANGES IN formatR VERSION 0.3-2
 
 MINOR CHANGES
