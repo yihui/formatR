@@ -1,6 +1,4 @@
-This package provides a GUI (by gWidgets and prefers gWidgetsRGtk2) 
-to format R source code. Spaces and indent will be added to the code 
-automatically, so that R code will be more human-readable and tidy.
+This package can be used to reformat R code: spaces and indent will be added to R code automatically, so that the code will be more human-readable and tidy. This package also provides a GUI (by gWidgets and prefers gWidgetsRGtk2) to format R source code.
 
 To install from CRAN, use
 
