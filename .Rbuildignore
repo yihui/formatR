@@ -1,4 +1,3 @@
 inst/examples
 .gitignore
-lyxsweave.R
 clean-up.R
