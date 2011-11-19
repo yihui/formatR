@@ -6,7 +6,7 @@ if (file.exists('formatR.tex')) {
     idx = grep('\\\\documentclass', x)
     if (idx > 1) x = x[-(1:(idx-1))]
     idx = grep('\\\\bibliography|\\\\includegraphics', x)
-    x[idx] = sub('\\{.*formatR_inst_doc_', '{', x[idx])
+    x[idx] = sub('\\{.*formatR_vignettes_', '{', x[idx])
     writeLines(x, 'formatR.tex')
     file.rename('formatR.tex', 'formatR.Rnw')
 }
