@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
 
+## automatic bib generation
+library(tweakr)
+write_citation(c('Rd2roxygen', 'knitr', 'formatR', 'pgfSweave'), file = 'formatR.bib')
+
 ## deal with LyX filename mangling
 if (file.exists('formatR.tex')) {
     x = readLines('formatR.tex')
