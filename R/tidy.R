@@ -194,7 +194,7 @@ tidy.source =
                     'The error most likely came from line ', m[n],
                     '; \nthe surrounding lines are:\n', s, '\n',
                     paste(text[r], collapse = '\n'), '\n', s, '\n',
-                    'See the Warning section in help(tidy.source) for possible reasons',
+                    'See the reference in help(tidy.source) for possible reasons',
                     '\n')
             stop(out)
         }
