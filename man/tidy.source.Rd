@@ -206,6 +206,9 @@ tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1",
   \url{https://github.com/yihui/formatR/wiki/} (an
   introduction to this package, with examples and further
   notes)
+
+  The package vignette also contains some examples (see
+  \code{vignette('formatR', package = 'formatR')}.
 }
 \seealso{
   \code{\link[base]{parse}}, \code{\link[base]{deparse}},
