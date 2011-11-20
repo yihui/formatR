@@ -5,6 +5,7 @@
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
+% \usepackage{Sweave}  % no Sweave please! it ruins my typesetting
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -137,7 +138,7 @@ formatR
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "formatR"
+key "formatR-manual"
 
 \end_inset
 
@@ -535,7 +536,7 @@ Rd2roxygen
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "Rd2roxygen"
+key "Rd2roxygen-manual"
 
 \end_inset
 
@@ -562,7 +563,7 @@ pgfSweave
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "pgfSweave"
+key "pgfSweave-manual"
 
 \end_inset
 
@@ -591,7 +592,7 @@ knitr
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "knitr"
+key "knitr-manual"
 
 \end_inset
 
