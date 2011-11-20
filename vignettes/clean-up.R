@@ -10,5 +10,5 @@ if (file.exists('formatR.tex')) {
     writeLines(x, 'formatR.tex')
     file.rename('formatR.tex', 'formatR.Rnw')
 }
-unlink(sprintf('formatR.%s', c('aux', 'log', 'out', 'pdf', 'map')))
+unlink(sprintf('formatR.%s', c('aux', 'log', 'out', 'pdf')))
 ## now we can cheat Sweave :-)
