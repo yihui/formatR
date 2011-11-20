@@ -1,3 +1,14 @@
+		   CHANGES IN formatR VERSION 0.3-4
+
+MINOR CHANGES
+
+  o slight tweaks to the vignette (stopped Sweave from adding
+  \usepackage{Sweave} which introduces ae by default)
+
+  o fixed the error message in tidy.source(), pointing users to the
+  wiki page on GitHub (thanks, Gabor Grothendieck)
+
+
 		   CHANGES IN formatR VERSION 0.3-3
 
 MINOR CHANGES
