@@ -105,6 +105,9 @@
 ##' \code{\link[base]{cat}}
 ##' @references \url{https://github.com/yihui/formatR/wiki/} (an
 ##' introduction to this package, with examples and further notes)
+##'
+##' The package vignette also contains some examples (see
+##' \code{vignette('formatR', package = 'formatR')}.
 ##' @keywords IO
 ##' @importFrom parser parser
 ##' @export
