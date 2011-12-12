@@ -209,6 +209,9 @@ tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1",
 
   The package vignette also contains some examples (see
   \code{vignette('formatR', package = 'formatR')}.
+
+  Hadley's style guide:
+  \url{https://github.com/hadley/devtools/wiki/Style}
 }
 \seealso{
   \code{\link[base]{parse}}, \code{\link[base]{deparse}},
