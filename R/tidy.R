@@ -108,6 +108,9 @@
 ##'
 ##' The package vignette also contains some examples (see
 ##' \code{vignette('formatR', package = 'formatR')}.
+##'
+##' Hadley's style guide:
+##' \url{https://github.com/hadley/devtools/wiki/Style}
 ##' @keywords IO
 ##' @importFrom parser parser
 ##' @export
