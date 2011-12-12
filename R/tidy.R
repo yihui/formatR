@@ -180,6 +180,8 @@ tidy.source =
                 j = i - 1
                 while (blank.line[j]) {
                     blank.line[j] = FALSE; j = j - 1  # search backwards & rm blank lines
+                    warning('removed blank line ', j,
+                            ' (you should not put an \'else\' in a separate line!)')
                 }
             }
             text.lines[blank.line] = sprintf("%s<-\"%s\"", begin.comment, end.comment)
