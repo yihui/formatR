@@ -135,7 +135,8 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     text.mask = tidy.block(text.lines, width.cutoff)
     text.tidy = unmask.source(text.mask, replace.tab = keep.space)
   } else {
-    text.tidy = text.mask = tidy.block(text.lines, width.cutoff)
+    text.mask = tidy.block(text.lines, width.cutoff)
+    text.tidy = strsplit(text.mask, '\n', fixed = TRUE)
     begin.comment = end.comment = ""
   }
   text.tidy = reindent.lines(text.tidy, reindent.spaces)
