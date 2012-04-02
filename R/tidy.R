@@ -193,15 +193,17 @@ reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption
 #'
 #' cat(unmask.source(x), sep = '\n')
 unmask.source = function(text.mask, replace.tab = FALSE) {
-  idx = grepl('\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa <- ', text.mask)
-  text.mask[idx] = gsub('\\\\', '\\', text.mask[idx], fixed = TRUE)
-  text.tidy = gsub("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa <- \"|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr\"", "", text.mask)
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
-  text.tidy = gsub(" %InLiNe_IdEnTiFiEr%[ ]*[^\n]*\"([ ]*#[^\"]*)\"", "  \\1",
-                   gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.tidy))
+  text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
   ## move 'else ...' back to the last line
-  text.tidy = gsub('\n[[:space:]]*else', ' else', text.tidy)
+  text.mask = gsub('\n[[:space:]]*else', ' else', text.mask)
+  text.mask = unlist(strsplit(text.mask, '\n', fixed = TRUE))
+  idx = grepl('invisible(".BeGiN_TiDy_IdEnTiFiEr_HaHaHa', text.mask, fixed = TRUE)
+  text.mask[idx] = gsub('\\\\', '\\', text.mask[idx], fixed = TRUE)
+  text.tidy = gsub('invisible\\("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr"\\)', 
+                   '', text.mask)
+  text.tidy = gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
   if (replace.tab) gsub('\\\\t', '\t', text.tidy) else text.tidy
 }
 
