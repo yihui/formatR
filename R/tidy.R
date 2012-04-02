@@ -54,7 +54,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
                        keep.space = getOption('keep.space', FALSE),
                        replace.assign = getOption('replace.assign', FALSE),
                        output = TRUE, text = NULL,
-                       width.cutoff = 0.75 * getOption("width"), ...) {
+                       width.cutoff = getOption("width"), ...) {
   if (is.null(text)) {
     if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
       source = pipe("pbpaste")
@@ -154,7 +154,7 @@ tidy.block = function(text, width) {
 }
 
 # reflow comments (including roxygen comments)
-reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = .75 * getOption('width')) {
+reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
   r = rle(idx)$lengths; flag = idx[1] # code and comments alternate in text
   unlist(lapply(split(text, rep(seq(length(r)), r)), function(x) {
     if (flag) {
