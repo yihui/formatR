@@ -76,23 +76,9 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
       text.lines[head.comment] = gsub("\\", "\\\\", text.lines[head.comment], fixed = TRUE)
     }
-    m = seq_along(text.lines) # map between new row indices to old indices
     ## wrap long comments if you do not want to preserve leading spaces
     if (!keep.space) {
-      ## don't wrap roxygen comments
-      head.idx = which(head.comment & !grepl("^[[:space:]]*#*#'", text.lines))
-      k = 0  # k records how far the wrapped comments have pushed the index
-      for (i in head.idx) {
-        j = i + k  # j records the real index
-        tmp = strwrap(text.lines[j], width = width.cutoff, prefix = "# ",
-                      exdent = 2, initial = '')
-        if (length(tmp) > 1) {
-          text.lines[j] = tmp[1]
-          text.lines = append(text.lines, tmp[-1], j)
-          m = append(m, rep(j, length(tmp) - 1), j)
-        }
-        k = k + length(tmp) - 1
-      }
+      text.lines = reflow.comments(text.lines, head.comment, width.cutoff)
       head.comment = grepl('^[[:space:]]*#', text.lines)
     }
     text.lines[head.comment] =
@@ -167,6 +153,19 @@ tidy.block = function(text, width) {
   res
 }
 
+# reflow comments (including roxygen comments)
+reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = .75 * getOption('width')) {
+  r = rle(idx)$lengths; flag = idx[1] # code and comments alternate in text
+  unlist(lapply(split(text, rep(seq(length(r)), r)), function(x) {
+    if (flag) {
+      b = sub("^\\s*(#+)('?).*", '\\1\\2 ', x[1])
+      x = paste(b, paste(gsub("^\\s*(#+)('?)", '', x), collapse = '\n'))
+      x = strwrap(x, width = width, prefix = b, exdent = 1, initial = '')
+    }
+    flag <<- !flag
+    x
+  }), use.names = FALSE)
+}
 
 #' Restore the real source code from the masked text
 #'
