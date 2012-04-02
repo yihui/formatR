@@ -14,7 +14,8 @@ Description: This package provides a function tidy.source()
 Imports:
     parser (>= 0.0-14)
 Suggests:
-    gWidgetsRGtk2
+    gWidgetsRGtk2,
+    knitr
 License: GPL-2 | GPL-3
 URL: https://github.com/yihui/formatR/wiki
 BugReports: https://github.com/yihui/formatR/issues
