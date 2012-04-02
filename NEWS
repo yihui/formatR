@@ -1,3 +1,34 @@
+		   CHANGES IN formatR VERSION 0.4
+
+NEW FEATURES
+
+  o a new argument 'reindent.spaces' for tidy.source() to reindent the
+  code with a specified number of spaces (e.g. 2)
+
+  o comments will be reflowed as a whole block when possible (instead
+  of being wrapped line by line); thanks, Paul Johnson
+
+MAJOR CHANGES
+
+  o when a comment block is reflowed, the second and following lines
+  will not be indented
+
+  o the default value of the 'width.cutoff' argument in tidy.source()
+  is getOption('width') now; in the past it was 75% of that width
+  which was less intuitive
+
+  o part of the documentation of tidy.source() has been moved to
+  https://github.com/yihui/formatR/wiki/
+
+  o internally the comments are preserved by putting them in an
+  expression invisible("# comments"); in past versions comments were
+  retained in assignments; this change should not affect end users
+
+BUG FIXES
+
+  o fixed #16: \\ in comments are preserved correctly now
+  
+
 		   CHANGES IN formatR VERSION 0.3-4
 
 MINOR CHANGES
