@@ -30,8 +30,7 @@ tidy.dir(path = ".", recursive = FALSE, ...)
 library(formatR)
 
 path = tempdir()
-file.copy(system.file("demo", package = "base"), path, 
-    recursive = TRUE)
+file.copy(system.file("demo", package = "base"), path, recursive = TRUE)
 tidy.dir(path, recursive = TRUE)
 }
 \author{

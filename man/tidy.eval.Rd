@@ -2,8 +2,7 @@
 \alias{tidy.eval}
 \title{Evaluate R code and mask the output by a prefix}
 \usage{
-tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", 
-    envir = globalenv())
+tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", envir = globalenv())
 }
 \arguments{
   \item{source}{the input filename (by default the
@@ -38,8 +37,8 @@ library(formatR)
 tidy.eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 
 ## evaluate a file
-tidy.eval(source = file.path(system.file(package = "stats"), 
-    "demo", "nlm.R"), keep.blank.line = TRUE)
+tidy.eval(source = file.path(system.file(package = "stats"), "demo", "nlm.R"), 
+    keep.blank.line = TRUE)
 }
 \author{
   Yihui Xie <\url{http://yihui.name}>

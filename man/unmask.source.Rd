@@ -19,9 +19,8 @@ unmask.source(text.mask, replace.tab = FALSE)
 \examples{
 library(formatR)
 
-src = c("    # a single line of comments is preserved", 
-    "1+1", "  ", "if(TRUE){", "x=1  # inline comments!", "}else{", 
-    "x=2;print('Oh no... ask the right bracket to go away!')}", 
+src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){", 
+    "x=1  # inline comments!", "}else{", "x=2;print('Oh no... ask the right bracket to go away!')}", 
     "2+2+2    # 'short comments'", "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments", 
     "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
 

@@ -3,10 +3,9 @@
 \title{`Tidy up' R code while preserving comments}
 \usage{
 tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", 
-    TRUE), keep.blank.line = getOption("keep.blank.line", TRUE), 
-    keep.space = getOption("keep.space", FALSE), replace.assign = getOption("replace.assign", 
-        FALSE), output = TRUE, text = NULL, width.cutoff = 0.75 * 
-        getOption("width"), ...)
+    TRUE), keep.blank.line = getOption("keep.blank.line", TRUE), keep.space = getOption("keep.space", 
+    FALSE), replace.assign = getOption("replace.assign", FALSE), reindent.spaces = getOption("reindent.spaces", 
+    4), output = TRUE, text = NULL, width.cutoff = getOption("width"), ...)
 }
 \arguments{
   \item{source}{a character string: location of the source
@@ -26,6 +25,9 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   \item{replace.assign}{whether to replace the assign
   operator \code{=} with \code{<-}}
 
+  \item{reindent.spaces}{number of spaces to indent the
+  code (default 4)}
+
   \item{output}{output to the console or a file using
   \code{\link[base]{cat}}?}
 
@@ -39,7 +41,7 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   \item{width.cutoff}{passed to
   \code{\link[base]{deparse}}: integer in [20, 500]
   determining the cutoff at which line-breaking is tried
-  (default to be \code{0.75 * getOption("width")})}
+  (default to be \code{getOption("width")})}
 
   \item{...}{other arguments passed to
   \code{\link[base]{cat}}, e.g.  \code{file} (this can be
@@ -75,16 +77,14 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
 library(formatR)
 
 ## use the 'text' argument
-src = c("    # a single line of comments is preserved", 
-    "1+1", "  ", "if(TRUE){", "x=1  # inline comments", "}else{", 
-    "x=2;print('Oh no... ask the right bracket to go away!')}", 
+src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){", 
+    "x=1  # inline comments", "}else{", "x=2;print('Oh no... ask the right bracket to go away!')}", 
     "1*3 # one space before this comment will become two!", "2+2+2    # 'short comments'", 
     "   ", "lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### only 'single quotes' are allowed in comments", 
     "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line", 
-    "\\t\\t## tabs/spaces before comments: use keep.space=TRUE to keep them", 
-    "'a character string with \\t in it'", "# note tabs will be converted to spaces when keep.space = TRUE", 
-    paste("## here is a", paste(rep("long", 20), collapse = " "), 
-        "comment"))
+    "\\t\\t## tabs/spaces before comments: use keep.space=TRUE to keep them", "'a character string with \\t in it'", 
+    "# note tabs will be converted to spaces when keep.space = TRUE", "", paste("## here is a", 
+        paste(rep("long", 20), collapse = " "), "comment"))
 
 ## source code
 cat(src, sep = "\\n")
@@ -98,6 +98,9 @@ tidy.source(text = src, keep.space = TRUE)
 ## preserve blank lines
 tidy.source(text = src, keep.blank.line = TRUE)
 
+## indent with 2 spaces
+tidy.source(text = src, reindent.spaces = 2)
+
 ## discard comments!
 tidy.source(text = src, keep.comment = FALSE)
 
@@ -106,8 +109,7 @@ tidy.source(text = src, output = FALSE)$text.mask
 
 
 ## tidy up the source code of image demo
-x = file.path(system.file(package = "graphics"), "demo", 
-    "image.R")
+x = file.path(system.file(package = "graphics"), "demo", "image.R")
 
 # to console
 tidy.source(x)
@@ -132,8 +134,8 @@ if (interactive()) {
 }
 
 ## the if-else structure
-tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", 
-    "## comments", "} else 2}"))
+tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", 
+    "} else 2}"))
 }
 \author{
   Yihui Xie <\url{http://yihui.name}> with substantial
