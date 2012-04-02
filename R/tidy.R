@@ -17,6 +17,7 @@
 #'   of comments (default \code{FALSE})
 #' @param replace.assign whether to replace the assign operator \code{=} with
 #'   \code{<-}
+#' @param reindent.spaces number of spaces to indent the code (default 4)
 #' @param output output to the console or a file using \code{\link[base]{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
@@ -53,6 +54,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
                        keep.blank.line = getOption('keep.blank.line', TRUE),
                        keep.space = getOption('keep.space', FALSE),
                        replace.assign = getOption('replace.assign', FALSE),
+                       reindent.spaces = getOption('reindent.spaces', 4),
                        output = TRUE, text = NULL,
                        width.cutoff = getOption("width"), ...) {
   if (is.null(text)) {
@@ -136,6 +138,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     text.tidy = text.mask = tidy.block(text.lines, width.cutoff)
     begin.comment = end.comment = ""
   }
+  text.tidy = reindent.lines(text.tidy, reindent.spaces)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask,
                  begin.comment = begin.comment, end.comment = end.comment))
@@ -165,6 +168,15 @@ reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption
     flag <<- !flag
     x
   }), use.names = FALSE)
+}
+
+# reindent lines with a different number of spaces
+reindent.lines = function(text, n = 2) {
+  if (n == 4) return(text)  # no need to do anything
+  s = paste(rep(' ', n), collapse = '')
+  t1 = gsub('^( *)(.*)', '\\1', text)
+  t2 = gsub('^( *)(.*)', '\\2', text)
+  paste(gsub(' {4}', s, t1), t2, sep = '')
 }
 
 #' Restore the real source code from the masked text
