@@ -107,6 +107,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       m = seq_along(text.lines)
       ## line number where errors occur
       n = as.numeric(tail(strsplit(strsplit(out, '\n')[[1]][2], ':')[[1]], 2)[1])
+      if (n > length(m)) n = length(m)
       r = (-3:3) + m[n]; r = r[r > 0 & r <= length(text)]
       s = paste(rep('#', .75 * getOption('width')), collapse = '')
       message('Unable to parse the R code! ',
