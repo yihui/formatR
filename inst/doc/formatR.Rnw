@@ -26,7 +26,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
-% \usepackage{Sweave}  % no Sweave please! it ruins my typesetting
 
 \makeatother
 

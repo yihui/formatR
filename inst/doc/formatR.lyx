@@ -5,7 +5,6 @@
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
-% \usepackage{Sweave}  % no Sweave please! it ruins my typesetting
 \end_preamble
 \use_default_options true
 \begin_modules
