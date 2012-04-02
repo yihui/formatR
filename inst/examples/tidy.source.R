@@ -12,6 +12,7 @@ src = c("    # a single line of comments is preserved",
 "\t\t## tabs/spaces before comments: use keep.space=TRUE to keep them",
 "'a character string with \t in it'",
 "# note tabs will be converted to spaces when keep.space = TRUE",
+'',
 paste("## here is a", paste(rep("long", 20), collapse = ' '), "comment"))
 
 ## source code
@@ -25,6 +26,9 @@ tidy.source(text = src, keep.space = TRUE)
 
 ## preserve blank lines
 tidy.source(text = src, keep.blank.line = TRUE)
+
+## indent with 2 spaces
+tidy.source(text = src, reindent.spaces = 2)
 
 ## discard comments!
 tidy.source(text = src, keep.comment = FALSE)
