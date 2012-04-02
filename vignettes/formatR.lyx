@@ -1,5 +1,5 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 417
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass article
@@ -14,7 +14,7 @@ knitr
 \maintain_unincluded_children false
 \language english
 \language_package none
-\inputencoding auto
+\inputencoding default
 \fontencoding global
 \font_roman palatino
 \font_sans lmss
@@ -50,7 +50,6 @@ knitr
 \use_esint 1
 \use_mhchem 1
 \use_mathdots 1
-\use_undertilde 1
 \cite_engine natbib_authoryear
 \use_bibtopic false
 \use_indices false
@@ -90,7 +89,7 @@ status open
 
 % 
 \backslash
-SweaveOpts{comment=}
+SweaveOpts{comment=NA}
 \end_layout
 
 \end_inset
@@ -183,7 +182,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<usage-tidy-source,comment=##>>=
+<<usage-tidy-source,comment='##'>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -207,7 +206,7 @@ usage(tidy.source, width = .73)
 \end_layout
 
 \begin_layout Standard
-There are four options which can affect the final output: 
+There are five options which can affect the output: 
 \family typewriter
 keep.comment
 \family default
@@ -218,6 +217,10 @@ keep.blank.line
 , 
 \family typewriter
 keep.space
+\family default
+, 
+\family typewriter
+reindent.spaces
 \family default
  and 
 \family typewriter
@@ -421,7 +424,7 @@ status open
 
 \begin_layout Plain Layout
 
-tidy.source(text = src, replace.assign=TRUE)
+tidy.source(text = src[1:6], replace.assign=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -449,7 +452,7 @@ status open
 
 \begin_layout Plain Layout
 
-tidy.source(text = src, keep.space = TRUE)
+tidy.source(text = src[1:2], keep.space = TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -483,6 +486,34 @@ status open
 \begin_layout Plain Layout
 
 tidy.source(text = src, keep.blank.line = FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Reindent code
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<reindent-spaces>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+tidy.source(text = src, reindent.spaces = 2)
 \end_layout
 
 \begin_layout Plain Layout
