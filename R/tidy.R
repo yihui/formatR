@@ -82,7 +82,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       head.comment = grepl('^[[:space:]]*#', text.lines)
     }
     text.lines[head.comment] =
-      sprintf("%s<-\"%s%s\"", begin.comment, text.lines[head.comment], end.comment)
+      sprintf('invisible("%s%s%s")', begin.comment, text.lines[head.comment], end.comment)
     blank.line = grepl('^[[:space:]]*$', text.lines)
     if (any(blank.line) && isTRUE(keep.blank.line)) {
       ## no blank lines before an 'else' statement!
@@ -95,7 +95,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
                   ' (you should not put an \'else\' in a separate line!)')
         }
       }
-      text.lines[blank.line] = sprintf("%s<-\"%s\"", begin.comment, end.comment)
+      text.lines[blank.line] = sprintf('invisible("%s%s")', begin.comment, end.comment)
     }
     ## replace end-of-line comments to cheat R
     enc = options(encoding = "native.enc")
@@ -127,7 +127,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       idx = idx1 & (!idx2)
       out$text[idx] = sprintf(' %%InLiNe_IdEnTiFiEr%% "%s"', out$text[idx])
       idx = idx1 & idx2
-      out$text[idx] = sprintf('%s<-\"%s%s\"', begin.comment, out$text[idx], end.comment)
+      out$text[idx] = sprintf('invisible("%s%s%s")', begin.comment, out$text[idx], end.comment)
       text.lines = tapply(out$text, out$line1, paste, collapse=' ')
     }
     text.mask = tidy.block(text.lines, width.cutoff)
