@@ -19,16 +19,16 @@ tidy.gui(guiToolkit = "RGtk2")
   automatically.
 
   We can either open an R source file or directly write R
-  code in the text widget. Click the ``convert'' button,
+  code in the text widget. Click the \samp{convert} button,
   and the code will become tidy. See
   \code{\link{tidy.source}} for more details.
 }
 \note{
   By default, the interface is based on GTK+ (R package
-  \bold{RGtk2}), but other options (\bold{tcltk},
-  \bold{rJava} and \bold{Qt}) are possible too. See the
-  examples below. Note the ``Font'' button is only for the
-  GTK+ interface.
+  \pkg{RGtk2}), but other options (\pkg{tcltk}, \pkg{rJava}
+  and \bold{Qt}) are possible too.  See the examples below.
+  Note the \samp{Font} button is only for the GTK+
+  interface.
 }
 \examples{
 \dontrun{

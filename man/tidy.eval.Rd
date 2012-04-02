@@ -3,7 +3,7 @@
 \title{Evaluate R code and mask the output by a prefix}
 \usage{
 tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", 
-    envir = .GlobalEnv)
+    envir = globalenv())
 }
 \arguments{
   \item{source}{the input filename (by default the

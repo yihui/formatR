@@ -42,7 +42,7 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   (default to be \code{0.75 * getOption("width")})}
 
   \item{...}{other arguments passed to
-  \code{\link[base]{cat}}, e.g. \code{file} (this can be
+  \code{\link[base]{cat}}, e.g.  \code{file} (this can be
   useful for batch-processing R scripts, e.g.
   \code{tidy.source(source = 'input.R', file =
   'output.R')})}
@@ -65,72 +65,10 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   This function helps the users to tidy up their source
   code in a sense that necessary indents and spaces will be
   added, but comments will be preserved if
-  \code{keep.comment = TRUE}.
-
-  The method to preserve comments is to protect them as
-  strings in disguised assignments. For example, there is a
-  single line of comments in the source code:
-  \preformatted{ # asdf}
-
-  It will be first masked as
-
-  \preformatted{.IDENTIFIER1 <- " # asdf.IDENTIFIER2"}
-
-  which is a legal R expression, so
-  \code{\link[base]{parse}} can deal with it and will no
-  longer remove the disguised comments.  In the end the
-  identifiers will be removed to restore the original
-  comments, i.e. the strings \code{'.IDENTIFIER1 <- "'} and
-  \code{'.IDENTIFIER2"'} are replaced with empty strings.
-
-  ``Inline'' comments are handled differently: two spaces
-  will be added before the hash symbol \code{#}, e.g.
-  \preformatted{1+1# comments}
-
-  will become \preformatted{1+1 # comments}
-
-  Inline comments are first disguised as a weird operation
-  with its preceding R code, which is essentially
-  meaningless but syntactically correct!  For example,
-  \preformatted{1+1 \%InLiNe_IdEnTiFiEr\% "# comments"}
-
-  then \code{\link[base]{parse}} will deal with this
-  expression; again, the disguised comments will not be
-  removed. In the end, inline comments will be freed as
-  well (remove the operator \code{\%InLiNe_IdEnTiFiEr\%}
-  and surrounding double quotes).
-
-  All these special treatments to comments are due to the
-  fact that \code{\link[base]{parse}} and
-  \code{\link[base]{deparse}} can tidy the R code at the
-  price of dropping all the comments.
+  \code{keep.comment = TRUE}. See the references to know
+  how this function actually works.
 }
 \note{
-  When \code{keep.comment == TRUE}, \emph{all your double
-  quotes in the comments will be replaced by single
-  quotes!!} For example,
-
-  \preformatted{1 + 1 # here is "comment"}
-
-  will become \preformatted{1 + 1 # here is 'comment'}
-
-  There are global options which can override some
-  arguments: the argument \code{keep.comment} gets its
-  value from \code{options('keep.comment')} by default;
-  \code{keep.blank.line} from
-  \code{options('keep.blank.line')}, \code{keep.space} from
-  \code{options('keep.space')}, and \code{replace.assign}
-  from \code{options('replace.assign')}. If these options
-  are \code{NULL}, the default values will be \code{TRUE},
-  \code{TRUE}, \code{FALSE} and \code{FALSE} respectively.
-
-  Also note that if \code{keep.space} is \code{FALSE},
-  single lines of long comments will be wrapped into
-  shorter ones automatically. Otherwise, long comments will
-  not be wrapped, so they may exceed the page margin, and
-  \code{\\\\t} will be replaced with \code{\\t}. Roxygen
-  comments will not be wrapped in any case.
-
   Be sure to read the reference to know other limitations.
 }
 \examples{
