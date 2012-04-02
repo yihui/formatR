@@ -26,7 +26,7 @@
 #'   ignored
 #' @param width.cutoff passed to \code{\link[base]{deparse}}: integer in [20,
 #'   500] determining the cutoff at which line-breaking is tried (default to be
-#'   \code{0.75 * getOption("width")})
+#'   \code{getOption("width")})
 #' @param ... other arguments passed to \code{\link[base]{cat}}, e.g.
 #'   \code{file} (this can be useful for batch-processing R scripts, e.g.
 #'   \code{tidy.source(source = 'input.R', file = 'output.R')})
