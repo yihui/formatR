@@ -160,7 +160,7 @@ reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption
     if (flag) {
       b = sub("^\\s*(#+)('?).*", '\\1\\2 ', x[1])
       x = paste(b, paste(gsub("^\\s*(#+)('?)", '', x), collapse = '\n'))
-      x = strwrap(x, width = width, prefix = b, exdent = 1, initial = '')
+      x = strwrap(x, width = width, prefix = b, initial = '')
     }
     flag <<- !flag
     x
