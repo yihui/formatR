@@ -104,6 +104,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     out = try(attr(parser(text = text.lines), 'data'), silent = TRUE)
     options(enc)
     if (inherits(out, 'try-error')) {
+      m = seq_along(text.lines)
       ## line number where errors occur
       n = as.numeric(tail(strsplit(strsplit(out, '\n')[[1]][2], ':')[[1]], 2)[1])
       r = (-3:3) + m[n]; r = r[r > 0 & r <= length(text)]
