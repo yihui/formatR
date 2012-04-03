@@ -2,13 +2,10 @@
 \alias{unmask.source}
 \title{Restore the real source code from the masked text}
 \usage{
-unmask.source(text.mask, replace.tab = FALSE)
+unmask.source(text.mask)
 }
 \arguments{
   \item{text.mask}{the masked source code}
-
-  \item{replace.tab}{whether to replace \code{\\\\t} with
-  \code{\\t}}
 }
 \value{
   the real source code (a character vector)
