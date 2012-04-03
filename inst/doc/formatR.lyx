@@ -317,8 +317,18 @@ library(formatR)
 
 \begin_layout Plain Layout
 
-src = c("    # a single line of comments is preserved", "1+1", "if(TRUE){",
- 
+src = c("    ## comments retained; comment block reflowed;", 
+\end_layout
+
+\begin_layout Plain Layout
+
+    "    # use keep.space = TRUE to keep spaces before comments and stop
+ reflowing", 
+\end_layout
+
+\begin_layout Plain Layout
+
+    "1+1", "if(TRUE){", 
 \end_layout
 
 \begin_layout Plain Layout
@@ -336,30 +346,20 @@ src = c("    # a single line of comments is preserved", "1+1", "if(TRUE){",
 
 \begin_layout Plain Layout
 
-    "
-\backslash
-t
-\backslash
-t## tabs/spaces before comments: use keep.space=TRUE to keep them", 
-\end_layout
-
-\begin_layout Plain Layout
-
     "'a character string with 
 \backslash
-t in it'", "# note tabs will be converted to spaces when keep.space=TRUE",
- 
+t in it'",
 \end_layout
 
 \begin_layout Plain Layout
 
     "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a
- long line", paste("## here is a", 
+ long line", paste("#' here is a", 
 \end_layout
 
 \begin_layout Plain Layout
 
-        paste(rep("long", 20), collapse = " "), "comment"))
+        paste(rep("long", 20), collapse = " "), "roxygen comment"))
 \end_layout
 
 \begin_layout Plain Layout
@@ -423,7 +423,7 @@ status open
 
 \begin_layout Plain Layout
 
-tidy.source(text = src[1:6], replace.assign=TRUE)
+tidy.source(text = src[1:7], replace.assign=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -479,7 +479,7 @@ status open
 
 \begin_layout Plain Layout
 
-## note the 11th line (was a blank line)!
+## note the 10th line (an empty line) was discarded
 \end_layout
 
 \begin_layout Plain Layout
