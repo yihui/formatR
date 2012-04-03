@@ -135,7 +135,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       text.lines = tapply(out$text, out$line1, paste, collapse=' ')
     }
     text.mask = tidy.block(text.lines, width.cutoff)
-    text.tidy = unmask.source(text.mask, replace.tab = keep.space)
+    text.tidy = unmask.source(text.mask)
   } else {
     text.mask = tidy.block(text.lines, width.cutoff)
     text.tidy = unlist(strsplit(text.mask, '\n', fixed = TRUE))
@@ -186,7 +186,6 @@ reindent.lines = function(text, n = 2) {
 #'
 #' Remove the masks from the code to restore the real code.
 #' @param text.mask the masked source code
-#' @param replace.tab whether to replace \code{\\\\t} with \code{\\t}
 #' @return the real source code (a character vector)
 #' @author Yihui Xie <\url{http://yihui.name}>
 #' @export
@@ -207,7 +206,7 @@ reindent.lines = function(text, n = 2) {
 #' cat(x, sep = '\n')
 #'
 #' cat(unmask.source(x), sep = '\n')
-unmask.source = function(text.mask, replace.tab = FALSE) {
+unmask.source = function(text.mask) {
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
   text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
@@ -219,7 +218,6 @@ unmask.source = function(text.mask, replace.tab = FALSE) {
   text.tidy = gsub('invisible\\("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr"\\)', 
                    '', text.mask)
   text.tidy = gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
-  if (replace.tab) gsub('\\\\t', '\t', text.tidy) else text.tidy
 }
 
 
