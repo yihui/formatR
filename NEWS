@@ -1,3 +1,10 @@
+		   CHANGES IN formatR VERSION 0.4.1
+
+MINOR CHANGES
+
+  o \\t will no longer be replaced with \t when keep.space=TRUE
+  because it is dangerous to do so; see #17 for an example
+
 		   CHANGES IN formatR VERSION 0.4
 
 NEW FEATURES
