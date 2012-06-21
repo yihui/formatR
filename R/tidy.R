@@ -220,7 +220,7 @@ unmask.source = function(text.mask) {
 #' '1+1', '  ', 'if(TRUE){',
 #' "x=1  # comments begin with at least 2 spaces!", '}else{',
 #' "x=2;print('Oh no... ask the right bracket to go away!')}",
-#' '1*3 # this comment will be dropped!',
+#' "1*3 # this comment will be dropped!",
 #' "2+2+2    # 'short comments'",
 #' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
 #' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
