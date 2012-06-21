@@ -10,8 +10,6 @@ Description: This package provides a function tidy.source() and optionally a
     Spaces and indent will be added to the code automatically, and comments
     will be preserved under certain conditions, so that R code will be more
     human-readable and tidy.
-Imports:
-    parser (>= 0.0-14)
 Suggests:
     gWidgetsRGtk2,
     knitr

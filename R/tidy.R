@@ -47,7 +47,6 @@
 #'   
 #'   Hadley's style guide: \url{https://github.com/hadley/devtools/wiki/Style}
 #' @keywords IO
-#' @importFrom parser parser
 #' @export
 #' @example inst/examples/tidy.source.R
 tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comment', TRUE),
