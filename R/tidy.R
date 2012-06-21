@@ -159,29 +159,6 @@ tidy.block = function(text, width) {
   res
 }
 
-# reflow comments (including roxygen comments)
-reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
-  r = rle(idx)$lengths; flag = idx[1] # code and comments alternate in text
-  unlist(lapply(split(text, rep(seq(length(r)), r)), function(x) {
-    if (flag) {
-      b = sub("^\\s*(#+)('?).*", '\\1\\2 ', x[1])
-      x = paste(b, paste(gsub("^\\s*(#+)('?)", '', x), collapse = '\n'))
-      x = strwrap(x, width = width, prefix = b, initial = '')
-    }
-    flag <<- !flag
-    x
-  }), use.names = FALSE)
-}
-
-# reindent lines with a different number of spaces
-reindent.lines = function(text, n = 2) {
-  if (n == 4) return(text)  # no need to do anything
-  s = paste(rep(' ', n), collapse = '')
-  t1 = gsub('^( *)(.*)', '\\1', text)
-  t2 = gsub('^( *)(.*)', '\\2', text)
-  paste(gsub(' {4}', s, t1), t2, sep = '')
-}
-
 #' Restore the real source code from the masked text
 #'
 #' Remove the masks from the code to restore the real code.
