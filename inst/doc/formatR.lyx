@@ -136,7 +136,7 @@ formatR
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "formatR-manual"
+key "R-formatR"
 
 \end_inset
 
@@ -566,7 +566,7 @@ Rd2roxygen
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "Rd2roxygen-manual"
+key "R-Rd2roxygen"
 
 \end_inset
 
@@ -593,7 +593,7 @@ pgfSweave
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "pgfSweave-manual"
+key "R-pgfSweave"
 
 \end_inset
 
@@ -622,7 +622,7 @@ knitr
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "knitr-manual"
+key "R-knitr"
 
 \end_inset
 
