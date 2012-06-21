@@ -10,7 +10,7 @@
 #'   output is printed on screen
 #' @param prefix the prefix to mask the output
 #' @param envir the environment in which to evaluate the code (by default the 
-#'   global environment; if we do not want to mess up with the global 
+#'   parent environment; if we do not want to mess up with the parent
 #'   environment, we can set \code{envir = NULL} or \code{envir = new.env()})
 #' @return Evaluated R code with corresponding output (printed on screen or 
 #'   written in a file).
