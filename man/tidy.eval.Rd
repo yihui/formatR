@@ -17,8 +17,8 @@ tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.f
   \item{prefix}{the prefix to mask the output}
 
   \item{envir}{the environment in which to evaluate the
-  code (by default the global environment; if we do not
-  want to mess up with the global environment, we can set
+  code (by default the parent environment; if we do not
+  want to mess up with the parent environment, we can set
   \code{envir = NULL} or \code{envir = new.env()})}
 }
 \value{
