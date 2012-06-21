@@ -23,7 +23,7 @@
 #' 
 #' ## evaluate a file
 #' tidy.eval(source = file.path(system.file(package = "stats"), "demo", "nlm.R"), keep.blank.line = TRUE)
-tidy.eval = function(source = 'clipboard', ..., file = "", prefix = "## ", envir = globalenv()) {
+tidy.eval = function(source = 'clipboard', ..., file = "", prefix = "## ", envir = parent.frame()) {
   txt = tidy.source(source, ..., output = FALSE)$text.mask
   for(i in 1:length(txt)) {
     cat(unmask.source(txt[i]), '\n', file = file, append = TRUE)
