@@ -1,4 +1,24 @@
-		   CHANGES IN formatR VERSION 0.4.1
+		   CHANGES IN formatR VERSION 0.5
+
+MAJOR CHANGES
+
+  o the dependency on the parser package was removed because it was
+  orphaned on CRAN; this affects two features: replace = with <- (the
+  'replace.assign' option in tidy.source()) and the identification of
+  inline comments; tidy.source() will still work in most cases, but
+  please keep in mind that (1) 'replace.assign=TRUE' will not be
+  entirely reliable without parser (so use with extreme caution if you
+  do not have parser installed) (2) if you want to write # in a
+  character string, you must use double quotes, e.g. "here is a #"
+  will be fine whereas 'here is a #' is not; if you want to use quotes
+  in comments, please always use single quotes, e.g. # 'single quotes'
+  (inline comments that contain double quotes will be dropped); if the
+  parser package is available in your system (e.g. you installed it
+  from the archived source on CRAN), everything will be the same as
+  before
+
+  o the default value for 'envir' in tidy.eval() was changed from
+  globalenv() to parent.frame()
 
 MINOR CHANGES
 
