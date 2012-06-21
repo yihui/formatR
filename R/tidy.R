@@ -99,41 +99,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       }
       text.lines[blank.line] = sprintf('invisible("%s%s")', begin.comment, end.comment)
     }
-    ## replace end-of-line comments to cheat R
-    enc = options(encoding = "native.enc")
-    out = try(attr(parser(text = text.lines), 'data'), silent = TRUE)
-    options(enc)
-    if (inherits(out, 'try-error')) {
-      m = seq_along(text.lines)
-      ## line number where errors occur
-      n = as.numeric(tail(strsplit(strsplit(out, '\n')[[1]][2], ':')[[1]], 2)[1])
-      if (n > length(m)) n = length(m)
-      r = (-3:3) + m[n]; r = r[r > 0 & r <= length(text)]
-      s = paste(rep('#', .75 * getOption('width')), collapse = '')
-      message('Unable to parse the R code! ',
-              'The error most likely came from line ', m[n],
-              '; \nthe surrounding lines are:\n', s, '\n',
-              paste(text[r], collapse = '\n'), '\n', s, '\n',
-              'See the reference in help(tidy.source) for possible reasons',
-              '\n')
-      stop(out)
-    }
-    out = subset(out, out$terminal)
-    if (nrow(out) > 0) {
-      if (replace.assign) {
-        out$text[out$token.desc=='EQ_ASSIGN'] = '<-'
-      }
-      ## is inline comment?
-      idx1 = c(FALSE, diff(out$line1)==0) & (out$token.desc=='COMMENT')
-      ## is last line '{'?
-      idx2 = c(FALSE, (out$text == '{')[-length(idx1)])
-      out$text[idx1] = gsub('"', "'", out$text[idx1])
-      idx = idx1 & (!idx2)
-      out$text[idx] = sprintf(' %%InLiNe_IdEnTiFiEr%% "%s"', out$text[idx])
-      idx = idx1 & idx2
-      out$text[idx] = sprintf('invisible("%s%s%s")', begin.comment, out$text[idx], end.comment)
-      text.lines = tapply(out$text, out$line1, paste, collapse=' ')
-    }
+    text.lines = mask.inline(text.lines, replace.assign, begin.comment, end.comment)
     text.mask = tidy.block(text.lines, width.cutoff)
     text.tidy = unmask.source(text.mask)
   } else {
