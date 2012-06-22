@@ -8,6 +8,11 @@ has_package = function(pkg) pkg %in% .packages(TRUE)
 # line, and one line per assignment
 mask.inline = function(x, replace.assign, begin.comment, end.comment) {
   if (!has_package('parser')) {
+    # move comments after { to the next line
+    if (length(idx <- grep('\\{\\s*#.*$', x))) {
+      p = paste('{\ninvisible("', begin.comment, '\\1', end.comment, '")', sep = '')
+      x[idx] = gsub('\\{\\s*(#.*)$', p, x[idx])
+    }
     if (replace.assign) {
       warning('replace.assign=TRUE may not be reliable without the parser package!')
       x = gsub('^(\\s*[[:alnum:]_\\.]+\\s*)=(\\s*[^,]+)$', '\\1 <- \\2', x)
