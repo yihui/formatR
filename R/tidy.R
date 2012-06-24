@@ -153,9 +153,6 @@ unmask.source = function(text.mask) {
   text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n[[:space:]]*else', ' else', text.mask)
-  text.mask = unlist(strsplit(text.mask, '\n', fixed = TRUE))
-  idx = grepl('invisible(".BeGiN_TiDy_IdEnTiFiEr_HaHaHa', text.mask, fixed = TRUE)
-  text.mask[idx] = gsub('\\\\', '\\', text.mask[idx], fixed = TRUE)
   text.tidy = gsub('invisible\\("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr"\\)', 
                    '', text.mask)
   text.tidy = gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
