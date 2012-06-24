@@ -6,7 +6,7 @@ has_package = function(pkg) pkg %in% .packages(TRUE)
 # rules: if you do not have parser installed, a literal # must be writen in
 # double quotes, e.g. "# is not comment"; = for assignment must stand in its own
 # line, and one line per assignment
-mask.inline = function(x, replace.assign, begin.comment, end.comment) {
+mask.inline = function(x, replace.assign) {
   if (!has_package('parser')) {
     # move comments after { to the next line
     if (length(idx <- grep('\\{\\s*#.*$', x))) {

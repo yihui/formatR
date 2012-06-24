@@ -68,9 +68,6 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     return('')
   }
   if (isTRUE(keep.comment)) {
-    ## if you have variable names like this in your code, then you really beat me...
-    begin.comment = ".BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
-    end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
     if (!keep.space) text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
     head.comment = grepl('^[[:space:]]*#', text.lines)
     if (any(head.comment)) {
@@ -97,7 +94,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       }
       text.lines[blank.line] = sprintf('invisible("%s%s")', begin.comment, end.comment)
     }
-    text.lines = mask.inline(text.lines, replace.assign, begin.comment, end.comment)
+    text.lines = mask.inline(text.lines, replace.assign)
     text.mask = tidy.block(text.lines, width.cutoff)
     text.tidy = unmask.source(text.mask)
   } else {
@@ -109,6 +106,11 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
   invisible(list(text.tidy = text.tidy, text.mask = text.mask,
                  begin.comment = begin.comment, end.comment = end.comment))
 }
+
+## if you have variable names like this in your code, then you really beat me...
+begin.comment = ".BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
+end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
+pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
 
 # wrapper around parse() and deparse()
 tidy.block = function(text, width) {
@@ -152,8 +154,7 @@ unmask.source = function(text.mask) {
   text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n[[:space:]]*else', ' else', text.mask)
-  text.tidy = gsub('invisible\\("\\.BeGiN_TiDy_IdEnTiFiEr_HaHaHa|\\.HaHaHa_EnD_TiDy_IdEnTiFiEr"\\)', 
-                   '', text.mask)
+  text.tidy = gsub(pat.comment, '', text.mask)
   text.tidy = gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
 }
 
