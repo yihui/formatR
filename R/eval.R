@@ -27,9 +27,9 @@ tidy.eval = function(source = 'clipboard', ..., file = "", prefix = "## ", envir
   txt = tidy.source(source, ..., output = FALSE)$text.tidy
   for(i in 1:length(txt)) {
     cat(txt[i], '\n', sep = '', file = file, append = TRUE)
-    res = capture.output(eval(parse(text = txt[i]), envir = envir))
-    if (length(res)) {
-      cat(paste(prefix, res, sep = ''), sep = '\n', file = file, append = TRUE)
+    out = capture.output(eval(res <-parse(text = txt[i]), envir = envir))
+    if (length(res) > 0L && length(out) > 0L) {
+      cat(paste(prefix, out, sep = ''), sep = '\n', file = file, append = TRUE)
       cat('\n', file = file, append = TRUE)
     }
   }
