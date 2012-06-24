@@ -75,7 +75,6 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     head.comment = grepl('^[[:space:]]*#', text.lines)
     if (any(head.comment)) {
       text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
-      text.lines[head.comment] = gsub("\\", "\\\\", text.lines[head.comment], fixed = TRUE)
     }
     ## wrap long comments if you do not want to preserve leading spaces
     if (!keep.space) {
