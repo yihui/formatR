@@ -1,3 +1,13 @@
+		   CHANGES IN formatR VERSION 0.6
+
+MAJOR CHANGES
+
+  o the 'text.tidy' component in the results of tidy.source() is a
+  character vector of code blocks instead of code lines now, e.g. in
+  previous versions, the result may be c('if (TRUE) {', '1', '}')
+  (vector of length 3), but now it becomes 'if (TRUE) {\n1\n}'; each
+  element of 'text.tidy' contains a minimal complete code block
+
 		   CHANGES IN formatR VERSION 0.5
 
 MAJOR CHANGES
