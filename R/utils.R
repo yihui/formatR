@@ -1,6 +1,35 @@
 # faster than require() but less rigorous
 has_package = function(pkg) pkg %in% .packages(TRUE)
 
+# aux for replace `=` by `<-`
+replace_assignment <- function(exp) {
+  library(codetools)
+  ret <-
+    lapply(as.list(exp),
+           function(ee) {
+             walkCode(e = ee,
+                      w = makeCodeWalker(
+                        call = function (e, w) {
+                          ca <- walkCode(e[[1]], w)
+                          arg <- lapply(as.list(e[-1]),
+                                        function(a) {
+                                          if (missing(a)) NA
+                                          else walkCode(a, w)
+                                        })
+                          as.call(c(list(ca), arg))
+                        },
+                        leaf = function(e, w) {
+                          if (length(e) == 0) e <- NULL
+                          else if (is.null(e)) e <- NULL
+                          else if (inherits(e, "srcref")) e <- NULL
+                          else if (identical(e, as.name("="))) e <- as.name("<-")
+                          e
+                        }))
+           }
+           )
+  lapply(ret, function(r) paste(deparse(r), collapse = " "))
+}
+
 ## replace inline comments to cheat R
 
 # rules: if you do not have parser installed, a literal # must be writen in
@@ -14,8 +43,9 @@ mask.inline = function(x, replace.assign) {
       x[idx] = gsub('\\{\\s*(#.*)$', p, x[idx])
     }
     if (replace.assign) {
+      e <- parse(text = paste(x, collapse = "\n"))
+      x <- replace_assignment(e)
       warning('replace.assign=TRUE may not be reliable without the parser package!')
-      x = gsub('^(\\s*[[:alnum:]_\\.]+\\s*)=(\\s*[^,]+)$', '\\1 <- \\2', x)
     }
     return(gsub('(#[^"]*)$', ' %InLiNe_IdEnTiFiEr% "\\1"', x))
   }
