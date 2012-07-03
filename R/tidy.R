@@ -96,11 +96,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     text.lines = mask.inline(text.lines)
   }
   text.mask = tidy.block(text.lines, width.cutoff, replace.assign)
-  if (keep.comment) {
-    text.tidy = unmask.source(text.mask)
-  } else {
-    text.tidy = text.mask
-  }
+  text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent.lines(text.tidy, reindent.spaces)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
