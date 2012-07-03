@@ -64,7 +64,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
   }
   if (length(text) == 0L || all(grepl('^\\s*$', text))) {
     if (output) cat('\n', ...)
-    return('')
+    return(list(text.tidy = '', text.mask = ''))
   }
   text.lines = text
   if (keep.comment) {
