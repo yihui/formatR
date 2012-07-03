@@ -1,9 +1,10 @@
-#' `Tidy up' R code while preserving comments
-#' 
-#' This function has nothing to do with code optimization; it just returns
-#' parsed source code, but also tries to preserve comments, which is different
-#' with \code{\link[base]{parse}}. See `Details'.
-#' 
+#' Reformat R code while preserving blank lines and comments
+#'
+#' This function returns reformatted source code; it tries to preserve blank
+#' lines and comments, which is different with \code{\link[base]{parse}}. It can
+#' also replace \code{=} with \code{<-} where \code{=} means assignments, and
+#' reindent code by a specified number of spaces (default is 4).
+#'
 #' This function helps the users to tidy up their source code in a sense that
 #' necessary indents and spaces will be added, but comments will be preserved if
 #' \code{keep.comment = TRUE}. See the references to know how this function
