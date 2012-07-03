@@ -94,12 +94,14 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       }
       text.lines[blank.line] = sprintf('invisible("%s%s")', begin.comment, end.comment)
     }
-    text.lines = mask.inline(text.lines, replace.assign)
-    text.mask = tidy.block(text.lines, width.cutoff)
+    text.lines = mask.inline(text.lines)
+  }
+  text.mask = tidy.block(text.lines, width.cutoff, replace.assign)
+  if (keep.comment) {
     text.tidy = unmask.source(text.mask)
   } else {
-    text.mask = text.tidy = tidy.block(text.lines, width.cutoff)
     begin.comment = end.comment = ""
+    text.tidy = text.mask
   }
   text.tidy = reindent.lines(text.tidy, reindent.spaces)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
