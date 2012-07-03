@@ -1,30 +1,19 @@
-# aux for replace `=` by `<-`
-replace_assignment <- function(exp) {
+# replace `=` by `<-` in expressions
+replace_assignment = function(exp) {
   library(codetools)
-  ret <-
-    lapply(as.list(exp),
-           function(ee) {
-             walkCode(e = ee,
-                      w = makeCodeWalker(
-                        call = function (e, w) {
-                          ca <- walkCode(e[[1]], w)
-                          arg <- lapply(as.list(e[-1]),
-                                        function(a) {
-                                          if (missing(a)) NA
-                                          else walkCode(a, w)
-                                        })
-                          as.call(c(list(ca), arg))
-                        },
-                        leaf = function(e, w) {
-                          if (length(e) == 0) e <- NULL
-                          else if (is.null(e)) e <- NULL
-                          else if (inherits(e, "srcref")) e <- NULL
-                          else if (identical(e, as.name("="))) e <- as.name("<-")
-                          e
-                        }))
-           }
-           )
-  lapply(ret, function(r) paste(deparse(r), collapse = " "))
+  wc = makeCodeWalker(
+    call = function (e, w) {
+      cl = walkCode(e[[1]], w)
+      arg = lapply(as.list(e[-1]), function(a) if (missing(a)) NA else walkCode(a, w))
+      as.call(c(list(cl), arg))
+    },
+    leaf = function(e, w) {
+      if (length(e) == 0 || inherits(e, "srcref")) return(NULL)
+      # x = 1 is actually `=`(x, 1), i.e. `=` is a function
+      if (identical(e, as.name("="))) e <- as.name("<-")
+      e
+    })
+  lapply(as.list(exp), walkCode, w = wc)
 }
 
 ## replace inline comments to cheat R
