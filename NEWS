@@ -1,5 +1,14 @@
 		   CHANGES IN formatR VERSION 0.6
 
+NEW FEATURES
+
+  o the replace.assign argument is much more reliable now; it is based
+  on the codetools package (code analysis) instead of regular
+  expressions (big thanks to Kohske Takahashi)
+
+  o replace.assign also works when keep.comment=FALSE; in previous
+  versions, replace.assign=TRUE only applies to keep.comment=TRUE
+
 MAJOR CHANGES
 
   o the 'text.tidy' component in the results of tidy.source() is a
@@ -7,6 +16,15 @@ MAJOR CHANGES
   previous versions, the result may be c('if (TRUE) {', '1', '}')
   (vector of length 3), but now it becomes 'if (TRUE) {\n1\n}'; each
   element of 'text.tidy' contains a minimal complete code block
+
+  o potential dependency on the parser package has been removed
+  (replaced by the codetools package)
+
+MINOR CHANGES
+
+  o the results of tidy.source() (a list) only contain text.tidy and
+  text.mask now; begin.comment and end.comment were removed since they
+  were not used anywhere
 
 		   CHANGES IN formatR VERSION 0.5
 
