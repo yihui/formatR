@@ -80,7 +80,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     text.lines[head.comment] =
       sprintf('invisible("%s%s%s")', begin.comment, text.lines[head.comment], end.comment)
     blank.line = grepl('^[[:space:]]*$', text.lines)
-    if (any(blank.line) && isTRUE(keep.blank.line)) {
+    if (any(blank.line) && keep.blank.line) {
       ## no blank lines before an 'else' statement!
       else.line = grep('^[[:space:]]*else(\\W|)', text.lines)
       for (i in else.line) {
