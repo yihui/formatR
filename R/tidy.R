@@ -67,7 +67,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     if (output) cat('\n', ...)
     return('')
   }
-  if (isTRUE(keep.comment)) {
+  if (keep.comment) {
     if (!keep.space) text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
     head.comment = grepl('^[[:space:]]*#', text.lines)
     if (any(head.comment)) {
