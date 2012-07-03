@@ -113,15 +113,10 @@ end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
 pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
 
 # wrapper around parse() and deparse()
-tidy.block = function(text, width) {
+tidy.block = function(text, width = getOption('width'), arrow = FALSE) {
   exprs = base::parse(text = text)
-  n = length(exprs)
-  res = character(n)
-  for (i in 1:n) {
-    dep = paste(base::deparse(exprs[i], width), collapse = "\n")
-    res[i] = substring(dep, 12, nchar(dep) - 1)
-  }
-  res
+  exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
+  sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
 
 #' Restore the real source code from the masked text
