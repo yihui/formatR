@@ -146,7 +146,7 @@ unmask.source = function(text.mask) {
   ## move 'else ...' back to the last line
   text.mask = gsub('\n[[:space:]]*else', ' else', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
-  text.tidy = gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
+  gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
 }
 
 
