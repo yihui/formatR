@@ -11,6 +11,7 @@ Description: This package provides a function tidy.source() and optionally a
     will be preserved under certain conditions, so that R code will be more
     human-readable and tidy.
 Suggests:
+    codetools,
     gWidgetsRGtk2,
     knitr
 License: GPL-2 | GPL-3
