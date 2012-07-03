@@ -1,11 +1,11 @@
 \name{tidy.source}
 \alias{tidy.source}
-\title{`Tidy up' R code while preserving comments}
+\title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", 
-    TRUE), keep.blank.line = getOption("keep.blank.line", TRUE), keep.space = getOption("keep.space", 
-    FALSE), replace.assign = getOption("replace.assign", FALSE), reindent.spaces = getOption("reindent.spaces", 
-    4), output = TRUE, text = NULL, width.cutoff = getOption("width"), ...)
+tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE), 
+    keep.blank.line = getOption("keep.blank.line", TRUE), keep.space = getOption("keep.space", 
+        FALSE), replace.assign = getOption("replace.assign", FALSE), reindent.spaces = getOption("reindent.spaces", 
+        4), output = TRUE, text = NULL, width.cutoff = getOption("width"), ...)
 }
 \arguments{
   \item{source}{a character string: location of the source
@@ -54,14 +54,14 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   code as a character vector} \item{text.mask}{the code
   containing comments, which are masked in assignments or
   with the weird operator}
-  \item{begin.comment,end.comment}{identifiers used to mark
-  the comments}
 }
 \description{
-  This function has nothing to do with code optimization;
-  it just returns parsed source code, but also tries to
-  preserve comments, which is different with
-  \code{\link[base]{parse}}. See `Details'.
+  This function returns reformatted source code; it tries
+  to preserve blank lines and comments, which is different
+  with \code{\link[base]{parse}}. It can also replace
+  \code{=} with \code{<-} where \code{=} means assignments,
+  and reindent code by a specified number of spaces
+  (default is 4).
 }
 \details{
   This function helps the users to tidy up their source
@@ -134,8 +134,7 @@ if (interactive()) {
 }
 
 ## the if-else structure
-tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", 
-    "} else 2}"))
+tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
 }
 \author{
   Yihui Xie <\url{http://yihui.name}> with substantial
