@@ -41,10 +41,10 @@
 #'   \code{\link[base]{cat}}
 #' @references \url{https://github.com/yihui/formatR/wiki/} (an introduction to
 #'   this package, with examples and further notes)
-#'   
-#'   The package vignette also contains some examples (see 
+#'
+#'   The package vignette also contains some examples (see
 #'   \code{vignette('formatR', package = 'formatR')}.
-#'   
+#'
 #'   Hadley's style guide: \url{https://github.com/hadley/devtools/wiki/Style}
 #' @keywords IO
 #' @export
@@ -151,7 +151,7 @@ unmask.source = function(text.mask) {
 
 
 #' A weird operator for internal use only
-#' 
+#'
 #' This operator is almost meaningless; it is used to mask the inline comments.
 #' @rdname InLiNe_IdEnTiFiEr
 #' @usage x %InLiNe_IdEnTiFiEr% y
@@ -165,31 +165,31 @@ unmask.source = function(text.mask) {
 #' @keywords internal
 #' @examples
 #' ## we can use it with *anything*
-#' 
+#'
 #' 1 %InLiNe_IdEnTiFiEr% 2
-#' 
+#'
 #' 1:10 %InLiNe_IdEnTiFiEr% "asdf"
-#' 
+#'
 #' lm %InLiNe_IdEnTiFiEr% 'garbage'
-#' 
+#'
 "%InLiNe_IdEnTiFiEr%" <- function(x, y) x
 
 
 #' Modified versions of parse() and deparse()
-#' 
+#'
 #' These two functions parse and deparse the masked source code.
-#' 
+#'
 #' For \code{\link{parse.tidy}}, the source code is masked to preserve comments,
 #' then this function uses \code{\link[base]{parse}} to return the parsed but
 #' unevaluated expressions in a list.
-#' 
+#'
 #' For \code{\link{deparse.tidy}}, it uses \code{\link[base]{deparse}} to turn
 #' the unevaluated (and masked) expressions into character strings; the masks
 #' will be removed to restore the real source code. See
 #' \code{\link{unmask.source}}.
-#' @param text the source code as a character string to be passed to 
+#' @param text the source code as a character string to be passed to
 #'   \code{\link{tidy.source}}
-#' @param ... for \code{\link{parse.tidy}}: other arguments to be passed to 
+#' @param ... for \code{\link{parse.tidy}}: other arguments to be passed to
 #'   \code{\link{tidy.source}}; for \code{\link{deparse.tidy}}: arguments to be
 #'   passed to \code{\link[base]{deparse}}
 #' @return \code{\link{parse.tidy}} returns the unevaluated expressions;
@@ -197,7 +197,7 @@ unmask.source = function(text.mask) {
 #' @author Yihui Xie <\url{http://yihui.name}>
 #' @note These functions are mainly designed for the package \pkg{pgfSweave};
 #'   they may not be useful to general users.
-#' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}}, 
+#' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
 #'   \code{\link{tidy.source}}
 #' @export
 #' @keywords internal
@@ -210,13 +210,13 @@ unmask.source = function(text.mask) {
 #' "2+2+2    # 'short comments'",
 #' "lm(y~x1+x2)  ### only 'single quotes' are allowed in comments",
 #' "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line")
-#' 
+#'
 #' (expr = parse.tidy(src))
-#' 
+#'
 #' parse.tidy(src, keep.blank.line = TRUE)
-#' 
+#'
 #' cat(deparse.tidy(expr))
-#' 
+#'
 #' deparse.tidy(expr, width.cutoff = 50)
 parse.tidy = function(text, ...) {
   tidy.res = tidy.source(text = text, output = FALSE, ...)
@@ -232,12 +232,12 @@ deparse.tidy = function(expr, ...) {
 }
 
 #' Format the R scripts under a directory
-#' 
+#'
 #' This function first looks for all the R scripts under a directory (using the
 #' pattern \code{"\\\\.[RrSsQq]$"}), then uses \code{\link{tidy.source}} to tidy
 #' these scripts. The original scripts will be overwritten with reformatted code
 #' if reformatting was successful. You may need to back up the original
-#' directory first if you do not fully understand the tricks 
+#' directory first if you do not fully understand the tricks
 #' \code{\link{tidy.source}} is using.
 #' @param path the directory
 #' @param recursive whether to recursively look for R scripts under \code{path}
@@ -248,7 +248,7 @@ deparse.tidy = function(expr, ...) {
 #' @export
 #' @examples
 #' library(formatR)
-#' 
+#'
 #' path = tempdir()
 #' file.copy(system.file('demo', package = 'base'), path, recursive=TRUE)
 #' tidy.dir(path, recursive=TRUE)
