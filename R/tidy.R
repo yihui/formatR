@@ -33,7 +33,6 @@
 #' @return A list with components \item{text.tidy}{the reformatted code as a
 #'   character vector} \item{text.mask}{the code containing comments, which are
 #'   masked in assignments or with the weird operator}
-#'   \item{begin.comment,end.comment}{identifiers used to mark the comments}
 #' @note Be sure to read the reference to know other limitations.
 #' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
 #'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
@@ -100,13 +99,11 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
   if (keep.comment) {
     text.tidy = unmask.source(text.mask)
   } else {
-    begin.comment = end.comment = ""
     text.tidy = text.mask
   }
   text.tidy = reindent.lines(text.tidy, reindent.spaces)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
-  invisible(list(text.tidy = text.tidy, text.mask = text.mask,
-                 begin.comment = begin.comment, end.comment = end.comment))
+  invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }
 
 ## if you have variable names like this in your code, then you really beat me...
