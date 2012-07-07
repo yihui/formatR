@@ -627,7 +627,18 @@ key "R-knitr"
 \end_inset
 
 .
- The real vignette is in LyX, which can be found here:
+ The real vignette is in LyX, which can be found on Github: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/yihui/formatR/tree/master/inst/doc
+\end_layout
+
+\end_inset
+
+, and the Rnw source is here:
 \end_layout
 
 \begin_layout Standard
@@ -641,7 +652,7 @@ status open
 
 \begin_layout Plain Layout
 
-system.file('doc', 'formatR.lyx', package='formatR')
+system.file('doc', 'formatR.Rnw', package='formatR')
 \end_layout
 
 \begin_layout Plain Layout
@@ -665,7 +676,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/yihui/lyx
+http://yihui.name/knitr/demo/lyx/
 \end_layout
 
 \end_inset
