@@ -1,4 +1,4 @@
-%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass{article}
 \usepackage{mathpazo}
@@ -59,22 +59,22 @@ library(formatR)
 usage(tidy.source, width = .73)
 @
 
-There are five options which can affect the output: \texttt{keep.comment},
-\texttt{keep.blank.line}, \texttt{keep.space}, \texttt{reindent.spaces}
-and \texttt{replace.assign}. They are explained in the help page;
-see \texttt{?tidy.source}. For example, if we do not want to keep
-the blank lines in the code, we can first specify a global option
-like this:
+There are six options which can affect the output: \texttt{keep.comment},
+\texttt{keep.blank.line}, \texttt{keep.space}, \texttt{reindent.spaces},
+\texttt{left.brace.newline} and \texttt{replace.assign}. They are
+explained in the help page; see \texttt{?tidy.source}. For example,
+if we do not want to keep the blank lines in the code, we can first
+specify a global option like this:
 
-<<setup>>=
-options(keep.blank.line = TRUE) # not really need to do so; default is TRUE
+<<setup, eval=FALSE>>=
+options(keep.blank.line = FALSE)
 @
 
 The option \texttt{width} will affect the width of the output, e.g.
 we can specify a narrow width:
 
 <<width-spec>>=
-options(width = 85)
+options(width = 80)
 @
 
 Here are some examples taken from the help page:
@@ -110,7 +110,7 @@ tidy.source(text = src[1:7], replace.assign=TRUE)
 \subsection*{Preserve leading spaces}
 
 <<leading-spaces>>=
-tidy.source(text = src[1:2], keep.space = TRUE)
+tidy.source(text = src[1:3], keep.space = TRUE)
 @
 
 
@@ -126,6 +126,13 @@ tidy.source(text = src, keep.blank.line = FALSE)
 
 <<reindent-spaces>>=
 tidy.source(text = src, reindent.spaces = 2)
+@
+
+
+\subsection*{Move left braces \{ to new lines}
+
+<<left-brace-newline>>=
+tidy.source(text = src[1:9], left.brace.newline = TRUE)
 @
 
 
