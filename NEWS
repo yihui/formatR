@@ -9,6 +9,10 @@ NEW FEATURES
   o replace.assign also works when keep.comment=FALSE; in previous
   versions, replace.assign=TRUE only applies to keep.comment=TRUE
 
+  o tidy.source() gained a new argument 'left.brace.newline'; when set
+  to TRUE, the left curly brace { will be moved to a new line (#18)
+  (thanks, Jared Lander)
+
 MAJOR CHANGES
 
   o the 'text.tidy' component in the results of tidy.source() is a
