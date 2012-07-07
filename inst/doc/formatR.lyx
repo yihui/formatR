@@ -586,7 +586,7 @@ examples
 \series bold
 roxygen2
 \series default
- is not well-formatted; 
+ is not formatted; 
 \series bold
 pgfSweave
 \series default
