@@ -18,6 +18,8 @@
 #'   of comments (default \code{FALSE})
 #' @param replace.assign whether to replace the assign operator \code{=} with
 #'   \code{<-}
+#' @param left.brace.newline whether to put the left brace \code{\{} to a new
+#'   line (default \code{FALSE})
 #' @param reindent.spaces number of spaces to indent the code (default 4)
 #' @param output output to the console or a file using \code{\link[base]{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
@@ -53,6 +55,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
                        keep.blank.line = getOption('keep.blank.line', TRUE),
                        keep.space = getOption('keep.space', FALSE),
                        replace.assign = getOption('replace.assign', FALSE),
+                       left.brace.newline = getOption('left.brace.newline', FALSE),
                        reindent.spaces = getOption('reindent.spaces', 4),
                        output = TRUE, text = NULL,
                        width.cutoff = getOption("width"), ...) {
@@ -99,6 +102,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
   text.mask = tidy.block(text.lines, width.cutoff, replace.assign)
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent.lines(text.tidy, reindent.spaces)
+  if (left.brace.newline) text.tidy = move_leftbrace(text.tidy, reindent.spaces)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }

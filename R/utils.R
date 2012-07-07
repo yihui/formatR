@@ -52,3 +52,17 @@ reindent.lines = function(text, n = 2) {
     paste(gsub(' {4}', s, t1), t2, sep = '', collapse = '\n')
   }), use.names = FALSE)
 }
+
+# text is the code, n is number of spaces for indentation
+move_leftbrace = function(text, n) {
+  s = paste(rep(' ', n), collapse = '')
+  unlist(lapply(strsplit(text, '\n', fixed = TRUE), function(x) {
+    if (!length(idx <- grep('(\\)|else) \\{$', x))) return(x)
+    # remove first n spaces from the next lines, and use this amount of spaces
+    # for the { lines
+    pre = substring(gsub('^( *)(.*)', '\\1', x[idx + 1L]), n + 1L)
+    x[idx] = mapply(gsub, '(\\)|else) \\{$', paste('\\1\n', pre, '{', sep = ''), x[idx],
+                    USE.NAMES = FALSE)
+    x
+  }), use.names = FALSE)
+}
