@@ -22,7 +22,8 @@ MAJOR CHANGES
   element of 'text.tidy' contains a minimal complete code block
 
   o potential dependency on the parser package has been removed
-  (replaced by the codetools package)
+  (replaced by the codetools package); this also makes it more robust
+  to use Unicode characters in R code now, see issue #13 for example
 
 MINOR CHANGES
 
