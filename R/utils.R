@@ -19,7 +19,7 @@ replace_assignment = function(exp) {
 ## replace inline comments to cheat R
 
 # a literal # must be writen in double quotes, e.g. "# is not comment"
-mask.inline = function(x) {
+mask_inline = function(x) {
   # move comments after { to the next line
   if (length(idx <- grep('\\{\\s*#.*$', x))) {
     p = paste('{\ninvisible("', begin.comment, '\\1', end.comment, '")', sep = '')
@@ -29,7 +29,7 @@ mask.inline = function(x) {
 }
 
 # reflow comments (including roxygen comments)
-reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
+reflow_comments = function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
   r = rle(idx)$lengths; flag = idx[1] # code and comments alternate in text
   unlist(lapply(split(text, rep(seq(length(r)), r)), function(x) {
     if (flag) {
@@ -43,7 +43,7 @@ reflow.comments = function(text, idx = grepl('^\\s*#+', text), width = getOption
 }
 
 # reindent lines with a different number of spaces
-reindent.lines = function(text, n = 2) {
+reindent_lines = function(text, n = 2) {
   if (n == 4) return(text)  # no need to do anything
   s = paste(rep(' ', n), collapse = '')
   unlist(lapply(strsplit(text, '\n', fixed = TRUE), function(x) {

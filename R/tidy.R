@@ -78,7 +78,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     }
     ## wrap long comments if you do not want to preserve leading spaces
     if (!keep.space) {
-      text.lines = reflow.comments(text.lines, head.comment, width.cutoff)
+      text.lines = reflow_comments(text.lines, head.comment, width.cutoff)
       head.comment = grepl('^[[:space:]]*#', text.lines)
     }
     text.lines[head.comment] =
@@ -97,11 +97,11 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
       }
       text.lines[blank.line] = sprintf('invisible("%s%s")', begin.comment, end.comment)
     }
-    text.lines = mask.inline(text.lines)
+    text.lines = mask_inline(text.lines)
   }
-  text.mask = tidy.block(text.lines, width.cutoff, replace.assign)
+  text.mask = tidy_block(text.lines, width.cutoff, replace.assign)
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
-  text.tidy = reindent.lines(text.tidy, reindent.spaces)
+  text.tidy = reindent_lines(text.tidy, reindent.spaces)
   if (left.brace.newline) text.tidy = move_leftbrace(text.tidy, reindent.spaces)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
@@ -113,7 +113,7 @@ end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
 pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
 
 # wrapper around parse() and deparse()
-tidy.block = function(text, width = getOption('width'), arrow = FALSE) {
+tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
   exprs = base::parse(text = text)
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
