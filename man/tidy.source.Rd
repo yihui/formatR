@@ -4,8 +4,9 @@
 \usage{
 tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE), 
     keep.blank.line = getOption("keep.blank.line", TRUE), keep.space = getOption("keep.space", 
-        FALSE), replace.assign = getOption("replace.assign", FALSE), reindent.spaces = getOption("reindent.spaces", 
-        4), output = TRUE, text = NULL, width.cutoff = getOption("width"), ...)
+        FALSE), replace.assign = getOption("replace.assign", FALSE), left.brace.newline = getOption("left.brace.newline", 
+        FALSE), reindent.spaces = getOption("reindent.spaces", 4), output = TRUE, 
+    text = NULL, width.cutoff = getOption("width"), ...)
 }
 \arguments{
   \item{source}{a character string: location of the source
@@ -24,6 +25,9 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE)
 
   \item{replace.assign}{whether to replace the assign
   operator \code{=} with \code{<-}}
+
+  \item{left.brace.newline}{whether to put the left brace
+  \code{\{} to a new line (default \code{FALSE})}
 
   \item{reindent.spaces}{number of spaces to indent the
   code (default 4)}
