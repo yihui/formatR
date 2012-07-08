@@ -114,7 +114,7 @@ pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)'
 
 # wrapper around parse() and deparse()
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
-  exprs = base::parse(text = text)
+  exprs = base::parse(text = text, srcfile = NULL)
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
