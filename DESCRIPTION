@@ -15,7 +15,7 @@ Suggests:
     gWidgetsRGtk2,
     knitr
 License: GPL-2 | GPL-3
-URL: https://github.com/yihui/formatR/wiki
+URL: http://yihui.name/formatR
 BugReports: https://github.com/yihui/formatR/issues
 Collate:
     'tidy.R'
