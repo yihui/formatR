@@ -1,5 +1,4 @@
 inst/examples
 .gitignore
-clean-up.R
 ^\.Rproj\.user$
 formatR.Rproj
