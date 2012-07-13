@@ -332,6 +332,11 @@ src = c("    ## comments retained; comment block reflowed;",
 
 \begin_layout Plain Layout
 
+    "#' roxygen comments will not be wrapped in any case",
+\end_layout
+
+\begin_layout Plain Layout
+
     "1+1", "if(TRUE){", 
 \end_layout
 
