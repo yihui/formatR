@@ -432,7 +432,7 @@ status open
 
 \begin_layout Plain Layout
 
-tidy.source(text = src[1:7], replace.assign=TRUE)
+tidy.source(text = src[1:8], replace.assign=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -460,7 +460,7 @@ status open
 
 \begin_layout Plain Layout
 
-tidy.source(text = src[1:3], keep.space = TRUE)
+tidy.source(text = src[1:4], keep.space = TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -488,7 +488,7 @@ status open
 
 \begin_layout Plain Layout
 
-## note the 10th line (an empty line) was discarded
+## note the 11th line [an empty line] was discarded
 \end_layout
 
 \begin_layout Plain Layout
@@ -549,7 +549,7 @@ status open
 
 \begin_layout Plain Layout
 
-tidy.source(text = src[1:9], left.brace.newline = TRUE)
+tidy.source(text = src[1:10], left.brace.newline = TRUE)
 \end_layout
 
 \begin_layout Plain Layout
