@@ -722,6 +722,35 @@ http://yihui.name/knitr/demo/lyx/
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<write-bib, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if (require('knitr'))
+\end_layout
+
+\begin_layout Plain Layout
+
+write_bib(c('Rd2roxygen', 'knitr', 'formatR'), file = 'formatR.bib')
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "formatR"
