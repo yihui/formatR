@@ -25,6 +25,11 @@ MAJOR CHANGES
   (replaced by the codetools package); this also makes it more robust
   to use Unicode characters in R code now, see issue #13 for example
 
+  o roxygen comments (#') will not be reflowed; this gives us control
+  over which comments to be reflowed (sometimes we do not want
+  comments to be wrapped and we can write them in the special roxygen
+  comments)
+
 MINOR CHANGES
 
   o the results of tidy.source() (a list) only contain text.tidy and
