@@ -625,16 +625,16 @@ roxygen2
 \series default
  is not formatted; 
 \series bold
-pgfSweave
+knitr
 \series default
  
 \begin_inset CommandInset citation
 LatexCommand citep
-key "R-pgfSweave"
+key "R-knitr"
 
 \end_inset
 
- can tidy the Sweave code chunks when the Sweave option 
+ can tidy the Sweave code chunks when the chunk option 
 \family typewriter
 tidy
 \family default
