@@ -78,6 +78,7 @@ tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comm
     }
     ## wrap long comments if you do not want to preserve leading spaces
     if (!keep.space) {
+      head.comment = head.comment & !grepl("^\\s*#+'", text.lines)
       text.lines = reflow_comments(text.lines, head.comment, width.cutoff)
       head.comment = grepl('^[[:space:]]*#', text.lines)
     }
