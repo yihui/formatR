@@ -73,8 +73,8 @@ tidy.source = function(
   }
   text.lines = text
   if (keep.comment) {
-    if (!keep.space) text.lines = gsub("^[[:space:]]+|[[:space:]]+$", "", text.lines)
-    head.comment = grepl('^[[:space:]]*#', text.lines)
+    if (!keep.space) text.lines = gsub("^\\s+|\\s+$", "", text.lines)
+    head.comment = grepl('^\\s*#', text.lines)
     if (any(head.comment)) {
       text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
     }
@@ -82,14 +82,14 @@ tidy.source = function(
     if (!keep.space) {
       head.comment = head.comment & !grepl("^\\s*#+'", text.lines)
       text.lines = reflow_comments(text.lines, head.comment, width.cutoff)
-      head.comment = grepl('^[[:space:]]*#', text.lines)
+      head.comment = grepl('^\\s*#', text.lines)
     }
     text.lines[head.comment] =
       sprintf('invisible("%s%s%s")', begin.comment, text.lines[head.comment], end.comment)
-    blank.line = grepl('^[[:space:]]*$', text.lines)
+    blank.line = grepl('^\\s*$', text.lines)
     if (any(blank.line) && keep.blank.line) {
       ## no blank lines before an 'else' statement!
-      else.line = grep('^[[:space:]]*else(\\W|)', text.lines)
+      else.line = grep('^\\s*else(\\W|)', text.lines)
       for (i in else.line) {
         j = i - 1
         while (blank.line[j]) {
@@ -151,7 +151,7 @@ unmask.source = function(text.mask) {
   ##   the identifier first to move the comments back to the same line
   text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
   ## move 'else ...' back to the last line
-  text.mask = gsub('\n[[:space:]]*else', ' else', text.mask)
+  text.mask = gsub('\n\\s*else', ' else', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
   gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
 }
