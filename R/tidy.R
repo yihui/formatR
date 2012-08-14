@@ -51,14 +51,16 @@
 #' @keywords IO
 #' @export
 #' @example inst/examples/tidy.source.R
-tidy.source = function(source = "clipboard", keep.comment = getOption('keep.comment', TRUE),
-                       keep.blank.line = getOption('keep.blank.line', TRUE),
-                       keep.space = getOption('keep.space', FALSE),
-                       replace.assign = getOption('replace.assign', FALSE),
-                       left.brace.newline = getOption('left.brace.newline', FALSE),
-                       reindent.spaces = getOption('reindent.spaces', 4),
-                       output = TRUE, text = NULL,
-                       width.cutoff = getOption("width"), ...) {
+tidy.source = function(
+  source = "clipboard", keep.comment = getOption('keep.comment', TRUE),
+  keep.blank.line = getOption('keep.blank.line', TRUE),
+  keep.space = getOption('keep.space', FALSE),
+  replace.assign = getOption('replace.assign', FALSE),
+  left.brace.newline = getOption('left.brace.newline', FALSE),
+  reindent.spaces = getOption('reindent.spaces', 4),
+  output = TRUE, text = NULL,
+  width.cutoff = getOption("width"), ...
+) {
   if (is.null(text)) {
     if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
       source = pipe("pbpaste")
