@@ -75,9 +75,7 @@ tidy.source = function(
   if (keep.comment) {
     if (!keep.space) text.lines = gsub("^\\s+|\\s+$", "", text.lines)
     head.comment = grepl('^\\s*#', text.lines)
-    if (any(head.comment)) {
-      text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
-    }
+    text.lines[head.comment] = gsub('\\\\', '\\\\\\\\', gsub('"', "'", text.lines[head.comment]))
     ## wrap long comments if you do not want to preserve leading spaces
     if (!keep.space) {
       head.comment = head.comment & !grepl("^\\s*#+'", text.lines)
@@ -152,6 +150,8 @@ unmask.source = function(text.mask) {
   text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else', ' else', text.mask)
+  idx = grep(pat.comment, text.mask)
+  text.mask[idx] = gsub('\\\\\\\\', '\\\\', text.mask[idx])
   text.tidy = gsub(pat.comment, '', text.mask)
   gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
 }
