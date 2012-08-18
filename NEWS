@@ -1,3 +1,10 @@
+		   CHANGES IN formatR VERSION 0.7
+
+BUG FIXES
+
+  o backslashes in whole lines of comments can be correctly retained
+  now (e.g. #' \code{1+1}) (thanks, KAPLAN Bernard)
+
 		   CHANGES IN formatR VERSION 0.6
 
 NEW FEATURES
