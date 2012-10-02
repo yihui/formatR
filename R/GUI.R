@@ -55,8 +55,6 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
   txt = gtext(container = g1, wrap = FALSE, 
               font.attr = c(family = "monospace", size = "medium"), expand = TRUE)
   font.attr = c(style = "normal", size = "medium", weight = "light")
-  tidy.opts = list(keep.comment = TRUE, keep.blank.line = TRUE,
-                              keep.space = FALSE, replace.assign = FALSE, width.cutoff = 60)
   gbutton("Open", container = g2, handler = function(h, ...) {
     s = gfile("Open R Source")
     if (!is.na(s)) {
@@ -68,13 +66,7 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
   gbutton("Convert", container = g2, handler = function(h, ...) {
     src = svalue(txt)
     Encoding(src) = 'UTF-8'
-    text.tidy = tidy.source(text = src,
-                            keep.comment = tidy.opts$keep.comment,
-                            keep.blank.line = tidy.opts$keep.blank.line,
-                            keep.space = tidy.opts$keep.space,
-                            replace.assign = tidy.opts$replace.assign,
-                            width.cutoff = tidy.opts$width.cutoff,
-                            output = FALSE)$text.tidy
+    text.tidy = tidy.source(text = src, output = FALSE)$text.tidy
     Encoding(text.tidy) = 'UTF-8'
     enc = options(encoding = "UTF-8")
     svalue(txt) = text.tidy
@@ -125,35 +117,30 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
     g = ggroup(horizontal = FALSE, container = w)
     tbl = glayout(container = g, expand = TRUE, spacing = 0)
     tbl[1, 1, expand = TRUE] = (gf.kc <- gframe("Keep Comments?", container = tbl))
-    r.kc = gradio(c("TRUE", "FALSE"),
-                  ifelse(as.logical(tidy.opts$keep.comment), 1, 2),
+    r.kc = gradio(c("TRUE", "FALSE"), ifelse(getOption('keep.comment', TRUE), 1, 2),
                   horizontal = TRUE, container = gf.kc)
     tbl[2, 1, expand = TRUE] = (gf.kb <- gframe("Keep Blank Lines?", container = tbl))
-    r.kb = gradio(c("TRUE", "FALSE"),
-                  ifelse(as.logical(tidy.opts$keep.blank.line), 1, 2),
+    r.kb = gradio(c("TRUE", "FALSE"), ifelse(getOption('keep.blank.line', TRUE), 1, 2),
                   horizontal = TRUE, container = gf.kb)
     tbl[3, 1, expand = TRUE] = (gf.ks <- gframe("Keep Spaces?", container = tbl))
-    r.ks = gradio(c("TRUE", "FALSE"),
-                  ifelse(as.logical(tidy.opts$keep.space), 1, 2),
+    r.ks = gradio(c("TRUE", "FALSE"), ifelse(getOption('keep.space', FALSE), 1, 2),
                   horizontal = TRUE, container = gf.ks)
     tbl[4, 1, expand = TRUE] = (gf.ra <- gframe("Replace '=' with '<-' in assigning operations?",
                                                 container = tbl))
-    r.ra = gradio(c("TRUE", "FALSE"),
-                  ifelse(as.logical(tidy.opts$replace.assign), 1, 2),
+    r.ra = gradio(c("TRUE", "FALSE"), ifelse(getOption('replace.assign', FALSE), 1, 2),
                   horizontal = TRUE, container = gf.ra)
     tbl[5, 1, expand = TRUE] = (gf.wi <- gframe("Text Width", container = tbl))
-    r.wi = gedit(as.character(tidy.opts$width.cutoff), container = gf.wi,
-                 coerce.with = as.integer)
+    r.wi = gedit(getOption('width'), container = gf.wi, coerce.with = as.integer)
     g1 = ggroup(container = g)
     b.ok = gbutton("OK", container = g1, handler = function(h, ...) {
       if (is.na(svalue(r.wi))) {
         gmessage("Please input an integer for the text width!", "Error", icon = "error")
       } else {
-        tidy.opts <<- list(keep.comment = as.logical(svalue(r.kc)),
-                                    keep.blank.line = as.logical(svalue(r.kb)),
-                                    keep.space = as.logical(svalue(r.ks)),
-                                    replace.assign = as.logical(svalue(r.ra)),
-                                    width.cutoff = svalue(r.wi))
+        options(keep.comment = as.logical(svalue(r.kc)),
+                keep.blank.line = as.logical(svalue(r.kb)),
+                keep.space = as.logical(svalue(r.ks)),
+                replace.assign = as.logical(svalue(r.ra)),
+                width = svalue(r.wi))
         dispose(w)
       }
     })
