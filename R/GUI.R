@@ -68,7 +68,6 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
   gbutton("Convert", container = g2, handler = function(h, ...) {
     src = svalue(txt)
     Encoding(src) = 'UTF-8'
-    src = unlist(strsplit(src, '\n', fixed = TRUE))
     text.tidy = tidy.source(text = src,
                             keep.comment = tidy.opts$keep.comment,
                             keep.blank.line = tidy.opts$keep.blank.line,
