@@ -164,3 +164,8 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
   })
   invisible(txt)
 }
+
+gui.styles = c("normal", "oblique", "italic")
+gui.sizes = c("xx-large", "x-large", "large", "medium", "small", "x-small", "xx-small")
+gui.weights = c("ultralight", "heavy", "light", "book", "semibold", "ultraheavy",
+  "bold", "thin", "ultrabold", "medium")
