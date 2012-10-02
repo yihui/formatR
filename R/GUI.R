@@ -128,6 +128,8 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
                   horizontal = TRUE, container = gf.ra)
     tbl[5, 1, expand = TRUE] = (gf.wi <- gframe('Text Width', container = tbl))
     r.wi = gedit(getOption('width'), container = gf.wi, coerce.with = as.integer)
+    tbl[6, 1, expand = TRUE] = (gf.rs <- gframe('Number of Spaces to Indent'))
+    r.rs = gedit(getOption('reindent.spaces', 4), container = gf.rs, coerce.with = as.integer)
     g1 = ggroup(container = g)
     b.ok = gbutton('OK', container = g1, handler = function(h, ...) {
       if (is.na(svalue(r.wi))) {
@@ -137,6 +139,7 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
                 keep.blank.line = as.logical(svalue(r.kb)),
                 keep.space = as.logical(svalue(r.ks)),
                 replace.assign = as.logical(svalue(r.ra)),
+                reindent.spaces = svalue(r.rs),
                 width = svalue(r.wi))
         dispose(w)
       }
