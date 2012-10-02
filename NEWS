@@ -5,6 +5,14 @@ BUG FIXES
   o backslashes in whole lines of comments can be correctly retained
   now (e.g. #' \code{1+1}) (thanks, KAPLAN Bernard)
 
+  o the font button in tidy.gui() works again (#23) (thanks, Dason
+  Kurkiewicz)
+
+NEW FEATURES
+
+  o the number of spaces for indentation can be specified in
+  tidy.gui()
+
 		   CHANGES IN formatR VERSION 0.6
 
 NEW FEATURES
