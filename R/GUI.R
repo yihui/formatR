@@ -116,17 +116,16 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
     w = gwindow("Preferences")
     g = ggroup(horizontal = FALSE, container = w)
     tbl = glayout(container = g, expand = TRUE, spacing = 0)
-    tbl[1, 1, expand = TRUE] = (gf.kc <- gframe("Keep Comments?", container = tbl))
+    tbl[1, 1, expand = TRUE] = (gf.kc <- gframe("Keep Comments?"))
     r.kc = gradio(c("TRUE", "FALSE"), ifelse(getOption('keep.comment', TRUE), 1, 2),
                   horizontal = TRUE, container = gf.kc)
-    tbl[2, 1, expand = TRUE] = (gf.kb <- gframe("Keep Blank Lines?", container = tbl))
+    tbl[2, 1, expand = TRUE] = (gf.kb <- gframe("Keep Blank Lines?"))
     r.kb = gradio(c("TRUE", "FALSE"), ifelse(getOption('keep.blank.line', TRUE), 1, 2),
                   horizontal = TRUE, container = gf.kb)
-    tbl[3, 1, expand = TRUE] = (gf.ks <- gframe("Keep Spaces?", container = tbl))
+    tbl[3, 1, expand = TRUE] = (gf.ks <- gframe("Keep Spaces?"))
     r.ks = gradio(c("TRUE", "FALSE"), ifelse(getOption('keep.space', FALSE), 1, 2),
                   horizontal = TRUE, container = gf.ks)
-    tbl[4, 1, expand = TRUE] = (gf.ra <- gframe("Replace '=' with '<-' in assigning operations?",
-                                                container = tbl))
+    tbl[4, 1, expand = TRUE] = (gf.ra <- gframe("Replace '=' with '<-' in assigning operations?"))
     r.ra = gradio(c("TRUE", "FALSE"), ifelse(getOption('replace.assign', FALSE), 1, 2),
                   horizontal = TRUE, container = gf.ra)
     tbl[5, 1, expand = TRUE] = (gf.wi <- gframe("Text Width", container = tbl))
