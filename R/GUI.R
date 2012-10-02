@@ -126,7 +126,7 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
     tbl[4, 1, expand = TRUE] = (gf.ra <- gframe("Replace '=' with '<-' in assigning operations?"))
     r.ra = gradio(c('TRUE', 'FALSE'), ifelse(getOption('replace.assign', FALSE), 1, 2),
                   horizontal = TRUE, container = gf.ra)
-    tbl[5, 1, expand = TRUE] = (gf.wi <- gframe('Text Width', container = tbl))
+    tbl[5, 1, expand = TRUE] = (gf.wi <- gframe('Text Width'))
     r.wi = gedit(getOption('width'), container = gf.wi, coerce.with = as.integer)
     tbl[6, 1, expand = TRUE] = (gf.rs <- gframe('Number of Spaces to Indent'))
     r.rs = gedit(getOption('reindent.spaces', 4), container = gf.rs, coerce.with = as.integer)
