@@ -57,7 +57,7 @@ reindent_lines = function(text, n = 2) {
 move_leftbrace = function(text, n) {
   s = paste(rep(' ', n), collapse = '')
   unlist(lapply(strsplit(text, '\n', fixed = TRUE), function(x) {
-    if (!length(idx <- grep('(\\)|else) \\{$', x))) return(x)
+    if (length(x) < 2 || !length(idx <- grep('(\\)|else) \\{$', x))) return(x)
     # remove first n spaces from the next lines, and use this amount of spaces
     # for the { lines
     pre = substring(gsub('^( *)(.*)', '\\1', x[idx + 1L]), n + 1L)
