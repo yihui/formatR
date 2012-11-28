@@ -58,9 +58,8 @@ move_leftbrace = function(text, n) {
   s = paste(rep(' ', n), collapse = '')
   unlist(lapply(strsplit(text, '\n', fixed = TRUE), function(x) {
     if (length(x) < 2 || !length(idx <- grep('(\\)|else) \\{$', x))) return(x)
-    # remove first n spaces from the next lines, and use this amount of spaces
-    # for the { lines
-    pre = substring(gsub('^( *)(.*)', '\\1', x[idx + 1L]), n + 1L)
+    # indent the same amount of spaces as the { lines
+    pre = gsub('^( *)(.*)', '\\1', x[idx])
     x[idx] = mapply(gsub, '(\\)|else) \\{$', paste('\\1\n', pre, '{', sep = ''), x[idx],
                     USE.NAMES = FALSE)
     x
