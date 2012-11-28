@@ -104,7 +104,7 @@ tidy.source = function(
   text.mask = tidy_block(text.lines, width.cutoff, replace.assign)
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, reindent.spaces)
-  if (left.brace.newline) text.tidy = move_leftbrace(text.tidy, reindent.spaces)
+  if (left.brace.newline) text.tidy = move_leftbrace(text.tidy)
   if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }

@@ -53,9 +53,8 @@ reindent_lines = function(text, n = 2) {
   }), use.names = FALSE)
 }
 
-# text is the code, n is number of spaces for indentation
-move_leftbrace = function(text, n) {
-  s = paste(rep(' ', n), collapse = '')
+# move { to the next line
+move_leftbrace = function(text) {
   unlist(lapply(strsplit(text, '\n', fixed = TRUE), function(x) {
     if (length(x) < 2 || !length(idx <- grep('(\\)|else) \\{$', x))) return(x)
     # indent the same amount of spaces as the { lines
