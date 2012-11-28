@@ -1,4 +1,4 @@
 inst/examples
 .gitignore
 ^\.Rproj\.user$
-formatR.Rproj
+^.*\.Rproj$
