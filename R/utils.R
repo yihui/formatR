@@ -46,7 +46,7 @@ reflow_comments = function(text, idx = grepl('^\\s*#+', text), width = getOption
 reindent_lines = function(text, n = 2) {
   if (n == 4) return(text)  # no need to do anything
   s = paste(rep(' ', n), collapse = '')
-  unlist(lapply(strsplit(text, '\n', fixed = TRUE), function(x) {
+  unlist(lapply(strsplit(text, '\n'), function(x) {
     t1 = gsub('^( *)(.*)', '\\1', x)
     t2 = gsub('^( *)(.*)', '\\2', x)
     paste(gsub(' {4}', s, t1), t2, sep = '', collapse = '\n')
