@@ -3,10 +3,9 @@
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
 tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE), 
-    keep.blank.line = getOption("keep.blank.line", TRUE), keep.space = getOption("keep.space", 
-        FALSE), replace.assign = getOption("replace.assign", FALSE), left.brace.newline = getOption("left.brace.newline", 
-        FALSE), reindent.spaces = getOption("reindent.spaces", 4), output = TRUE, 
-    text = NULL, width.cutoff = getOption("width"), ...)
+    keep.blank.line = getOption("keep.blank.line", TRUE), replace.assign = getOption("replace.assign", 
+        FALSE), left.brace.newline = getOption("left.brace.newline", FALSE), reindent.spaces = getOption("reindent.spaces", 
+        4), output = TRUE, text = NULL, width.cutoff = getOption("width"), ...)
 }
 \arguments{
   \item{source}{a character string: location of the source
@@ -19,9 +18,6 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE)
 
   \item{keep.blank.line}{whether to keep blank lines
   (\code{TRUE} by default)}
-
-  \item{keep.space}{whether to preserve the leading spaces
-  in the single lines of comments (default \code{FALSE})}
 
   \item{replace.assign}{whether to replace the assign
   operator \code{=} with \code{<-}}
@@ -86,18 +82,14 @@ src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){"
     "1*3 # one space before this comment will become two!", "2+2+2    # 'short comments'", 
     "   ", "lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### only 'single quotes' are allowed in comments", 
     "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line", 
-    "\\t\\t## tabs/spaces before comments: use keep.space=TRUE to keep them", 
-    "'a character string with \\t in it'", "# note tabs will be converted to spaces when keep.space = TRUE", 
-    "", paste("## here is a", paste(rep("long", 20), collapse = " "), "comment"))
+    "'a character string with \\t in it'", "", paste("## here is a", paste(rep("long", 
+        20), collapse = " "), "comment"))
 
 ## source code
 cat(src, sep = "\\n")
 
 ## the formatted version
 tidy.source(text = src)
-
-## other options: preserve leading spaces
-tidy.source(text = src, keep.space = TRUE)
 
 ## preserve blank lines
 tidy.source(text = src, keep.blank.line = TRUE)
