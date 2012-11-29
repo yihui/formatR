@@ -14,8 +14,6 @@
 #'   \code{tidy.souce()} without specifying the argument \code{source})
 #' @param keep.comment whether to keep comments (\code{TRUE} by default)
 #' @param keep.blank.line whether to keep blank lines (\code{TRUE} by default)
-#' @param keep.space whether to preserve the leading spaces in the single lines
-#'   of comments (default \code{FALSE})
 #' @param replace.assign whether to replace the assign operator \code{=} with
 #'   \code{<-}
 #' @param left.brace.newline whether to put the left brace \code{\{} to a new
@@ -54,7 +52,6 @@
 tidy.source = function(
   source = "clipboard", keep.comment = getOption('keep.comment', TRUE),
   keep.blank.line = getOption('keep.blank.line', TRUE),
-  keep.space = getOption('keep.space', FALSE),
   replace.assign = getOption('replace.assign', FALSE),
   left.brace.newline = getOption('left.brace.newline', FALSE),
   reindent.spaces = getOption('reindent.spaces', 4),
@@ -73,16 +70,14 @@ tidy.source = function(
   }
   text.lines = text
   if (keep.comment) {
-    if (!keep.space) text.lines = gsub("^\\s+|\\s+$", "", text.lines)
+    text.lines = gsub("^\\s+|\\s+$", "", text.lines)
     text.lines = gsub('\\\\', '\\\\\\\\', text.lines)
     head.comment = grepl('^\\s*#', text.lines)
     text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
-    ## wrap long comments if you do not want to preserve leading spaces
-    if (!keep.space) {
-      head.comment = head.comment & !grepl("^\\s*#+'", text.lines)
-      text.lines = reflow_comments(text.lines, head.comment, width.cutoff)
-      head.comment = grepl('^\\s*#', text.lines)
-    }
+    ## wrap long comments
+    head.comment = head.comment & !grepl("^\\s*#+'", text.lines)
+    text.lines = reflow_comments(text.lines, head.comment, width.cutoff)
+    head.comment = grepl('^\\s*#', text.lines)
     text.lines[head.comment] =
       sprintf('invisible("%s%s%s")', begin.comment, text.lines[head.comment], end.comment)
     blank.line = grepl('^\\s*$', text.lines)

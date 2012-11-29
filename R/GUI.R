@@ -120,9 +120,6 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
     tbl[2, 1, expand = TRUE] = (gf.kb <- gframe('Keep Blank Lines?'))
     r.kb = gradio(c('TRUE', 'FALSE'), ifelse(getOption('keep.blank.line', TRUE), 1, 2),
                   horizontal = TRUE, container = gf.kb)
-    tbl[3, 1, expand = TRUE] = (gf.ks <- gframe('Keep Spaces?'))
-    r.ks = gradio(c('TRUE', 'FALSE'), ifelse(getOption('keep.space', FALSE), 1, 2),
-                  horizontal = TRUE, container = gf.ks)
     tbl[4, 1, expand = TRUE] = (gf.ra <- gframe("Replace '=' with '<-' in assigning operations?"))
     r.ra = gradio(c('TRUE', 'FALSE'), ifelse(getOption('replace.assign', FALSE), 1, 2),
                   horizontal = TRUE, container = gf.ra)
@@ -137,7 +134,6 @@ tidy.gui = function(guiToolkit = 'RGtk2') {
       } else {
         options(keep.comment = as.logical(svalue(r.kc)),
                 keep.blank.line = as.logical(svalue(r.kb)),
-                keep.space = as.logical(svalue(r.ks)),
                 replace.assign = as.logical(svalue(r.ra)),
                 reindent.spaces = svalue(r.rs),
                 width = svalue(r.wi))
