@@ -1,10 +1,9 @@
-%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.5 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass{article}
 \usepackage{mathpazo}
 \renewcommand{\sfdefault}{lmss}
 \renewcommand{\ttdefault}{lmtt}
-\usepackage[T1]{fontenc}
 \usepackage{geometry}
 \geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
 \usepackage{url}
@@ -82,8 +81,8 @@ Here are some examples taken from the help page:
 <<tidy-source-ex>>=
 library(formatR)
 ## use the 'text' argument
-src = c("    ## comments retained; comment block reflowed;", 
-    "    # use keep.space = TRUE to keep spaces before comments and stop reflowing", 
+src = c("    ## comments are retained;",
+    "# a comment block will be reflowed if it contains long comments;", 
     "#' roxygen comments will not be wrapped in any case",
     "1+1", "if(TRUE){", 
     "x=1  # inline comments", "}else{", "x=2;print('Oh no... ask the right bracket to go away!')}", 
@@ -101,17 +100,10 @@ cat(src, sep = "\n")
 @
 
 
-\subsection*{Format and replace \texttt{=} with \texttt{<-}}
+\subsection*{Format and replace \texttt{=} with \texttt{\textless{}-}}
 
 <<tidy-replace-assign>>=
 tidy.source(text = src[1:8], replace.assign=TRUE)
-@
-
-
-\subsection*{Preserve leading spaces}
-
-<<leading-spaces>>=
-tidy.source(text = src[1:4], keep.space = TRUE)
 @
 
 

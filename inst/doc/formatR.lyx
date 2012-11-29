@@ -321,13 +321,13 @@ library(formatR)
 
 \begin_layout Plain Layout
 
-src = c("    ## comments retained; comment block reflowed;", 
+src = c("    ## comments are retained;",
 \end_layout
 
 \begin_layout Plain Layout
 
-    "    # use keep.space = TRUE to keep spaces before comments and stop
- reflowing", 
+    "# a comment block will be reflowed if it contains long comments;",
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -433,34 +433,6 @@ status open
 \begin_layout Plain Layout
 
 tidy.source(text = src[1:8], replace.assign=TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Preserve leading spaces
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<leading-spaces>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-tidy.source(text = src[1:4], keep.space = TRUE)
 \end_layout
 
 \begin_layout Plain Layout

@@ -9,9 +9,7 @@ src = c("    # a single line of comments is preserved",
 "2+2+2    # 'short comments'", "   ",
 "lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### only 'single quotes' are allowed in comments",
 "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line",
-"\t\t## tabs/spaces before comments: use keep.space=TRUE to keep them",
 "'a character string with \t in it'",
-"# note tabs will be converted to spaces when keep.space = TRUE",
 '',
 paste("## here is a", paste(rep("long", 20), collapse = ' '), "comment"))
 
@@ -20,9 +18,6 @@ cat(src, sep = '\n')
 
 ## the formatted version
 tidy.source(text = src)
-
-## other options: preserve leading spaces
-tidy.source(text = src, keep.space = TRUE)
 
 ## preserve blank lines
 tidy.source(text = src, keep.blank.line = TRUE)
