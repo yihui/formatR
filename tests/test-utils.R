@@ -13,4 +13,11 @@ with(getNamespace('formatR'), {
     identical(move_leftbrace('if (TRUE) {\n  1\n} else {\n  2}'),
               'if (TRUE)\n{\n  1\n} else\n{\n  2}')
   )
+
+  stopifnot(
+    identical(reindent_lines(''), ''),
+    identical(reindent_lines(c('', '')), c('', '')),
+    identical(reindent_lines('    ', 2), '  '),
+    identical(reindent_lines('if (TRUE) {\n    1\n}', 2), 'if (TRUE) {\n  1\n}')
+  )
 })
