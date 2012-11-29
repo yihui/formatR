@@ -8,6 +8,14 @@ BUG FIXES
   o the font button in tidy.gui() works again (#23) (thanks, Dason
   Kurkiewicz)
 
+  o the option left.brace.newline was buggy; it did not work for empty
+  lines
+
+MAJOR CHANGES
+
+  o the option keep.space in tidy.source() was removed; the spaces
+  before comments will not be faithfully kept
+
 NEW FEATURES
 
   o the number of spaces for indentation can be specified in
