@@ -110,6 +110,7 @@ tidy.source = function(
 begin.comment = ".BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
 end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
 pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
+inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 
 # wrapper around parse() and deparse()
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
@@ -150,7 +151,10 @@ unmask.source = function(text.mask) {
   text.mask = gsub('\n\\s*else', ' else', text.mask)
   text.mask = gsub('\\\\\\\\', '\\\\', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
-  gsub(' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"', "  \\1", text.tidy)
+  # inline comments should be termined by $ or \n
+  text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), "  \\1\\2", text.tidy)
+  # the rest of inline comments should be appended by \n
+  gsub(inline.comment, "  \\1\n", text.tidy)
 }
 
 
