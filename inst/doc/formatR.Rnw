@@ -30,7 +30,9 @@
 
 \begin{document}
 
-% \SweaveOpts{comment=NA}
+<<no-comment, include=FALSE>>=
+if (require('knitr')) opts_chunk$set(comment=NA)
+@
 
 
 \title{\textbf{formatR}: Format R Code Automatically}
