@@ -68,7 +68,7 @@ tidy.source = function(
   text = readLines(source, warn = FALSE)
   if (length(text) == 0L || all(grepl('^\\s*$', text))) {
     if (output) cat('\n', ...)
-    return(list(text.tidy = '', text.mask = ''))
+    return(list(text.tidy = text, text.mask = text))
   }
   text.lines = text
   if (keep.comment) {
