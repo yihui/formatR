@@ -116,7 +116,9 @@ inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
   exprs = base::parse(text = text, srcfile = NULL)
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
-  sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
+  text = sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
+  # add one space between a left bracket and a following comma
+  text = gsub("\\[\\s*,", "\\[ ,", text)
 }
 
 #' Restore the real source code from the masked text
