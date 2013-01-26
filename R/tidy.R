@@ -41,11 +41,6 @@
 #'   \code{\link[base]{cat}}
 #' @references \url{https://github.com/yihui/formatR/wiki/} (an introduction to
 #'   this package, with examples and further notes)
-#'
-#'   The package vignette also contains some examples (see
-#'   \code{vignette('formatR', package = 'formatR')}.
-#'
-#'   Hadley's style guide: \url{https://github.com/hadley/devtools/wiki/Style}
 #' @keywords IO
 #' @export
 #' @example inst/examples/tidy.source.R
