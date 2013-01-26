@@ -80,30 +80,6 @@ knitr
 
 \begin_body
 
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<no-comment, include=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-if (require('knitr')) opts_chunk$set(comment=NA)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Title
 
 \series bold
@@ -149,11 +125,19 @@ key "R-formatR"
 \end_inset
 
  was designed to help users tidy (reformat) their source code.
- This vignette serves as a showcase of the function 
-\emph on
-tidy.source()
-\emph default
-, and a broader introduction can be found in 
+ This vignette serves as a placeholder for Sweave only, and the real vignette
+ was written in R Markdown with 
+\series bold
+knitr
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "R-knitr"
+
+\end_inset
+
+: 
 \begin_inset Flex URL
 status collapsed
 
@@ -165,497 +149,18 @@ https://github.com/yihui/formatR/wiki/
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Section
-The workhorse 
-\emph on
-tidy.source()
-\end_layout
-
-\begin_layout Standard
-The main function in this package is 
-\emph on
-tidy.source()
-\emph default
-, which can take a file as input, parse it and write the formatted code
- to the console or a file.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<usage-tidy-source,comment='##'>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-library(formatR)
-\end_layout
-
-\begin_layout Plain Layout
-
-usage(tidy.source, width = .73)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-There are six options which can affect the output: 
-\family typewriter
-keep.comment
-\family default
-, 
-\family typewriter
-keep.blank.line
-\family default
-, 
-\family typewriter
-keep.space
-\family default
-, 
-\family typewriter
-reindent.spaces
-\family default
-, 
-\family typewriter
-left.brace.newline
-\family default
- and 
-\family typewriter
-replace.assign
-\family default
-.
- They are explained in the help page; see 
-\family typewriter
-?tidy.source
-\family default
-.
- For example, if we do not want to keep the blank lines in the code, we
- can first specify a global option like this:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<setup, eval=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-options(keep.blank.line = FALSE)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The option 
-\family typewriter
-width
-\family default
- will affect the width of the output, e.g.
- we can specify a narrow width:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<width-spec>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-options(width = 80)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Here are some examples taken from the help page:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<tidy-source-ex>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-library(formatR)
-\end_layout
-
-\begin_layout Plain Layout
-
-## use the 'text' argument
-\end_layout
-
-\begin_layout Plain Layout
-
-src = c("    ## comments are retained;",
-\end_layout
-
-\begin_layout Plain Layout
-
-    "# a comment block will be reflowed if it contains long comments;",
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-    "#' roxygen comments will not be wrapped in any case",
-\end_layout
-
-\begin_layout Plain Layout
-
-    "1+1", "if(TRUE){", 
-\end_layout
-
-\begin_layout Plain Layout
-
-    "x=1  # inline comments", "}else{", "x=2;print('Oh no...
- ask the right bracket to go away!')}", 
-\end_layout
-
-\begin_layout Plain Layout
-
-    "1*3 # one space before this comment will become two!", "2+2+2    #
- 'short comments'", "   ", "lm(y~x1+x2)  ### only 'single quotes' are allowed
- in comments", 
-\end_layout
-
-\begin_layout Plain Layout
-
-    "'a character string with 
-\backslash
-t in it'",
-\end_layout
-
-\begin_layout Plain Layout
-
-    "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a
- long line", paste("#' here is a", 
-\end_layout
-
-\begin_layout Plain Layout
-
-        paste(rep("long", 20), collapse = " "), "roxygen comment"))
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Source code
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<source-code>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-cat(src, sep = "
-\backslash
-n")
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Format and replace 
-\family typewriter
-=
-\family default
- with 
-\family typewriter
-<-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<tidy-replace-assign>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-tidy.source(text = src[1:8], replace.assign=TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Discard blank lines
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<blank-lines>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-## note the 11th line [an empty line] was discarded
-\end_layout
-
-\begin_layout Plain Layout
-
-tidy.source(text = src, keep.blank.line = FALSE)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Reindent code
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<reindent-spaces>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-tidy.source(text = src, reindent.spaces = 2)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Move left braces { to new lines
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<left-brace-newline>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-tidy.source(text = src[1:10], left.brace.newline = TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Discard comments
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<discard-comments>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-tidy.source(text = src, keep.comment = FALSE)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Applications
-\end_layout
-
-\begin_layout Standard
-This package has been used in a few other R packages.
- For example, 
-\series bold
-Rd2roxygen
-\series default
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "R-Rd2roxygen"
-
-\end_inset
-
- uses 
-\series bold
-formatR
-\series default
- to reformat the code in the 
-\family sans
-usage
-\family default
- and 
-\family sans
-examples
-\family default
- sections in Rd files, since the code generated by 
-\series bold
-roxygen2
-\series default
- is not formatted; 
-\series bold
-knitr
-\series default
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "R-knitr"
-
-\end_inset
-
- can tidy the Sweave code chunks when the chunk option 
-\family typewriter
-tidy
-\family default
- is 
-\family typewriter
-TRUE
-\family default
- (just like the code in this vignette).
-\end_layout
-
-\begin_layout Section*
-About this vignette
-\end_layout
-
-\begin_layout Standard
-You might be curious about how this vignette was generated, because it looks
- different from other Sweave-based vignettes.
- The answer is 
-\series bold
-knitr
-\series default
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "R-knitr"
-
-\end_inset
-
-.
- The real vignette is in LyX, which can be found on Github: 
+ The R Markdown source can be found at 
 \begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/yihui/formatR/tree/master/inst/doc
+https://github.com/yihui/formatR/tree/master/inst/doc/index.Rmd
 \end_layout
 
 \end_inset
 
-, and the Rnw source is here:
+ or:
 \end_layout
 
 \begin_layout Standard
@@ -669,41 +174,13 @@ status open
 
 \begin_layout Plain Layout
 
-system.file('doc', 'formatR.Rnw', package='formatR')
+system.file('doc', 'index.Rmd', package='formatR')
 \end_layout
 
 \begin_layout Plain Layout
 
 @
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Instructions on how to use 
-\series bold
-knitr
-\series default
- with LyX can be found at 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://yihui.name/knitr/demo/lyx/
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
 
 \begin_layout Plain Layout
 
@@ -712,12 +189,7 @@ status open
 
 \begin_layout Plain Layout
 
-if (require('knitr'))
-\end_layout
-
-\begin_layout Plain Layout
-
-write_bib(c('Rd2roxygen', 'knitr', 'formatR'), file = 'formatR.bib')
+if (require('knitr')) write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
 \end_layout
 
 \begin_layout Plain Layout
