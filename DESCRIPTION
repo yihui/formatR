@@ -18,6 +18,7 @@ Suggests:
 License: GPL-2 | GPL-3
 URL: http://yihui.name/formatR
 BugReports: https://github.com/yihui/formatR/issues
+VignetteBuilder: knitr
 Collate:
     'tidy.R'
     'GUI.R'

@@ -19,6 +19,7 @@
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
+%\VignetteEngine{knitr}
 
 \makeatother
 
@@ -44,7 +45,8 @@ or:
 system.file('doc', 'index.Rmd', package='formatR')
 @
 <<write-bib, include=FALSE>>=
-if (require('knitr')) write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
+library(knitr)
+write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
 @
 
 \bibliographystyle{jss}

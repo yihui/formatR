@@ -5,6 +5,7 @@
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
+%\VignetteEngine{knitr}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -189,7 +190,12 @@ system.file('doc', 'index.Rmd', package='formatR')
 
 \begin_layout Plain Layout
 
-if (require('knitr')) write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
 \end_layout
 
 \begin_layout Plain Layout
