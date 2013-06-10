@@ -114,23 +114,7 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
   sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
 
-#' Restore the real source code from the masked text
-#'
-#' Remove the masks from the code to restore the real code.
-#' @param text.mask the masked source code
-#' @return the real source code (a character vector)
-#' @author Yihui Xie <\url{http://yihui.name}>
-#' @export
-#' @keywords internal
-#' @examples
-#' library(formatR)
-#'
-#' messy = system.file('format', 'messy-b.R', package = 'formatR')
-#' x = tidy.source(messy, output = FALSE)$text.mask
-#'
-#' cat(x, sep = '\n')
-#'
-#' cat(unmask.source(x), sep = '\n')
+# Restore the real source code from the masked text
 unmask.source = function(text.mask) {
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line

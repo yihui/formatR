@@ -8,6 +8,8 @@ MAJOR CHANGES
   well as the operator "%InLiNe_IdEnTiFiEr%"; they were designed for the
   pgfSweave package, which has been archived on CRAN for a long time
 
+  o the function unmask.source() is no longer exported
+
 		   CHANGES IN formatR VERSION 0.7
 
 BUG FIXES
