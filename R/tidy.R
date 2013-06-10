@@ -45,17 +45,17 @@
 #' @export
 #' @example inst/examples/tidy.source.R
 tidy.source = function(
-  source = "clipboard", keep.comment = getOption('keep.comment', TRUE),
+  source = 'clipboard', keep.comment = getOption('keep.comment', TRUE),
   keep.blank.line = getOption('keep.blank.line', TRUE),
   replace.assign = getOption('replace.assign', FALSE),
   left.brace.newline = getOption('left.brace.newline', FALSE),
   reindent.spaces = getOption('reindent.spaces', 4),
   output = TRUE, text = NULL,
-  width.cutoff = getOption("width"), ...
+  width.cutoff = getOption('width'), ...
 ) {
   if (is.null(text)) {
-    if (source == "clipboard" && Sys.info()["sysname"] == "Darwin") {
-      source = pipe("pbpaste")
+    if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
+      source = pipe('pbpaste')
     }
   } else {
     source = textConnection(text); on.exit(close(source))
@@ -67,7 +67,7 @@ tidy.source = function(
   }
   text.lines = text
   if (keep.comment) {
-    text.lines = gsub("^\\s+|\\s+$", "", text.lines)
+    text.lines = gsub('^\\s+|\\s+$', '', text.lines)
     text.lines = gsub('\\\\', '\\\\\\\\', text.lines)
     head.comment = grepl('^\\s*#', text.lines)
     text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
@@ -97,13 +97,13 @@ tidy.source = function(
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, reindent.spaces)
   if (left.brace.newline) text.tidy = move_leftbrace(text.tidy)
-  if (output) cat(paste(text.tidy, collapse = "\n"), "\n", ...)
+  if (output) cat(paste(text.tidy, collapse = '\n'), '\n', ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }
 
 ## if you have variable names like this in your code, then you really beat me...
-begin.comment = ".BeGiN_TiDy_IdEnTiFiEr_HaHaHa"
-end.comment = ".HaHaHa_EnD_TiDy_IdEnTiFiEr"
+begin.comment = '.BeGiN_TiDy_IdEnTiFiEr_HaHaHa'
+end.comment = '.HaHaHa_EnD_TiDy_IdEnTiFiEr'
 pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
 inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 
@@ -134,15 +134,15 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
 unmask.source = function(text.mask) {
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
-  text.mask = gsub("%InLiNe_IdEnTiFiEr%[ ]*\n", "%InLiNe_IdEnTiFiEr%", text.mask)
+  text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else', ' else', text.mask)
   text.mask = gsub('\\\\\\\\', '\\\\', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
   # inline comments should be termined by $ or \n
-  text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), "  \\1\\2", text.tidy)
+  text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
   # the rest of inline comments should be appended by \n
-  gsub(inline.comment, "  \\1\n", text.tidy)
+  gsub(inline.comment, '  \\1\n', text.tidy)
 }
 
 
