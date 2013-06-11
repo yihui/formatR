@@ -67,7 +67,6 @@ tidy.source = function(
   }
   text.lines = text
   if (keep.comment) {
-    text.lines = gsub('^\\s+|\\s+$', '', text.lines)
     text.lines = gsub('\\\\', '\\\\\\\\', text.lines)
     head.comment = grepl('^\\s*#', text.lines)
     text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
