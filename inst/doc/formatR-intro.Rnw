@@ -39,11 +39,11 @@ The package \textbf{formatR} \citep{R-formatR} was designed to help
 users tidy (reformat) their source code. This vignette serves as a
 placeholder for Sweave only, and the real vignette was written in
 R Markdown with \textbf{knitr} \citep{R-knitr}: \url{https://github.com/yihui/formatR/wiki/}.
-The R Markdown source can be found at \url{https://github.com/yihui/formatR/tree/master/inst/doc/index.Rmd}
+The R Markdown source can be found at \url{https://github.com/yihui/formatR/tree/master/inst/doc/formatR.Rmd}
 or:
 
 <<lyx-doc, eval=FALSE>>=
-system.file('doc', 'index.Rmd', package='formatR')
+system.file('doc', 'formatR.Rmd', package='formatR')
 @
 <<write-bib, include=FALSE>>=
 library(knitr)
@@ -51,7 +51,7 @@ write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
 @
 
 \bibliographystyle{jss}
-\bibliography{formatR}
+\bibliography{formatR-intro}
 
 
 \end{document}

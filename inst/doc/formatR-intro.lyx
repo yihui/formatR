@@ -156,7 +156,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/yihui/formatR/tree/master/inst/doc/index.Rmd
+https://github.com/yihui/formatR/tree/master/inst/doc/formatR.Rmd
 \end_layout
 
 \end_inset
@@ -175,7 +175,7 @@ status open
 
 \begin_layout Plain Layout
 
-system.file('doc', 'index.Rmd', package='formatR')
+system.file('doc', 'formatR.Rmd', package='formatR')
 \end_layout
 
 \begin_layout Plain Layout
@@ -211,7 +211,7 @@ write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "formatR"
+bibfiles "formatR-intro"
 options "jss"
 
 \end_inset
