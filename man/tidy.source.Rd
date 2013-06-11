@@ -2,10 +2,12 @@
 \alias{tidy.source}
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE), 
-    keep.blank.line = getOption("keep.blank.line", TRUE), replace.assign = getOption("replace.assign", 
-        FALSE), left.brace.newline = getOption("left.brace.newline", FALSE), reindent.spaces = getOption("reindent.spaces", 
-        4), output = TRUE, text = NULL, width.cutoff = getOption("width"), ...)
+tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", 
+    TRUE), keep.blank.line = getOption("keep.blank.line", 
+    TRUE), replace.assign = getOption("replace.assign", FALSE), 
+    left.brace.newline = getOption("left.brace.newline", FALSE), 
+    reindent.spaces = getOption("reindent.spaces", 4), output = TRUE, 
+    text = NULL, width.cutoff = getOption("width"), ...)
 }
 \arguments{
   \item{source}{a character string: location of the source
@@ -76,14 +78,12 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", TRUE)
 \examples{
 library(formatR)
 
+## a messy R script
+messy = system.file("format", "messy.R", package = "formatR")
+tidy.source(messy)
+
 ## use the 'text' argument
-src = c("    # a single line of comments is preserved", "1+1", "  ", "if(TRUE){", 
-    "x=1  # inline comments", "}else{", "x=2;print('Oh no... ask the right bracket to go away!')}", 
-    "1*3 # one space before this comment will become two!", "2+2+2    # 'short comments'", 
-    "   ", "lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### only 'single quotes' are allowed in comments", 
-    "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line", 
-    "'a character string with \\t in it'", "", paste("## here is a", paste(rep("long", 
-        20), collapse = " "), "comment"))
+src = readLines(messy)
 
 ## source code
 cat(src, sep = "\\n")

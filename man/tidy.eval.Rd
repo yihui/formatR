@@ -37,7 +37,8 @@ library(formatR)
 tidy.eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 
 ## evaluate a file
-tidy.eval(source = file.path(system.file(package = "stats"), "demo", "nlm.R"), keep.blank.line = TRUE)
+tidy.eval(source = file.path(system.file(package = "stats"), "demo", "nlm.R"), 
+    keep.blank.line = TRUE)
 }
 \author{
   Yihui Xie <\url{http://yihui.name}>
