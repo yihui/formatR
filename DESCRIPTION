@@ -13,7 +13,6 @@ Description: This package provides a function tidy.source() and optionally a
 Suggests:
     codetools,
     gWidgetsRGtk2,
-    markdown,
     knitr
 License: GPL-2 | GPL-3
 URL: http://yihui.name/formatR
