@@ -14,7 +14,7 @@ Suggests:
     codetools,
     gWidgetsRGtk2,
     knitr
-License: GPL-2 | GPL-3
+License: GPL
 URL: http://yihui.name/formatR
 BugReports: https://github.com/yihui/formatR/issues
 VignetteBuilder: knitr
