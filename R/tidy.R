@@ -1,8 +1,8 @@
 #' Reformat R code while preserving blank lines and comments
 #'
 #' This function returns reformatted source code; it tries to preserve blank
-#' lines and comments, which is different with \code{\link[base]{parse}}. It can
-#' also replace \code{=} with \code{<-} where \code{=} means assignments, and
+#' lines and comments, which is different with \code{\link{parse}}. It can also
+#' replace \code{=} with \code{<-} where \code{=} means assignments, and
 #' reindent code by a specified number of spaces (default is 4).
 #'
 #' This function helps the users to tidy up their source code in a sense that
@@ -19,17 +19,17 @@
 #' @param left.brace.newline whether to put the left brace \code{\{} to a new
 #'   line (default \code{FALSE})
 #' @param reindent.spaces number of spaces to indent the code (default 4)
-#' @param output output to the console or a file using \code{\link[base]{cat}}?
+#' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
 #'   alternatively, if \code{text} is a character vector containing the source
 #'   code, it will be used as the input and the \code{source} argument will be
 #'   ignored
-#' @param width.cutoff passed to \code{\link[base]{deparse}}: integer in [20,
-#'   500] determining the cutoff at which line-breaking is tried (default to be
+#' @param width.cutoff passed to \code{\link{deparse}}: integer in [20, 500]
+#'   determining the cutoff at which line-breaking is tried (default to be
 #'   \code{getOption("width")})
-#' @param ... other arguments passed to \code{\link[base]{cat}}, e.g.
-#'   \code{file} (this can be useful for batch-processing R scripts, e.g.
+#' @param ... other arguments passed to \code{\link{cat}}, e.g. \code{file}
+#'   (this can be useful for batch-processing R scripts, e.g.
 #'   \code{tidy.source(source = 'input.R', file = 'output.R')})
 #' @return A list with components \item{text.tidy}{the reformatted code as a
 #'   character vector} \item{text.mask}{the code containing comments, which are
@@ -37,11 +37,9 @@
 #' @note Be sure to read the reference to know other limitations.
 #' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
 #'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
-#' @seealso \code{\link[base]{parse}}, \code{\link[base]{deparse}},
-#'   \code{\link[base]{cat}}
+#' @seealso \code{\link{parse}}, \code{\link{deparse}}, \code{\link{cat}}
 #' @references \url{https://github.com/yihui/formatR/wiki/} (an introduction to
 #'   this package, with examples and further notes)
-#' @keywords IO
 #' @export
 #' @example inst/examples/tidy.source.R
 tidy.source = function(

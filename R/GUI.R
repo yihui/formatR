@@ -15,7 +15,6 @@
 #'   other options (\pkg{tcltk}, \pkg{rJava} and \bold{Qt}) are possible too.
 #'   See the examples below. Note the \samp{Font} button is only for the GTK+
 #'   interface.
-#' @author Yihui Xie <\url{http://yihui.name}>
 #' @seealso \code{\link{tidy.source}}
 #' @export
 #' @references \url{https://github.com/yihui/formatR/wiki/} (screenshots)
