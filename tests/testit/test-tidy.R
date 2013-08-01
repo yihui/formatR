@@ -10,3 +10,8 @@ assert(
   identical(tidy.res('paste(1 #asdf\n,2)'), 'paste(1  #asdf\n, 2)'),
   identical(tidy.res(c('# asdf', '1+1')), c('# asdf', '1 + 1'))
 )
+
+assert(
+  'tidy.source() preserves backslashes in comments',
+  identical(tidy.res('# \\a \\b \\c'), '# \\a \\b \\c')
+)
