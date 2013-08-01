@@ -11,8 +11,8 @@ tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.f
   \item{...}{other arguments passed to
   \code{\link{tidy.source}}}
 
-  \item{file}{the file to write by \code{\link[base]{cat}};
-  by default the output is printed on screen}
+  \item{file}{the file to write by \code{\link{cat}}; by
+  default the output is printed on screen}
 
   \item{prefix}{the prefix to mask the output}
 
@@ -39,9 +39,6 @@ tidy.eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 ## evaluate a file
 tidy.eval(source = file.path(system.file(package = "stats"), "demo", "nlm.R"), 
     keep.blank.line = TRUE)
-}
-\author{
-  Yihui Xie <\url{http://yihui.name}>
 }
 \references{
   \url{https://github.com/yihui/formatR/wiki/}

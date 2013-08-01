@@ -31,7 +31,7 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   code (default 4)}
 
   \item{output}{output to the console or a file using
-  \code{\link[base]{cat}}?}
+  \code{\link{cat}}?}
 
   \item{text}{an alternative way to specify the input: if
   it is \code{NULL}, the function will read the source code
@@ -40,16 +40,15 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   code, it will be used as the input and the \code{source}
   argument will be ignored}
 
-  \item{width.cutoff}{passed to
-  \code{\link[base]{deparse}}: integer in [20, 500]
-  determining the cutoff at which line-breaking is tried
-  (default to be \code{getOption("width")})}
+  \item{width.cutoff}{passed to \code{\link{deparse}}:
+  integer in [20, 500] determining the cutoff at which
+  line-breaking is tried (default to be
+  \code{getOption("width")})}
 
-  \item{...}{other arguments passed to
-  \code{\link[base]{cat}}, e.g.  \code{file} (this can be
-  useful for batch-processing R scripts, e.g.
-  \code{tidy.source(source = 'input.R', file =
-  'output.R')})}
+  \item{...}{other arguments passed to \code{\link{cat}},
+  e.g. \code{file} (this can be useful for batch-processing
+  R scripts, e.g.  \code{tidy.source(source = 'input.R',
+  file = 'output.R')})}
 }
 \value{
   A list with components \item{text.tidy}{the reformatted
@@ -60,10 +59,10 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
 \description{
   This function returns reformatted source code; it tries
   to preserve blank lines and comments, which is different
-  with \code{\link[base]{parse}}. It can also replace
-  \code{=} with \code{<-} where \code{=} means assignments,
-  and reindent code by a specified number of spaces
-  (default is 4).
+  with \code{\link{parse}}. It can also replace \code{=}
+  with \code{<-} where \code{=} means assignments, and
+  reindent code by a specified number of spaces (default is
+  4).
 }
 \details{
   This function helps the users to tidy up their source
@@ -143,7 +142,6 @@ tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 
   notes)
 }
 \seealso{
-  \code{\link[base]{parse}}, \code{\link[base]{deparse}},
-  \code{\link[base]{cat}}
+  \code{\link{parse}}, \code{\link{deparse}},
+  \code{\link{cat}}
 }
-\keyword{IO}

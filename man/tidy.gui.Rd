@@ -56,9 +56,6 @@ tidy.gui("tcltk")
 
 }
 }
-\author{
-  Yihui Xie <\url{http://yihui.name}>
-}
 \references{
   \url{https://github.com/yihui/formatR/wiki/}
   (screenshots)
