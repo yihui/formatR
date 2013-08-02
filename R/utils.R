@@ -69,3 +69,9 @@ move_leftbrace = function(text) {
     paste(x, collapse = '\n')
   }), use.names = FALSE)
 }
+
+# parse but do not keep source (moved from knitr)
+parse_only = function(code) {
+  op = options(keep.source = FALSE); on.exit(options(op))
+  base::parse(text = code, srcfile = NULL)
+}

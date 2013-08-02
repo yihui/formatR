@@ -106,7 +106,7 @@ inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 
 # wrapper around parse() and deparse()
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
-  exprs = base::parse(text = text, srcfile = NULL)
+  exprs = parse_only(text)
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
