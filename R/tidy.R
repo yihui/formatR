@@ -63,34 +63,10 @@ tidy.source = function(
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
   }
-  text.lines = text
   if (keep.comment) {
-    text.lines = gsub('\\\\', '\\\\\\\\', text.lines)
-    head.comment = grepl('^\\s*#', text.lines)
-    text.lines[head.comment] = gsub('"', "'", text.lines[head.comment])
-    ## wrap long comments
-    head.comment = head.comment & !grepl("^\\s*#+'", text.lines)
-    text.lines = reflow_comments(text.lines, head.comment, width.cutoff)
-    head.comment = grepl('^\\s*#', text.lines)
-    text.lines[head.comment] =
-      sprintf('invisible("%s%s%s")', begin.comment, text.lines[head.comment], end.comment)
-    blank.line = grepl('^\\s*$', text.lines)
-    if (any(blank.line) && keep.blank.line) {
-      ## no blank lines before an 'else' statement!
-      else.line = grep('^\\s*else(\\W|)', text.lines)
-      for (i in else.line) {
-        j = i - 1
-        while (blank.line[j]) {
-          blank.line[j] = FALSE; j = j - 1  # search backwards & rm blank lines
-          warning('removed blank line ', j,
-                  ' (you should not put an \'else\' in a separate line!)')
-        }
-      }
-      text.lines[blank.line] = sprintf('invisible("%s%s")', begin.comment, end.comment)
-    }
-    text.lines = mask_inline(text.lines)
+    text = mask_comments(text, width.cutoff, keep.blank.line)
   }
-  text.mask = tidy_block(text.lines, width.cutoff, replace.assign)
+  text.mask = tidy_block(text, width.cutoff, replace.assign)
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, reindent.spaces)
   if (left.brace.newline) text.tidy = move_leftbrace(text.tidy)

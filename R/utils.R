@@ -16,7 +16,37 @@ replace_assignment = function(exp) {
   lapply(as.list(exp), walkCode, w = wc)
 }
 
-## replace inline comments to cheat R
+## mask comments to cheat R
+
+mask_comments = function(x, width, keep.blank.line) {
+  x = gsub('\\\\', '\\\\\\\\', x)
+  # whole lines of comments
+  idx = grepl('^\\s*#', x)
+  x[idx] = gsub('"', "'", x[idx])
+  # wrap long comments
+  idx = idx & !grepl("^\\s*#+'", x)
+  x = reflow_comments(x, idx, width)
+  idx = grepl('^\\s*#', x)
+  x[idx] = sprintf('invisible("%s%s%s")', begin.comment, x[idx], end.comment)
+  if (keep.blank.line) x = move_else(x)
+  mask_inline(x)
+}
+
+# no blank lines before an 'else' statement!
+move_else = function(x) {
+  blank = grepl('^\\s*$', x)
+  if (!any(blank)) return(x)
+  else.line = grep('^\\s*else(\\W|)', x)
+  for (i in else.line) {
+    j = i - 1
+    while (blank[j]) {
+      blank[j] = FALSE; j = j - 1  # search backwards & rm blank lines
+      warning('removed blank line ', j, " (should not put an 'else' in a separate line!)")
+    }
+  }
+  x[blank] = sprintf('invisible("%s%s")', begin.comment, end.comment)
+  x
+}
 
 # a literal # must be writen in double quotes, e.g. "# is not comment"
 mask_inline = function(x) {
