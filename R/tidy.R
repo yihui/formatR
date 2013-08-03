@@ -63,9 +63,7 @@ tidy.source = function(
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
   }
-  if (keep.comment) {
-    text = mask_comments(text, width.cutoff, keep.blank.line)
-  }
+  if (keep.comment) text = mask_comments(text, width.cutoff, keep.blank.line)
   text.mask = tidy_block(text, width.cutoff, replace.assign)
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, reindent.spaces)
