@@ -95,3 +95,8 @@ assert(
   identical(tidy.res(x1), c('1 + 1', '', 'if (F) {\n    \n}')),
   identical(tidy.res(x1, keep.blank.line = FALSE), c('1 + 1', 'if (F) {\n}'))
 )
+
+assert(
+  '= can be replaced with <- when replace.assign=TRUE',
+  identical(tidy.res('x=1;c(x=1)', replace.assign=TRUE), c('x <- 1', 'c(x = 1)'))
+)
