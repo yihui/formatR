@@ -49,6 +49,16 @@ if (R3) assert(
   identical(tidy.res(x2), '# only a comment')
 )
 
+x1 = '{if (TRUE) {
+1
+}
+else 2}
+'
+assert(
+  'tidy.source() moves else back if it is in a standalone line',
+  identical(tidy.res(x1), '{\n    if (TRUE) {\n        1\n    } else 2\n}')
+)
+
 if (packageVersion('formatR') > '0.8') assert(
   'when keep.comment=FALSE and everything is comment, tidy.source() returns character(0)',
   identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
