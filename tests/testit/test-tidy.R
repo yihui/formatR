@@ -34,6 +34,10 @@ if (R3) assert(
   ),
   identical(tidy.res(c(x1, '1+1', x1), width.cutoff = 20), c(x2, '1 + 1', x2))
 )
+if (R3) assert(
+  'roxygen comments are not wrapped',
+  identical(tidy.res(c(paste("#'", x1), '1*1')), c(paste("#'", x1), '1 * 1'))
+)
 
 x1 = '
 # only a comment
