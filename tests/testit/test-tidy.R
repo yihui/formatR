@@ -74,6 +74,11 @@ assert(
   identical(tidy.res(c('', '  ')), c('', '  '))
 )
 
+assert(
+  'keep.comment=FALSE removes comments',
+  identical(tidy.res(c('# a comment', '1+1'), keep.comment = FALSE), '1 + 1')
+)
+
 if (packageVersion('formatR') > '0.8') assert(
   'when keep.comment=FALSE and everything is comment, tidy.source() returns character(0)',
   identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
