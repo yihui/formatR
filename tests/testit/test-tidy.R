@@ -15,3 +15,32 @@ assert(
   'tidy.source() preserves backslashes in comments',
   identical(tidy.res('# \\a \\b \\c'), '# \\a \\b \\c')
 )
+
+assert(
+  'tidy.source() can preserve blank lines among non-empty code lines',
+  identical(tidy.res(c('if(TRUE){1+1', '', '}', '', '# a comment')),
+            c('if (TRUE) {\n    1 + 1\n    \n}', '', '# a comment'))
+)
+
+x1 = paste(c('#', letters), collapse = ' ')
+x2 = c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z')
+if (R3) assert(
+  'long comments are wrapped in tidy.source()',
+  identical(tidy.res(x1, width.cutoff = 20), x2),
+  identical(
+    tidy.res(rep(x1, 2), width.cutoff = 20),
+    c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z a b c d',
+      '# e f g h i j k l m n', '# o p q r s t u v w x', '# y z')
+  ),
+  identical(tidy.res(c(x1, '1+1', x1), width.cutoff = 20), c(x2, '1 + 1', x2))
+)
+
+x1 = '
+# only a comment
+'
+x2 = c('', '#only a comment', '', '')
+if (R3) assert(
+  'tidy.source() can deal with code that only contains a comment',
+  identical(tidy.res(x1), '# only a comment'),
+  identical(tidy.res(x2), '# only a comment')
+)
