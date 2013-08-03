@@ -44,7 +44,7 @@ move_else = function(x) {
       warning('removed blank line ', j, " (should not put an 'else' in a separate line!)")
     }
   }
-  x[blank] = sprintf('invisible("%s%s")', begin.comment, end.comment)
+  x[blank] = blank.comment
   x
 }
 

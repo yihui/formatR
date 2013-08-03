@@ -79,6 +79,7 @@ begin.comment = '.BeGiN_TiDy_IdEnTiFiEr_HaHaHa'
 end.comment = '.HaHaHa_EnD_TiDy_IdEnTiFiEr'
 pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
 inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
+blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 
 # wrapper around parse() and deparse()
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
