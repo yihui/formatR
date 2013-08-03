@@ -59,6 +59,15 @@ assert(
   identical(tidy.res(x1), '{\n    if (TRUE) {\n        1\n    } else 2\n}')
 )
 
+x1 = 'if (TRUE) {# comment
+1
+}
+'
+assert(
+  'comments after { are moved down one line',
+  identical(tidy.res(x1), 'if (TRUE) {\n    # comment\n    1\n}')
+)
+
 if (packageVersion('formatR') > '0.8') assert(
   'when keep.comment=FALSE and everything is comment, tidy.source() returns character(0)',
   identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
