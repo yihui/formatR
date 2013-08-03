@@ -68,6 +68,12 @@ assert(
   identical(tidy.res(x1), 'if (TRUE) {\n    # comment\n    1\n}')
 )
 
+assert(
+  'empty code returns empty string',
+  identical(tidy.res(''), ''),
+  identical(tidy.res(c('', '  ')), c('', '  '))
+)
+
 if (packageVersion('formatR') > '0.8') assert(
   'when keep.comment=FALSE and everything is comment, tidy.source() returns character(0)',
   identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
