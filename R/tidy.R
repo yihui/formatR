@@ -75,7 +75,8 @@ tidy.source = function(
 ## if you have variable names like this in your code, then you really beat me...
 begin.comment = '.BeGiN_TiDy_IdEnTiFiEr_HaHaHa'
 end.comment = '.HaHaHa_EnD_TiDy_IdEnTiFiEr'
-pat.comment = paste('invisible\\("\\', begin.comment, '|\\', end.comment, '"\\)', sep = '')
+pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
+mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.comment)
 inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 
@@ -93,7 +94,15 @@ unmask.source = function(text.mask) {
   text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else', ' else', text.mask)
-  text.mask = gsub('\\\\\\\\', '\\\\', text.mask)
+  if (R3) {
+    if (any(grepl('\\\\\\\\', text.mask)) && (any(grepl(mat.comment, text.mask)) ||
+          any(grepl(inline.comment, text.mask)))) {
+      m = gregexpr(mat.comment, text.mask)
+      regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+      m = gregexpr(inline.comment, text.mask)
+      regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+    }
+  } else text.mask = restore_bs(text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
   # inline comments should be termined by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)

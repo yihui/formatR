@@ -16,9 +16,60 @@ replace_assignment = function(exp) {
   lapply(as.list(exp), walkCode, w = wc)
 }
 
-## mask comments to cheat R
+R3 = getRversion() >= '3.0.0'
 
-mask_comments = function(x, width, keep.blank.line) {
+## mask comments to cheat R
+mask_comments = if (R3) function(x, width, keep.blank.line) {
+  d = get_parse_data(x)
+  if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
+  d = d[d$terminal, ]
+  d.line = d$line1; d.line2 = d$line2; d.token = d$token; d.text = d$text
+
+  # move else back
+  for (i in which(d.token == 'ELSE')) {
+    delta = d.line[i] - d.line[i - 1]
+    d.line[i:n] = d.line[i:n] - delta
+    d.line2[i:n] = d.line2[i:n] - delta
+  }
+  # how many blank lines after each token?
+  blank = c(pmax(d.line[-1] - d.line2[-n] - 1, 0), 0)
+
+  i = d.token == 'COMMENT'
+  # double backslashes and replace " with ' in comments
+  d.text[i] = gsub('"', "'", gsub('\\\\', '\\\\\\\\', d.text[i]))
+
+  c0 = d.line[-1] != d.line[-n]  # is there a line change?
+  c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
+  c2 = i & !c1  # inline comments
+  c3 = c1 & grepl("^#+'", d.text)  # roxygen comments
+
+  # reflow blocks of comments: first collapse them, then wrap them
+  i1 = which(c1 & !c3) # do not wrap roxygen comments
+  j1 = i1[1]
+  if (length(i1) > 1) for (i in 2:length(i1)) {
+    # two neighbor lines of comments
+    if (d.line[i1[i]] - d.line[i1[i - 1]] == 1) {
+      j2 = i1[i]
+      d.text[j1] = paste(d.text[j1], sub('^#+', '', d.text[j2]))
+      d.text[j2] = ''
+      c1[j2] = FALSE  # the second line is no longer a comment
+    } else j1 = i1[i]
+  }
+
+  # mask block and inline comments
+  d.text[c1 & !c3] = reflow_comments(d.text[c1 & !c3], width)
+  d.text[c3] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c3], end.comment)
+  d.text[c2] = sprintf('%%InLiNe_IdEnTiFiEr%% "%s"', d.text[c2])
+
+  # add blank lines
+  if (keep.blank.line) for (i in seq_along(d.text)) {
+    if (blank[i] > 0)
+      d.text[i] = paste(c(d.text[i], rep(blank.comment, blank[i])), collapse = '\n')
+  }
+
+  unlist(lapply(split(d.text, d.line), paste, collapse = ' '), use.names = FALSE)
+
+} else function(x, width, keep.blank.line) {
   x = gsub('\\\\', '\\\\\\\\', x)
   # whole lines of comments
   idx = grepl('^\\s*#', x)
@@ -58,8 +109,17 @@ mask_inline = function(x) {
   gsub('(#[^"]*)$', ' %InLiNe_IdEnTiFiEr% "\\1"', x)
 }
 
-# reflow comments (including roxygen comments)
-reflow_comments = function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
+# reflow comments (excluding roxygen comments)
+reflow_comments = if (R3) function(x, width) {
+  if (length(x) == 0) return(x)
+  # returns a character vector of the same length as x
+  b = sub('^(#+).*', '\\1', x)
+  mapply(function(res, prefix) {
+    paste(sprintf(
+      'invisible("%s%s%s")', begin.comment, paste(prefix, res), end.comment
+    ), collapse = '\n')
+  }, strwrap(sub('^#+', '', x), width = width, simplify = FALSE), b)
+} else function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
   r = rle(idx)$lengths; flag = idx[1] # code and comments alternate in text
   unlist(lapply(split(text, rep(seq(length(r)), r)), function(x) {
     if (flag) {
@@ -105,3 +165,16 @@ parse_only = function(code) {
   op = options(keep.source = FALSE); on.exit(options(op))
   base::parse(text = code, srcfile = NULL)
 }
+
+# TODO: this is only a temporary fix to a bug in R 3.0.1 and will be removed in
+# the future; when the code only contains a comment, getParseData() will signal
+# an error
+get_parse_data = function(x) {
+  if (length(i <- grep('^\\s*#', x)) == 1 && all(grepl('^\\s*(#|$)', x)))
+    return(data.frame(line1 = 1, line2 = 1, token = 'COMMENT', terminal = TRUE,
+                      text = gsub('^\\s+|\\s+$', '', x[i]), stringsAsFactors = FALSE))
+  utils::getParseData(parse(text = x, keep.source = TRUE))
+}
+
+# restore backslashes
+restore_bs = function(x) gsub('\\\\\\\\', '\\\\', x)

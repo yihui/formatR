@@ -1,3 +1,11 @@
+		   CHANGES IN formatR VERSION 0.9
+
+MAJOR CHANGES
+
+  o tidy.source() uses utils::getParseData() to identify comments in R code
+  under R 3.0.x, which is much more accurate than the regular expressions in
+  previous versions; users are strongly recommended to try R 3.0.x (#25, #26)
+
 		   CHANGES IN formatR VERSION 0.8
 
 MAJOR CHANGES
