@@ -44,3 +44,8 @@ if (R3) assert(
   identical(tidy.res(x1), '# only a comment'),
   identical(tidy.res(x2), '# only a comment')
 )
+
+if (packageVersion('formatR') > '0.8') assert(
+  'when keep.comment=FALSE and everything is comment, tidy.source() returns character(0)',
+  identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
+)

@@ -134,6 +134,7 @@ reflow_comments = if (R3) function(x, width) {
 
 # reindent lines with a different number of spaces
 reindent_lines = function(text, n = 2) {
+  if (length(text) == 0) return(text)
   if (n == 4) return(text)  # no need to do anything
   s = paste(rep(' ', n), collapse = '')
   unlist(lapply(strsplit(text, '\n'), function(x) {

@@ -83,12 +83,14 @@ blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 # wrapper around parse() and deparse()
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
   exprs = parse_only(text)
+  if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
 
 # Restore the real source code from the masked text
 unmask.source = function(text.mask) {
+  if (length(text.mask) == 0) return(text.mask)
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
   text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)
