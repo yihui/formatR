@@ -100,3 +100,18 @@ assert(
   '= can be replaced with <- when replace.assign=TRUE',
   identical(tidy.res('x=1;c(x=1)', replace.assign=TRUE), c('x <- 1', 'c(x = 1)'))
 )
+
+if (R3) assert(
+  'since R 3.0.0 comments can be written with double quotes in them',
+  identical(tidy.res('1+1# hello "world"'), "1 + 1  # hello 'world'")
+)
+
+x1 = '
+x="
+# this is not a comment
+"
+'
+if (R3) assert(
+  'since R 3.0.0, # in the beginning of a line does not necessarily mean comments',
+  identical(tidy.res(x1), 'x = "\\n# this is not a comment\\n"')
+)
