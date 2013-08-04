@@ -37,10 +37,10 @@
 \maketitle
 The package \textbf{formatR} \citep{R-formatR} was designed to help
 users tidy (reformat) their source code. This vignette serves as a
-placeholder for Sweave only, and the real vignette was written in
-R Markdown with \textbf{knitr} \citep{R-knitr}: \url{https://github.com/yihui/formatR/wiki/}.
-The R Markdown source can be found at \url{https://github.com/yihui/formatR/tree/master/inst/doc/formatR.Rmd}
-or:
+placeholder for a PDF vignette only, and the real vignette was written
+in R Markdown with \textbf{knitr} \citep{R-knitr}: \url{https://github.com/yihui/formatR/wiki/}.
+The R Markdown source can be found at \url{https://github.com/yihui/formatR/tree/master/vignettes/formatR.Rmd},
+or in the installation:
 
 <<lyx-doc, eval=FALSE>>=
 system.file('doc', 'formatR.Rmd', package='formatR')

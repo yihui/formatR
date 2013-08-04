@@ -126,8 +126,8 @@ key "R-formatR"
 \end_inset
 
  was designed to help users tidy (reformat) their source code.
- This vignette serves as a placeholder for Sweave only, and the real vignette
- was written in R Markdown with 
+ This vignette serves as a placeholder for a PDF vignette only, and the
+ real vignette was written in R Markdown with 
 \series bold
 knitr
 \series default
@@ -156,12 +156,12 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/yihui/formatR/tree/master/inst/doc/formatR.Rmd
+https://github.com/yihui/formatR/tree/master/vignettes/formatR.Rmd
 \end_layout
 
 \end_inset
 
- or:
+, or in the installation:
 \end_layout
 
 \begin_layout Standard
