@@ -6,6 +6,8 @@ MAJOR CHANGES
   under R 3.0.x, which is much more accurate than the regular expressions in
   previous versions; users are strongly recommended to try R 3.0.x (#25, #26)
 
+  o changed the meaning of the argument 'width' in usage(); see documentation
+
 		   CHANGES IN formatR VERSION 0.8
 
 MAJOR CHANGES
