@@ -195,7 +195,7 @@ library(knitr)
 
 \begin_layout Plain Layout
 
-write_bib(c('knitr', 'formatR'), file = 'formatR.bib')
+write_bib(c('knitr', 'formatR'), file = 'formatR-intro.bib')
 \end_layout
 
 \begin_layout Plain Layout
