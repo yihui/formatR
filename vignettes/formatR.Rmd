@@ -11,13 +11,13 @@ To install from CRAN, use
 install.packages('formatR')
 ```
 
-To install the development version from GitHub, use
+To install the latest development version, use
 
 ```{r eval=FALSE}
-install.packages('devtools')
-library(devtools)
-install_github('formatR', 'yihui')
+install.packages('formatR', repos = 'http://rforge.net')
 ```
+
+Or check out the [Github repository](https://github.com/yihui/formatR) and install from source if you know what this means.
 
 This page is always based on the development version.
 
