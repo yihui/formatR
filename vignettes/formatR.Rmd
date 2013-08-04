@@ -64,7 +64,7 @@ Two applications of `tidy.source()`:
 - `usage()` can reformat the usage of a function, e.g. compare `usage()` with the default output of `args()`:
   ```{r}
   library(formatR)
-  usage(glm, width=1)  # can set arbitrary width here
+  usage(glm, width=70)  # can set arbitrary width here
   args(glm)
   ```
 
