@@ -20,7 +20,7 @@
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 %\VignetteIndexEntry{formatR: Format R Code Automatically}
-%\VignetteEngine{knitr}
+%\VignetteEngine{knitr::knitr}
 
 \makeatother
 
