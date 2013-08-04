@@ -156,22 +156,6 @@ will become
 ```{r comment-brace, eval=FALSE}
 ```
 
-### Character strings with # in the beginning of a line
-
-```r
-mod = "1+1
-## comments here can bring troubles
-2+2"
-```
-
-We need to write like this:
-
-```r
-mod = "1+1\n## comments here can bring troubles\n2+2"
-## or
-mod = paste("1+1", "## comments here can bring troubles", "2+2", sep = '\n')
-```
-
 ### Inappropriate blank lines
 
 Blank lines are often used to separate complete chunks of R code, and arbitrary blank lines may cause failures in `tidy.source()` as well when the argument `keep.blank.line = TRUE`, e.g.
@@ -242,16 +226,6 @@ then `base::parse()` will deal with this expression; again, the disguised commen
 
 All these special treatments to comments are due to the fact that `base::parse()` and `base::deparse()` can tidy the R code at the price of dropping all the comments.
 
-Note when `keep.comment == TRUE`, you _must not write double quotes in the inline comments_ and _must write literal `#` in double quotes_!! For example,
-
-```r
-1 + 1  # double quotes in "comment" are not allowed
-1 + 1  # here is a legitimate 'comment' with single quotes
-
-"a valid character string with # in it"
-'a # in single quotes is not allowed'
-```
-
 ## 8. Global options
 
 There are global options which can override some arguments in `tidy.source()`:
@@ -265,6 +239,39 @@ There are global options which can override some arguments in `tidy.source()`:
 | `left.brace.newline` | `options('left.brace.newline')` | `FALSE`     |
 
 Also note that single lines of long comments will be wrapped into shorter ones automatically, but roxygen comments will not be wrapped (i.e., comments that begin with `#'`).
+
+## 9. Additional problems for R 2.15.x
+
+You are strongly recommended to upgrade to R 3.0.x; if you use `R < 3.0.0`, you will suffer from a few additional problems below.
+
+### Character strings with # in the beginning of a line
+
+```r
+mod = "1+1
+## comments here can bring troubles
+2+2"
+```
+
+We need to write like this:
+
+```r
+mod = "1+1\n## comments here can bring troubles\n2+2"
+## or
+mod = paste("1+1", "## comments here can bring troubles", "2+2", sep = '\n')
+```
+
+### Double quotes in comments
+
+Note when `keep.comment == TRUE`, you _must not write double quotes in the inline comments_ and _must write literal `#` in double quotes_!! For example,
+
+```r
+1 + 1  # double quotes in "comment" are not allowed
+1 + 1  # here is a legitimate 'comment' with single quotes
+
+"a valid character string with # in it"
+'a # in single quotes is not allowed'
+```
+
 
 ```{r include=FALSE}
 options(markdown.HTML.header = system.file('misc', 'vignette.css', package='knitr'))
