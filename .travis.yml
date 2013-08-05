@@ -1,0 +1,23 @@
+# it is not really python, but there is no R support on Travis CI yet
+language: python
+
+# environment variables
+env:
+  - R_LIBS_USER=~/R
+
+# install dependencies
+install:
+  - sudo apt-add-repository -y 'deb http://cran.rstudio.com/bin/linux/ubuntu precise/'
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+  - sudo apt-add-repository -y ppa:marutter/c2d4u
+  - sudo apt-get update
+  - sudo apt-get install r-base-dev r-cran-xml r-cran-rcurl r-cran-rgtk2 qpdf texinfo texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
+  - "[ ! -d ~/R ] && mkdir ~/R"
+  - R --version
+  - R -e '.libPaths(); sessionInfo()'
+  - Rscript -e 'install.packages(c("Rd2roxygen", "formatR"), dep = TRUE, repos = c("http://rforge.net", "http://cran.rstudio.org"))'
+
+# run tests
+script:
+  - cd ..
+  - Rscript -e 'library(Rd2roxygen); rab("formatR", check = TRUE)'

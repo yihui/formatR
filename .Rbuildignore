@@ -3,3 +3,4 @@ inst/examples
 ^\.Rproj\.user$
 ^.*\.Rproj$
 inst/doc/.*.lyx$
+.travis.yml
