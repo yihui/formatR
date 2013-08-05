@@ -45,7 +45,7 @@
 #' }
 tidy.gui = function(guiToolkit = 'RGtk2') {
   options(guiToolkit = guiToolkit)
-  require(paste('gWidgets', guiToolkit, sep = ''), character.only = TRUE)
+  library(paste('gWidgets', guiToolkit, sep = ''), character.only = TRUE)
 
   g = ggroup(horizontal = FALSE, container = gwindow('Tidy R Source'))
   g1 = ggroup(container = g, expand = TRUE)
