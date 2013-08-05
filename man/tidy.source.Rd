@@ -59,10 +59,10 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
 \description{
   This function returns reformatted source code; it tries
   to preserve blank lines and comments, which is different
-  with \code{\link{parse}}. It can also replace \code{=}
-  with \code{<-} where \code{=} means assignments, and
-  reindent code by a specified number of spaces (default is
-  4).
+  with \code{\link{parse}} and \code{\link{deparse}}. It
+  can also replace \code{=} with \code{<-} where \code{=}
+  means assignments, and reindent code by a specified
+  number of spaces (default is 4).
 }
 \details{
   This function helps the users to tidy up their source

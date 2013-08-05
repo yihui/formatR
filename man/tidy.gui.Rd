@@ -53,7 +53,6 @@ cat(svalue(g), sep = "\\n")  # get its value
 
 ## tcl/tk interface: need gWidgetstcltk package
 tidy.gui("tcltk")
-
 }
 }
 \references{
