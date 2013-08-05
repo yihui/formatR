@@ -8,7 +8,6 @@
 #' We can either open an R source file or directly write R code in the text
 #' widget. Click the \samp{convert} button, and the code will become tidy. See
 #' \code{\link{tidy.source}} for more details.
-#'
 #' @param guiToolkit the GUI toolkit to use
 #' @return the text widget is returned
 #' @note By default, the interface is based on GTK+ (R package \pkg{RGtk2}), but
@@ -41,7 +40,6 @@
 #'
 #' ## tcl/tk interface: need gWidgetstcltk package
 #' tidy.gui('tcltk')
-#'
 #' }
 tidy.gui = function(guiToolkit = 'RGtk2') {
   options(guiToolkit = guiToolkit)

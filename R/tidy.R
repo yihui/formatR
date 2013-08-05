@@ -1,9 +1,10 @@
 #' Reformat R code while preserving blank lines and comments
 #'
 #' This function returns reformatted source code; it tries to preserve blank
-#' lines and comments, which is different with \code{\link{parse}}. It can also
-#' replace \code{=} with \code{<-} where \code{=} means assignments, and
-#' reindent code by a specified number of spaces (default is 4).
+#' lines and comments, which is different with \code{\link{parse}} and
+#' \code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
+#' \code{=} means assignments, and reindent code by a specified number of spaces
+#' (default is 4).
 #'
 #' This function helps the users to tidy up their source code in a sense that
 #' necessary indents and spaces will be added, but comments will be preserved if
