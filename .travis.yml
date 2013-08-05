@@ -20,4 +20,4 @@ install:
 # run tests
 script:
   - cd ..
-  - Rscript -e 'library(Rd2roxygen); rab("formatR", check = TRUE)'
+  - Rscript -e 'library(Rd2roxygen); library(digest); rab("formatR", check = TRUE)'
