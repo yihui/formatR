@@ -123,7 +123,7 @@ unmask.source = function(text.mask) {
 #' Format the R scripts under a directory
 #'
 #' This function first looks for all the R scripts under a directory (using the
-#' pattern \code{"\\\\.[RrSsQq]$"}), then uses \code{\link{tidy.source}} to tidy
+#' pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy.source}} to tidy
 #' these scripts. The original scripts will be overwritten with reformatted code
 #' if reformatting was successful. You may need to back up the original
 #' directory first if you do not fully understand the tricks
@@ -142,7 +142,7 @@ unmask.source = function(text.mask) {
 #' file.copy(system.file('demo', package = 'base'), path, recursive=TRUE)
 #' tidy.dir(path, recursive=TRUE)
 tidy.dir = function(path = '.', recursive = FALSE, ...) {
-  flist = list.files(path, pattern = '\\.[RrSsQq]$', full.names = TRUE, recursive = recursive)
+  flist = list.files(path, pattern = '[.][RrSsQq]$', full.names = TRUE, recursive = recursive)
   for (f in flist) {
     message('tidying ', f)
     try(tidy.source(f, file = f, ...))
