@@ -63,11 +63,18 @@ tidy.source = function(
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
   }
+  if (keep.blank.line && R3) {
+    one = paste(text, collapse = '\n') # record how many line breaks before/after
+    n1 = attr(regexpr('^\n*', one), 'match.length')
+    n2 = attr(regexpr('\n*$', one), 'match.length')
+  }
   if (keep.comment) text = mask_comments(text, width.cutoff, keep.blank.line)
   text.mask = tidy_block(text, width.cutoff, replace.assign)
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, reindent.spaces)
   if (left.brace.newline) text.tidy = move_leftbrace(text.tidy)
+  # restore new lines in the beginning and end
+  if (keep.blank.line && R3) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
   if (output) cat(paste(text.tidy, collapse = '\n'), '\n', ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }

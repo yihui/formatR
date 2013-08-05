@@ -42,18 +42,17 @@ if (R3) assert(
 x1 = '
 # only a comment
 '
-x2 = c('', '#only a comment', '', '')
+x2 = c('', '# only a comment', '', '')
 if (R3) assert(
   'tidy.source() can deal with code that only contains a comment',
-  identical(tidy.res(x1), '# only a comment'),
-  identical(tidy.res(x2), '# only a comment')
+  identical(tidy.res(x1), c('', '# only a comment', '')),
+  identical(tidy.res(x2), x2)
 )
 
 x1 = '{if (TRUE) {
 1
 }
-else 2}
-'
+else 2}'
 assert(
   'tidy.source() moves else back if it is in a standalone line',
   identical(tidy.res(x1), '{\n    if (TRUE) {\n        1\n    } else 2\n}')
@@ -61,8 +60,7 @@ assert(
 
 x1 = 'if (TRUE) {# comment
 1
-}
-'
+}'
 assert(
   'comments after { are moved down one line',
   identical(tidy.res(x1), 'if (TRUE) {\n    # comment\n    1\n}')
@@ -92,7 +90,7 @@ if(F){
 '
 assert(
   'keep.blank.line=FALSE removes blank lines',
-  identical(tidy.res(x1), c('1 + 1', '', 'if (F) {\n    \n}')),
+  identical(tidy.res(x1), c('1 + 1', '', 'if (F) {\n    \n}', '')),
   identical(tidy.res(x1, keep.blank.line = FALSE), c('1 + 1', 'if (F) {\n}'))
 )
 
@@ -106,11 +104,9 @@ if (R3) assert(
   identical(tidy.res('1+1# hello "world"'), "1 + 1  # hello 'world'")
 )
 
-x1 = '
-x="
+x1 = 'x="
 # this is not a comment
-"
-'
+"'
 if (R3) assert(
   'since R 3.0.0, # in the beginning of a line does not necessarily mean comments',
   identical(tidy.res(x1), 'x = "\\n# this is not a comment\\n"')
