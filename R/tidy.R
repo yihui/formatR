@@ -70,7 +70,7 @@ tidy.source = function(
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
   if (keep.comment) text = mask_comments(text, width.cutoff, keep.blank.line)
-  text.mask = tidy_block(text, width.cutoff, replace.assign)
+  text.mask = tidy_block(text, width.cutoff, replace.assign && length(grep('=', text)))
   text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, reindent.spaces)
   if (left.brace.newline) text.tidy = move_leftbrace(text.tidy)
