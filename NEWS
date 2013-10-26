@@ -1,3 +1,15 @@
+		   CHANGES IN formatR VERSION 0.10
+
+MINOR CHANGES
+
+  o the argument 'replace.assign' in tidy.source() will be treated as FALSE
+  if there is no = in the code, because there is no need to replace = in
+  such cases (this slighly improves the performance)
+
+  o the PDF vignette was removed, and only the Markdown vignette was kept in
+  this package, which uses the vignette engine knitr::docco_linear; see
+  vignette('formatR', package = 'formatR')
+
 		   CHANGES IN formatR VERSION 0.9
 
 MAJOR CHANGES
