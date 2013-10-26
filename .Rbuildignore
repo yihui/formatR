@@ -2,5 +2,4 @@ inst/examples
 .gitignore
 ^\.Rproj\.user$
 ^.*\.Rproj$
-inst/doc/.*.lyx$
 .travis.yml
