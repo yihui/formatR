@@ -1,7 +1,9 @@
 <!--
-%\VignetteEngine{knitr::knitr}
+%\VignetteEngine{knitr::docco_linear}
 %\VignetteIndexEntry{An Introduction to formatR}
 -->
+
+# An Introduction to formatR
 
 ## 1. Installation
 
