@@ -20,7 +20,7 @@ R3 = getRversion() >= '3.0.0'
 
 ## mask comments to cheat R
 mask_comments = if (R3) function(x, width, keep.blank.line) {
-  d = get_parse_data(x)
+  d = utils::getParseData(parse(text = x, keep.source = TRUE))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
   d.line = d$line1; d.line2 = d$line2; d.token = d$token; d.text = d$text
@@ -165,16 +165,6 @@ move_leftbrace = function(text) {
 parse_only = function(code) {
   op = options(keep.source = FALSE); on.exit(options(op))
   base::parse(text = code, srcfile = NULL)
-}
-
-# TODO: this is only a temporary fix to a bug in R 3.0.1 and will be removed in
-# the future; when the code only contains a comment, getParseData() will signal
-# an error
-get_parse_data = function(x) {
-  if (length(i <- grep('^\\s*#', x)) == 1 && all(grepl('^\\s*(#|$)', x)))
-    return(data.frame(line1 = 1, line2 = 1, token = 'COMMENT', terminal = TRUE,
-                      text = gsub('^\\s+|\\s+$', '', x[i]), stringsAsFactors = FALSE))
-  utils::getParseData(parse(text = x, keep.source = TRUE))
 }
 
 # restore backslashes
