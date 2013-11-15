@@ -1,3 +1,14 @@
+		   CHANGES IN formatR VERSION 0.11
+
+MINOR CHANGES
+
+  o the usage() function returns the source code of the usage of a function
+  now; in previous versions, it only returns NULL
+
+  o tidy.source() may not work for R 3.0.0 or 3.0.1 if the code only
+  contains comments due to a bug in base R, which has been fixed; if you use
+  R 3.0, please upgrade to at least R 3.0.2 (R 2.15.x is not affected)
+
 		   CHANGES IN formatR VERSION 0.10
 
 MINOR CHANGES
