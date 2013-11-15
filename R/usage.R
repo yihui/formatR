@@ -6,7 +6,8 @@
 #' @param FUN the function name
 #' @param width the width of output (passed to \code{width.cutoff} in
 #'   \code{\link{tidy.source}})
-#' @return \code{NULL}; the usage is printed on screen
+#' @return The R code for the usage is returned as a character string
+#'   (invisibly).
 #' @seealso \code{\link{tidy.source}}
 #' @export
 #' @examples library(formatR)
@@ -50,4 +51,5 @@ usage = function(FUN, width = getOption('width')) {
   }
   tidy.res = tidy.source(text = res, output = FALSE, width.cutoff = width)
   cat(tidy.res$text.tidy, sep = '\n')
+  invisible(tidy.res$text.tidy)
 }
