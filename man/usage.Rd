@@ -11,7 +11,8 @@ usage(FUN, width = getOption("width"))
   \code{width.cutoff} in \code{\link{tidy.source}})}
 }
 \value{
-  \code{NULL}; the usage is printed on screen
+  The R code for the usage is returned as a character
+  string (invisibly).
 }
 \description{
   Print the reformatted usage of a function. The arguments
