@@ -6,6 +6,7 @@
 #' @param FUN the function name
 #' @param width the width of output (passed to \code{width.cutoff} in
 #'   \code{\link{tidy.source}})
+#' @param tidy whether or not to reformat the usage code
 #' @return The R code for the usage is returned as a character string
 #'   (invisibly).
 #' @seealso \code{\link{tidy.source}}
@@ -21,7 +22,7 @@
 #' usage(usage)
 #'
 #' usage(barplot.default, width = 60)  # narrower output
-usage = function(FUN, width = getOption('width')) {
+usage = function(FUN, width = getOption('width'), tidy = TRUE) {
   fn = as.character(substitute(FUN))
   res = capture.output(do.call(argsAnywhere, list(fn)))
   if (identical(res, 'NULL')) return()
@@ -45,6 +46,11 @@ usage = function(FUN, width = getOption('width')) {
   }
   if (!isS3) res[1] = paste(fn, res[1])
   if ((n <- length(res)) > 1 && res[n] == 'NULL') res = res[-n]  # rm last element 'NULL'
+  if (!tidy) {
+    cat(res, sep = '\n')
+    return(invisible(res))
+  }
+
   if (width <= 1) {
     warning("'width' should no longer be specified as a proportion")
     width = width * getOption("width")
