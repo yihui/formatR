@@ -42,6 +42,7 @@ mask_comments = if (R3) function(x, width, keep.blank.line) {
   c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
   c2 = i & !c1  # inline comments
   c3 = c1 & grepl("^#+'", d.text)  # roxygen comments
+  if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
 
   # reflow blocks of comments: first collapse them, then wrap them
   i1 = which(c1 & !c3) # do not wrap roxygen comments
@@ -76,6 +77,7 @@ mask_comments = if (R3) function(x, width, keep.blank.line) {
   x[idx] = gsub('"', "'", x[idx])
   # wrap long comments
   idx = idx & !grepl("^\\s*#+'", x)
+  if (grepl('^#!', x[1])) idx[1] = FALSE  # shebang comment
   x = reflow_comments(x, idx, width)
   idx = grepl('^\\s*#', x)
   x[idx] = sprintf('invisible("%s%s%s")', begin.comment, x[idx], end.comment)

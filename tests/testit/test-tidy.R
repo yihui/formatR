@@ -111,3 +111,8 @@ if (R3) assert(
   'since R 3.0.0, # in the beginning of a line does not necessarily mean comments',
   identical(tidy.res(x1), 'x = "\\n# this is not a comment\\n"')
 )
+
+assert(
+  'the shebang is preserved',
+  identical(tidy.res(c('#!/usr/bin/Rscript', '1+1')), c('#!/usr/bin/Rscript', '1 + 1'))
+)
