@@ -132,7 +132,7 @@ unmask.source = function(text.mask) {
 #' @param path the directory
 #' @param recursive whether to recursively look for R scripts under \code{path}
 #' @param ... other arguments to be passed to \code{\link{tidy.source}}
-#' @return NULL
+#' @return Invisible \code{NULL}.
 #' @author Yihui Xie <\url{http://yihui.name}>
 #' @seealso \code{\link{tidy.source}}
 #' @export

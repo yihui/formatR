@@ -14,7 +14,7 @@ tidy.dir(path = ".", recursive = FALSE, ...)
   \code{\link{tidy.source}}}
 }
 \value{
-NULL
+Invisible \code{NULL}.
 }
 \description{
 This function first looks for all the R scripts under a
