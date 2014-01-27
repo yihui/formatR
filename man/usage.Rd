@@ -14,13 +14,12 @@ usage(FUN, width = getOption("width"), tidy = TRUE)
 }
 \value{
 The R code for the usage is returned as a character string
-(invisibly).
+  (invisibly).
 }
 \description{
-Print the reformatted usage of a function. The arguments of
-the function are searched by \code{\link{argsAnywhere}}, so
-the function can be either exported or non-exported in a
-package. S3 methods will be marked.
+Print the reformatted usage of a function. The arguments of the function are
+searched by \code{\link{argsAnywhere}}, so the function can be either
+exported or non-exported in a package. S3 methods will be marked.
 }
 \examples{
 library(formatR)

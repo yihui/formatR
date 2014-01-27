@@ -51,24 +51,21 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
   file = 'output.R')})}
 }
 \value{
-A list with components \item{text.tidy}{the reformatted
-code as a character vector} \item{text.mask}{the code
-containing comments, which are masked in assignments or
-with the weird operator}
+A list with components \item{text.tidy}{the reformatted code as a
+  character vector} \item{text.mask}{the code containing comments, which are
+  masked in assignments or with the weird operator}
 }
 \description{
-This function returns reformatted source code; it tries to
-preserve blank lines and comments, which is different with
-\code{\link{parse}} and \code{\link{deparse}}. It can also
-replace \code{=} with \code{<-} where \code{=} means
-assignments, and reindent code by a specified number of
-spaces (default is 4).
+This function returns reformatted source code; it tries to preserve blank
+lines and comments, which is different with \code{\link{parse}} and
+\code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
+\code{=} means assignments, and reindent code by a specified number of spaces
+(default is 4).
 }
 \details{
-This function helps the users to tidy up their source code
-in a sense that necessary indents and spaces will be added,
-but comments will be preserved if \code{keep.comment =
-TRUE}. See the references to know how this function
+This function helps the users to tidy up their source code in a sense that
+necessary indents and spaces will be added, but comments will be preserved if
+\code{keep.comment = TRUE}. See the references to know how this function
 actually works.
 }
 \note{
@@ -132,15 +129,13 @@ if (interactive()) {
 tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
 }
 \author{
-Yihui Xie <\url{http://yihui.name}> with substantial
-contribution from Yixuan Qiu <\url{http://yixuan.cos.name}>
+Yihui Xie <\url{http://yihui.name}> with substantial contribution
+  from Yixuan Qiu <\url{http://yixuan.cos.name}>
 }
 \references{
-\url{https://github.com/yihui/formatR/wiki/} (an
-introduction to this package, with examples and further
-notes)
+\url{https://github.com/yihui/formatR/wiki/} (an introduction to
+  this package, with examples and further notes)
 }
 \seealso{
-\code{\link{parse}}, \code{\link{deparse}},
-\code{\link{cat}}
+\code{\link{parse}}, \code{\link{deparse}}, \code{\link{cat}}
 }

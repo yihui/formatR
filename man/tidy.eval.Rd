@@ -22,14 +22,13 @@ tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.f
   \code{envir = NULL} or \code{envir = new.env()})}
 }
 \value{
-Evaluated R code with corresponding output (printed on
-screen or written in a file).
+Evaluated R code with corresponding output (printed on screen or
+  written in a file).
 }
 \description{
-This function is designed to insert the output of each
-chunk of R code into the source code without really
-breaking the source code, since the output is masked in
-comments.
+This function is designed to insert the output of each chunk of R code into
+the source code without really breaking the source code, since the output is
+masked in comments.
 }
 \examples{
 library(formatR)
