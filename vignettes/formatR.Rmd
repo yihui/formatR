@@ -72,19 +72,17 @@ Two applications of `tidy.source()`:
 
 ## 3. The Graphical User Interface
 
-If one of the **gWidgets** packages has been installed (e.g. **gWidgetsRGtk2**), the function `tidy.gui()` can pop up a GUI to reformat R code like this:
+If the **shiny** packages has been installed, the function `tidy.app()` can launch a Shiny app to reformat R code like this:
 
 ```r
-library(gWidgetsRGtk2)
-library(formatR)
-tidy.gui()
+formatR::tidy.app()
 ```
 
-<p align="center"><img src="http://i.imgur.com/rc9p5.png" /></p>
+<p align="center"><img src="http://i.imgur.com/CuEPthH.png" /></p>
 
-After hitting the `Convert` button:
+After hitting the `Tidy` button:
 
-<p align="center"><img src="http://i.imgur.com/xjrdz.png" /></p>
+<p align="center"><img src="http://i.imgur.com/ulXmq9U.png" /></p>
 
 ## 4. Evaluate the code and mask output in comments
 
