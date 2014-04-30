@@ -8,8 +8,9 @@ x=2;print('Oh no... ask the right bracket to go away!')}
 1*3 # one space before this comment will become two!
 2+2+2    # 'short comments'
 
-lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### only 'single quotes' are allowed in comments
+# only 'single quotes' are allowed in comments
+df=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100))
+lm(y~x1+x2, data=df)
 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line
-'a character string with \t in it'
 
 ## here is a long long long long long long long long long long long long long long long long long long long long comment
