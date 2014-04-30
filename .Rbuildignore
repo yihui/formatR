@@ -3,3 +3,4 @@ inst/examples
 ^\.Rproj\.user$
 ^.*\.Rproj$
 .travis.yml
+inst/shiny/shinyapps
