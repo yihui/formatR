@@ -38,7 +38,7 @@
 #' @note Be sure to read the reference to know other limitations.
 #' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
 #'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
-#' @seealso \code{\link{parse}}, \code{\link{deparse}}, \code{\link{cat}}
+#' @seealso \code{\link{parse}}, \code{\link{deparse}}
 #' @references \url{https://github.com/yihui/formatR/wiki/} (an introduction to
 #'   this package, with examples and further notes)
 #' @export
