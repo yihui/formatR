@@ -4,7 +4,8 @@ NEW FEATURES
 
   o added a function tidy.app() to replace tidy.gui() in previous versions:
   tidy.app() launches a Shiny app in the browser to reformat R code. The
-  gWidgets interface (e.g. GTK+) is no longer supported.
+  gWidgets interface (e.g. GTK+) is no longer supported. See
+  https://yihui.shinyapps.io/formatR/ for a live demo.
 
 BUG FIXES
 
