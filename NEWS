@@ -1,5 +1,11 @@
 		   CHANGES IN formatR VERSION 0.11
 
+NEW FEATURES
+
+  o added a function tidy.app() to replace tidy.gui() in previous versions:
+  tidy.app() launches a Shiny app in the browser to reformat R code. The
+  gWidgets interface (e.g. GTK+) is no longer supported.
+
 BUG FIXES
 
   o the shebang #! is no longer treated as an R comment (thanks, Mirko
