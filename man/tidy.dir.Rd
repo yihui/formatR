@@ -5,13 +5,11 @@
 tidy.dir(path = ".", recursive = FALSE, ...)
 }
 \arguments{
-  \item{path}{the directory}
+\item{path}{the directory}
 
-  \item{recursive}{whether to recursively look for R
-  scripts under \code{path}}
+\item{recursive}{whether to recursively look for R scripts under \code{path}}
 
-  \item{...}{other arguments to be passed to
-  \code{\link{tidy.source}}}
+\item{...}{other arguments to be passed to \code{\link{tidy.source}}}
 }
 \value{
 Invisible \code{NULL}.

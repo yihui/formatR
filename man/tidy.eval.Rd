@@ -5,21 +5,19 @@
 tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.frame())
 }
 \arguments{
-  \item{source}{the input filename (by default the
-  clipboard; see \code{\link{tidy.source}})}
+\item{source}{the input filename (by default the clipboard; see
+\code{\link{tidy.source}})}
 
-  \item{...}{other arguments passed to
-  \code{\link{tidy.source}}}
+\item{...}{other arguments passed to \code{\link{tidy.source}}}
 
-  \item{file}{the file to write by \code{\link{cat}}; by
-  default the output is printed on screen}
+\item{file}{the file to write by \code{\link{cat}}; by default the output is
+printed on screen}
 
-  \item{prefix}{the prefix to mask the output}
+\item{prefix}{the prefix to mask the output}
 
-  \item{envir}{the environment in which to evaluate the
-  code (by default the parent environment; if we do not
-  want to mess up with the parent environment, we can set
-  \code{envir = NULL} or \code{envir = new.env()})}
+\item{envir}{the environment in which to evaluate the code (by default the
+parent environment; if we do not want to mess up with the parent
+environment, we can set \code{envir = NULL} or \code{envir = new.env()})}
 }
 \value{
 Evaluated R code with corresponding output (printed on screen or

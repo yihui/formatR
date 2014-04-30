@@ -10,45 +10,37 @@ tidy.source(source = "clipboard", keep.comment = getOption("keep.comment",
     text = NULL, width.cutoff = getOption("width"), ...)
 }
 \arguments{
-  \item{source}{a character string: location of the source
-  code (default to be the clipboard; this means we can copy
-  the code to clipboard and use \code{tidy.souce()} without
-  specifying the argument \code{source})}
+\item{source}{a character string: location of the source code (default to be
+the clipboard; this means we can copy the code to clipboard and use
+\code{tidy.souce()} without specifying the argument \code{source})}
 
-  \item{keep.comment}{whether to keep comments (\code{TRUE}
-  by default)}
+\item{keep.comment}{whether to keep comments (\code{TRUE} by default)}
 
-  \item{keep.blank.line}{whether to keep blank lines
-  (\code{TRUE} by default)}
+\item{keep.blank.line}{whether to keep blank lines (\code{TRUE} by default)}
 
-  \item{replace.assign}{whether to replace the assign
-  operator \code{=} with \code{<-}}
+\item{replace.assign}{whether to replace the assign operator \code{=} with
+\code{<-}}
 
-  \item{left.brace.newline}{whether to put the left brace
-  \code{\{} to a new line (default \code{FALSE})}
+\item{left.brace.newline}{whether to put the left brace \code{\{} to a new
+line (default \code{FALSE})}
 
-  \item{reindent.spaces}{number of spaces to indent the
-  code (default 4)}
+\item{reindent.spaces}{number of spaces to indent the code (default 4)}
 
-  \item{output}{output to the console or a file using
-  \code{\link{cat}}?}
+\item{output}{output to the console or a file using \code{\link{cat}}?}
 
-  \item{text}{an alternative way to specify the input: if
-  it is \code{NULL}, the function will read the source code
-  from the \code{source} argument; alternatively, if
-  \code{text} is a character vector containing the source
-  code, it will be used as the input and the \code{source}
-  argument will be ignored}
+\item{text}{an alternative way to specify the input: if it is \code{NULL},
+the function will read the source code from the \code{source} argument;
+alternatively, if \code{text} is a character vector containing the source
+code, it will be used as the input and the \code{source} argument will be
+ignored}
 
-  \item{width.cutoff}{passed to \code{\link{deparse}}:
-  integer in [20, 500] determining the cutoff at which
-  line-breaking is tried (default to be
-  \code{getOption("width")})}
+\item{width.cutoff}{passed to \code{\link{deparse}}: integer in [20, 500]
+determining the cutoff at which line-breaking is tried (default to be
+\code{getOption("width")})}
 
-  \item{...}{other arguments passed to \code{\link{cat}},
-  e.g. \code{file} (this can be useful for batch-processing
-  R scripts, e.g.  \code{tidy.source(source = 'input.R',
-  file = 'output.R')})}
+\item{...}{other arguments passed to \code{\link{cat}}, e.g. \code{file}
+(this can be useful for batch-processing R scripts, e.g.
+\code{tidy.source(source = 'input.R', file = 'output.R')})}
 }
 \value{
 A list with components \item{text.tidy}{the reformatted code as a
@@ -137,5 +129,5 @@ Yihui Xie <\url{http://yihui.name}> with substantial contribution
   this package, with examples and further notes)
 }
 \seealso{
-\code{\link{parse}}, \code{\link{deparse}}, \code{\link{cat}}
+\code{\link{parse}}, \code{\link{deparse}}
 }
