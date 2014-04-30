@@ -12,7 +12,7 @@ Description: This package provides a function tidy.source() and optionally a
     human-readable and tidy.
 Suggests:
     codetools,
-    gWidgetsRGtk2,
+    shiny,
     testit,
     knitr
 License: GPL

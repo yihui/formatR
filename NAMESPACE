@@ -1,3 +1,4 @@
+export(tidy.app)
 export(tidy.dir)
 export(tidy.eval)
 export(tidy.source)
