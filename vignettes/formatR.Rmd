@@ -7,13 +7,13 @@
 
 ## 1. Installation
 
-To install from CRAN, use
+To install from [CRAN](http://cran.rstudio.com/package=formatR), use
 
 ```{r eval=FALSE}
 install.packages('formatR')
 ```
 
-To install the latest development version, use
+To install the latest [development version](http://rforge.net/formatR), use
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://rforge.net')
@@ -64,11 +64,11 @@ Two applications of `tidy.source()`:
 
 - `tidy.dir()` can reformat all R scripts under a directory
 - `usage()` can reformat the usage of a function, e.g. compare `usage()` with the default output of `args()`:
-  ```{r}
-  library(formatR)
-  usage(glm, width=70)  # can set arbitrary width here
-  args(glm)
-  ```
+    ```{r collapse=TRUE}
+    library(formatR)
+    usage(glm, width=70)  # can set arbitrary width here
+    args(glm)
+    ```
 
 ## 3. The Graphical User Interface
 
