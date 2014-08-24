@@ -5,6 +5,7 @@
 #' (use \code{\link{tidy_dir}()}), and \code{tidy.eval()} (use
 #' \code{\link{tidy_eval}()}).
 #' @rdname deprecated
+#' @keywords internal
 #' @aliases formatR-deprecated
 #' @param ... arguments passed from the old functions of the style
 #'   \code{foo.bar()} to the new functions \code{foo_bar()}

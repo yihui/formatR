@@ -21,3 +21,4 @@ These functions have been renamed and deprecated in \pkg{formatR}:
 (use \code{\link{tidy_dir}()}), and \code{tidy.eval()} (use
 \code{\link{tidy_eval}()}).
 }
+\keyword{internal}
