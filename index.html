@@ -32,23 +32,43 @@ pre, code{font-size:90%;}
 
 <h2>1. Installation</h2>
 
-<p>To install from <a href="http://cran.rstudio.com/package=formatR">CRAN</a>, use</p>
+<p>You can install <strong>formatR</strong> from <a href="http://cran.rstudio.com/package=formatR">CRAN</a>, or <a href="http://rforge.net/formatR">RForge</a> if you want to test the latest development version:</p>
 
-<pre><code class="r">install.packages(&quot;formatR&quot;)
+<pre><code class="r">install.packages(&quot;formatR&quot;, repos = &quot;http://cran.rstudio.com&quot;)
+#&#39; to install the development version, run
+#&#39; install.packages(&#39;formatR&#39;, repos = &#39;http://rforge.net&#39;)
 </code></pre>
 
-<p>To install the latest <a href="http://rforge.net/formatR">development version</a>, use</p>
+<p>Or check out the <a href="https://github.com/yihui/formatR">Github repository</a> and install from source if you know what this means. This page is always based on the development version.</p>
 
-<pre><code class="r">install.packages(&quot;formatR&quot;, repos = &quot;http://rforge.net&quot;)
+<pre><code class="r">library(formatR)
+sessionInfo()
 </code></pre>
 
-<p>Or check out the <a href="https://github.com/yihui/formatR">Github repository</a> and install from source if you know what this means.</p>
-
-<p>This page is always based on the development version.</p>
+<pre><code>## R version 3.1.1 (2014-07-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=C              
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] formatR_0.10.6
+## 
+## loaded via a namespace (and not attached):
+## [1] evaluate_0.5.5 knitr_1.6.14   stringr_0.6.2  tools_3.1.1
+</code></pre>
 
 <h2>2. Reformat R code</h2>
 
-<p>The <a href="http://cran.r-project.org/package=formatR"><strong>formatR</strong></a> package was designed to reformat <a href="http://www.r-project.org">R</a> code to improve readability; the main workhorse is the function <code>tidy.source()</code>. Features include:</p>
+<p>The <a href="http://cran.r-project.org/package=formatR"><strong>formatR</strong></a> package was designed to reformat <a href="http://www.r-project.org">R</a> code to improve readability; the main workhorse is the function <code>tidy_source()</code>. Features include:</p>
 
 <ul>
 <li>long lines of code and comments are reorganized into appropriately shorter ones</li>
@@ -60,7 +80,7 @@ pre, code{font-size:90%;}
 <li>the left brace <code>{</code> can be moved to a new line</li>
 </ul>
 
-<p>Below is an example of what <code>tidy.source()</code> can do. The source code is:</p>
+<p>Below is an example of what <code>tidy_source()</code> can do. The source code is:</p>
 
 <pre><code class="r">## comments are retained;
 # a comment block will be reflowed if it contains long comments;
@@ -79,7 +99,7 @@ lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### a li
 ## here is a long long long long long long long long long long long long long comment which will be wrapped
 </code></pre>
 
-<p>We can copy the above code to clipboard, and type <code>tidy.source(width.cutoff = 70)</code> to get:</p>
+<p>We can copy the above code to clipboard, and type <code>tidy_source(width.cutoff = 70)</code> to get:</p>
 
 <pre><code class="r">## comments are retained; a comment block will be reflowed if it
 ## contains long comments;
@@ -102,10 +122,10 @@ lm(y ~ x1 + x2, data = data.frame(y = rnorm(100), x1 = rnorm(100), x2 = rnorm(10
 ## long comment which will be wrapped
 </code></pre>
 
-<p>Two applications of <code>tidy.source()</code>:</p>
+<p>Two applications of <code>tidy_source()</code>:</p>
 
 <ul>
-<li><code>tidy.dir()</code> can reformat all R scripts under a directory</li>
+<li><code>tidy_dir()</code> can reformat all R scripts under a directory</li>
 <li><p><code>usage()</code> can reformat the usage of a function, e.g. compare <code>usage()</code> with the default output of <code>args()</code>:</p>
 
 <pre><code class="r">library(formatR)
@@ -124,22 +144,23 @@ args(glm)
 
 <h2>3. The Graphical User Interface</h2>
 
-<p>If the <strong>shiny</strong> packages has been installed, the function <code>tidy.app()</code> can launch a Shiny app to reformat R code like this (<a href="https://yihui.shinyapps.io/formatR/">live demo</a>):</p>
+<p>If the <strong>shiny</strong> packages has been installed, the function <code>tidy_app()</code> can launch a Shiny app to reformat R code like this (<a href="https://yihui.shinyapps.io/formatR/">live demo</a>):</p>
 
-<pre><code class="r">formatR::tidy.app()
+<pre><code class="r">formatR::tidy_app()
 </code></pre>
 
-<p><img src="http://i.imgur.com/CuEPthH.png" alt="R source code before tidying"/></p>
+<p><img src="http://i.imgur.com/lUgtEAb.png" alt="R source code before tidying"/></p>
 
 <p>After hitting the <code>Tidy</code> button:</p>
 
-<p><img src="http://i.imgur.com/ulXmq9U.png" alt="R source code after tidying"/></p>
+<p><img src="http://i.imgur.com/TBZm0B8.png" alt="R source code after tidying"/></p>
 
 <h2>4. Evaluate the code and mask output in comments</h2>
 
-<p>It is often a pain when trying to copy R code from other people&#39;s code which has been run in R and the prompt characters (usually <code>&gt;</code>) are attached in the beginning of code, because we have to remove all the prompts <code>&gt;</code> and <code>+</code> manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function <code>tidy.eval()</code>, which uses <code>tidy.source()</code> to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:</p>
+<p>It is often a pain when trying to copy R code from other people&#39;s code which has been run in R and the prompt characters (usually <code>&gt;</code>) are attached in the beginning of code, because we have to remove all the prompts <code>&gt;</code> and <code>+</code> manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function <code>tidy.eval()</code>, which uses <code>tidy_source()</code> to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:</p>
 
-<pre><code class="r">tidy.eval(text = c(&quot;a&lt;-1+1;a  # print the value&quot;, &quot;matrix(rnorm(10),5)&quot;))
+<pre><code class="r">set.seed(123)
+tidy_eval(text = c(&quot;a&lt;-1+1;a  # print the value&quot;, &quot;matrix(rnorm(10),5)&quot;))
 </code></pre>
 
 <pre><code>a &lt;- 1 + 1
@@ -147,23 +168,23 @@ a  # print the value
 ## [1] 2
 
 matrix(rnorm(10), 5)
-##            [,1]       [,2]
-## [1,]  0.1871940 -1.2262683
-## [2,] -2.8014509  1.0201983
-## [3,] -0.5766116  0.5287316
-## [4,] -1.6568563 -0.1256175
-## [5,]  0.8038448  0.1983737
+##             [,1]       [,2]
+## [1,] -0.56047565  1.7150650
+## [2,] -0.23017749  0.4609162
+## [3,]  1.55870831 -1.2650612
+## [4,]  0.07050839 -0.6868529
+## [5,]  0.12928774 -0.4456620
 </code></pre>
 
-<p>The default source of the code is from clipboard like <code>tidy.source()</code>, so we can copy our code to clipboard, and simply run this in R:</p>
+<p>The default source of the code is from clipboard like <code>tidy_source()</code>, so we can copy our code to clipboard, and simply run this in R:</p>
 
 <pre><code class="r">library(formatR)
-tidy.eval()  # without specifying any arguments, it reads code from clipboard
+tidy_eval()  # without specifying any arguments, it reads code from clipboard
 </code></pre>
 
 <h2>5. Showcase</h2>
 
-<p>We continue the example code in Section 2, using different arguments in <code>tidy.source()</code> such as <code>arrow</code>, <code>blank</code>, <code>indent</code>, <code>brace.newline</code> and <code>comment</code>, etc.</p>
+<p>We continue the example code in Section 2, using different arguments in <code>tidy_source()</code> such as <code>arrow</code>, <code>blank</code>, <code>indent</code>, <code>brace.newline</code> and <code>comment</code>, etc.</p>
 
 <h3>Replace <code>=</code> with <code>&lt;-</code></h3>
 
@@ -232,7 +253,7 @@ lm(y ~ x1 + x2, data = data.frame(y = rnorm(100), x1 = rnorm(100), x2 = rnorm(10
 
 <h2>6. Further notes</h2>
 
-<p>The tricks used in this packages are very dirty. There might be dangers in using the functions in <strong>formatR</strong>. Please read the next section carefully to know exactly how comments are preserved. The best strategy to avoid failure is to put comments in complete lines or after <em>complete</em> R expressions. Below are some known issues that <code>tidy.source()</code> may fail.</p>
+<p>The tricks used in this packages are very dirty. There might be dangers in using the functions in <strong>formatR</strong>. Please read the next section carefully to know exactly how comments are preserved. The best strategy to avoid failure is to put comments in complete lines or after <em>complete</em> R expressions. Below are some known issues that <code>tidy_source()</code> may fail.</p>
 
 <h3>In-line comments after an incomplete expression or ;</h3>
 
@@ -243,7 +264,7 @@ x &lt;- ## this is not a complete expression
 x &lt;- 1; # you should not use ; here!
 </code></pre>
 
-<p>It is not a good idea to interrupt R code with comments and sometimes it can be confusing &ndash; comments should come after a complete R expression naturally; by the way, <code>tidy.source()</code> will move the comments after <code>{</code> to the next line, e.g.</p>
+<p>It is not a good idea to interrupt R code with comments and sometimes it can be confusing &ndash; comments should come after a complete R expression naturally; by the way, <code>tidy_source()</code> will move the comments after <code>{</code> to the next line, e.g.</p>
 
 <pre><code class="r">if (TRUE) {## comments
 }
@@ -258,7 +279,7 @@ x &lt;- 1; # you should not use ; here!
 
 <h3>Inappropriate blank lines</h3>
 
-<p>Blank lines are often used to separate complete chunks of R code, and arbitrary blank lines may cause failures in <code>tidy.source()</code> as well when the argument <code>blank = TRUE</code>, e.g.</p>
+<p>Blank lines are often used to separate complete chunks of R code, and arbitrary blank lines may cause failures in <code>tidy_source()</code> as well when the argument <code>blank = TRUE</code>, e.g.</p>
 
 <pre><code class="r">if (TRUE)
 
@@ -285,7 +306,7 @@ x &lt;- 1; # you should not use ; here!
 
 <p>I recommend you to use <code>&lt;-</code> or <code>=</code> consistently. What is more important is consistency. I always use <code>=</code> because it causes me no confusion (I do not believe it is ever possible for people to interpret <code>fun(a = 1)</code> as assigning <code>1</code> to a variable <code>a</code> instead of passing an argument value) and <code>&lt;-</code> is more dangerous because it works everywhere (you might have unconsciously created a new variable <code>a</code> in <code>fun(a &lt;- 1)</code>; see <a href="http://markmail.org/thread/tgt33474bkxz2hep">an example here</a>). The only disadvantage is that most R people use <code>&lt;-</code> so it may be difficult to collaborate with other people.</p>
 
-<h2>7. How does <code>tidy.source()</code> actually work?</h2>
+<h2>7. How does <code>tidy_source()</code> actually work?</h2>
 
 <p>The method to preserve comments is to protect them as strings in R expressions. For example, there is a single line of comments in the source code:</p>
 
@@ -320,7 +341,7 @@ x &lt;- 1; # you should not use ; here!
 
 <h2>8. Global options</h2>
 
-<p>There are global options which can override some arguments in <code>tidy.source()</code>:</p>
+<p>There are global options which can override some arguments in <code>tidy_source()</code>:</p>
 
 <table><thead>
 <tr>
