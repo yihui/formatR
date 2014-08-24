@@ -74,12 +74,12 @@ assert(
 
 assert(
   'keep.comment=FALSE removes comments',
-  identical(tidy.res(c('# a comment', '1+1'), keep.comment = FALSE), '1 + 1')
+  identical(tidy.res(c('# a comment', '1+1'), comment = FALSE), '1 + 1')
 )
 
 if (packageVersion('formatR') > '0.8') assert(
-  'when keep.comment=FALSE and everything is comment, tidy_source() returns character(0)',
-  identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
+  'when comment=FALSE and everything is comment, tidy_source() returns character(0)',
+  identical(tidy.res('# a comment', comment = FALSE), character(0))
 )
 
 x1 = '1+1
@@ -91,12 +91,12 @@ if(F){
 assert(
   'keep.blank.line=FALSE removes blank lines',
   identical(tidy.res(x1), c('1 + 1', '', 'if (F) {\n    \n}', '')),
-  identical(tidy.res(x1, keep.blank.line = FALSE), c('1 + 1', 'if (F) {\n}'))
+  identical(tidy.res(x1, blank = FALSE), c('1 + 1', 'if (F) {\n}'))
 )
 
 assert(
   '= can be replaced with <- when replace.assign=TRUE',
-  identical(tidy.res('x=1;c(x=1)', replace.assign=TRUE), c('x <- 1', 'c(x = 1)'))
+  identical(tidy.res('x=1;c(x=1)', arrow=TRUE), c('x <- 1', 'c(x = 1)'))
 )
 
 if (R3) assert(
