@@ -4,8 +4,8 @@
 #' the source code without really breaking the source code, since the output is
 #' masked in comments.
 #' @param source the input filename (by default the clipboard; see
-#'   \code{\link{tidy.source}})
-#' @param ... other arguments passed to \code{\link{tidy.source}}
+#'   \code{\link{tidy_source}})
+#' @param ... other arguments passed to \code{\link{tidy_source}}
 #' @param file the file to write by \code{\link{cat}}; by default the output is
 #'   printed on screen
 #' @param prefix the prefix to mask the output
@@ -18,12 +18,12 @@
 #' @references \url{http://yihui.name/formatR}
 #' @examples library(formatR)
 #' ## evaluate simple code as a character vector
-#' tidy.eval(text = c('a<-1+1;a','matrix(rnorm(10),5)'))
+#' tidy_eval(text = c('a<-1+1;a','matrix(rnorm(10),5)'))
 #'
 #' ## evaluate a file
-#' tidy.eval(file.path(system.file(package = 'stats'), 'demo', 'nlm.R'))
-tidy.eval = function(source = 'clipboard', ..., file = '', prefix = '## ', envir = parent.frame()) {
-  txt = tidy.source(source, ..., output = FALSE)$text.tidy
+#' tidy_eval(file.path(system.file(package = 'stats'), 'demo', 'nlm.R'))
+tidy_eval = function(source = 'clipboard', ..., file = '', prefix = '## ', envir = parent.frame()) {
+  txt = tidy_source(source, ..., output = FALSE)$text.tidy
   for(i in 1:length(txt)) {
     cat(txt[i], '\n', sep = '', file = file, append = TRUE)
     out = capture.output(eval(res <- parse_only(txt[i]), envir = envir))

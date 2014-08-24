@@ -8,7 +8,7 @@ usage(FUN, width = getOption("width"), tidy = TRUE)
 \item{FUN}{the function name}
 
 \item{width}{the width of output (passed to \code{width.cutoff} in
-\code{\link{tidy.source}})}
+\code{\link{tidy_source}})}
 
 \item{tidy}{whether or not to reformat the usage code}
 }
@@ -35,5 +35,5 @@ usage(usage)
 usage(barplot.default, width = 60)  # narrower output
 }
 \seealso{
-\code{\link{tidy.source}}
+\code{\link{tidy_source}}
 }

@@ -9,7 +9,7 @@ shinyUI(fluidPage(
         tags$script(src = 'shiny-handler.js'),
         tags$style(type = 'text/css', '.popover {max-width: 100%;}')
       ),
-      helpText('This Shiny app uses the function', code('tidy.source()'),
+      helpText('This Shiny app uses the function', code('tidy_source()'),
                'in the', a(href = 'http://yihui.name/formatR', strong('formatR')),
                sprintf('(v%s)', packageVersion('formatR')),
                'package to reformat R code in the text box on the right.',

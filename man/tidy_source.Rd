@@ -1,8 +1,8 @@
-\name{tidy.source}
-\alias{tidy.source}
+\name{tidy_source}
+\alias{tidy_source}
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy.source(source = "clipboard", comment = getOption("formatR.comment", 
+tidy_source(source = "clipboard", comment = getOption("formatR.comment", 
     TRUE), blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow", 
     FALSE), brace.newline = getOption("formatR.brace.newline", FALSE), 
     indent = getOption("formatR.indent", 4), output = TRUE, text = NULL, 
@@ -38,7 +38,7 @@ determining the cutoff at which line-breaking is tried (default to be
 
 \item{...}{other arguments passed to \code{\link{cat}}, e.g. \code{file}
 (this can be useful for batch-processing R scripts, e.g.
-\code{tidy.source(source = 'input.R', file = 'output.R')})}
+\code{tidy_source(source = 'input.R', file = 'output.R')})}
 }
 \value{
 A list with components \item{text.tidy}{the reformatted code as a
@@ -60,7 +60,7 @@ library(formatR)
 
 ## a messy R script
 messy = system.file("format", "messy.R", package = "formatR")
-tidy.source(messy)
+tidy_source(messy)
 
 ## use the 'text' argument
 src = readLines(messy)
@@ -69,30 +69,30 @@ src = readLines(messy)
 cat(src, sep = "\\n")
 
 ## the formatted version
-tidy.source(text = src)
+tidy_source(text = src)
 
 ## preserve blank lines
-tidy.source(text = src, blank = TRUE)
+tidy_source(text = src, blank = TRUE)
 
 ## indent with 2 spaces
-tidy.source(text = src, indent = 2)
+tidy_source(text = src, indent = 2)
 
 ## discard comments!
-tidy.source(text = src, comment = FALSE)
+tidy_source(text = src, comment = FALSE)
 
 ## wanna see the gory truth??
-tidy.source(text = src, output = FALSE)$text.mask
+tidy_source(text = src, output = FALSE)$text.mask
 
 
 ## tidy up the source code of image demo
 x = file.path(system.file(package = "graphics"), "demo", "image.R")
 
 # to console
-tidy.source(x)
+tidy_source(x)
 
 # to a file
 f = tempfile()
-tidy.source(x, blank = TRUE, file = f)
+tidy_source(x, blank = TRUE, file = f)
 
 ## check the original code here and see the difference
 file.show(x)
@@ -100,17 +100,17 @@ file.show(f)
 
 ## use global options
 options(comment = TRUE, blank = FALSE)
-tidy.source(x)
+tidy_source(x)
 
 ## if you've copied R code into the clipboard
 if (interactive()) {
-    tidy.source("clipboard")
+    tidy_source("clipboard")
     ## write into clipboard again
-    tidy.source("clipboard", file = "clipboard")
+    tidy_source("clipboard", file = "clipboard")
 }
 
 ## the if-else structure
-tidy.source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
+tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
 }
 \author{
 Yihui Xie <\url{http://yihui.name}> with substantial contribution

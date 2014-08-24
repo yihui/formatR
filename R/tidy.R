@@ -25,7 +25,7 @@
 #'   \code{getOption("width")})
 #' @param ... other arguments passed to \code{\link{cat}}, e.g. \code{file}
 #'   (this can be useful for batch-processing R scripts, e.g.
-#'   \code{tidy.source(source = 'input.R', file = 'output.R')})
+#'   \code{tidy_source(source = 'input.R', file = 'output.R')})
 #' @return A list with components \item{text.tidy}{the reformatted code as a
 #'   character vector} \item{text.mask}{the code containing comments, which are
 #'   masked in assignments or with the weird operator}
@@ -37,7 +37,7 @@
 #'   with examples and further notes)
 #' @export
 #' @example inst/examples/tidy.source.R
-tidy.source = function(
+tidy_source = function(
   source = 'clipboard', comment = getOption('formatR.comment', TRUE),
   blank = getOption('formatR.blank', TRUE),
   arrow = getOption('formatR.arrow', FALSE),
@@ -113,7 +113,7 @@ tidy.source = function(
   }
   if (comment) text = mask_comments(text, width.cutoff, blank)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
-  text.tidy = if (comment) unmask.source(text.mask) else text.mask
+  text.tidy = if (comment) unmask_source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
@@ -139,7 +139,7 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
 }
 
 # Restore the real source code from the masked text
-unmask.source = function(text.mask) {
+unmask_source = function(text.mask) {
   if (length(text.mask) == 0) return(text.mask)
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
@@ -166,28 +166,28 @@ unmask.source = function(text.mask) {
 #' Format the R scripts under a directory
 #'
 #' This function first looks for all the R scripts under a directory (using the
-#' pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy.source}} to tidy
+#' pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy_source}} to tidy
 #' these scripts. The original scripts will be overwritten with reformatted code
 #' if reformatting was successful. You may need to back up the original
 #' directory first if you do not fully understand the tricks
-#' \code{\link{tidy.source}} is using.
+#' \code{\link{tidy_source}} is using.
 #' @param path the directory
 #' @param recursive whether to recursively look for R scripts under \code{path}
-#' @param ... other arguments to be passed to \code{\link{tidy.source}}
+#' @param ... other arguments to be passed to \code{\link{tidy_source}}
 #' @return Invisible \code{NULL}.
 #' @author Yihui Xie <\url{http://yihui.name}>
-#' @seealso \code{\link{tidy.source}}
+#' @seealso \code{\link{tidy_source}}
 #' @export
 #' @examples
 #' library(formatR)
 #'
 #' path = tempdir()
 #' file.copy(system.file('demo', package = 'base'), path, recursive=TRUE)
-#' tidy.dir(path, recursive=TRUE)
-tidy.dir = function(path = '.', recursive = FALSE, ...) {
+#' tidy_dir(path, recursive=TRUE)
+tidy_dir = function(path = '.', recursive = FALSE, ...) {
   flist = list.files(path, pattern = '[.][RrSsQq]$', full.names = TRUE, recursive = recursive)
   for (f in flist) {
     message('tidying ', f)
-    try(tidy.source(f, file = f, ...))
+    try(tidy_source(f, file = f, ...))
   }
 }

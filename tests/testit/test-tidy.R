@@ -1,23 +1,23 @@
 library(testit)
 
 tidy.res = function(x, ...) {
-  tidy.source(text = x, ..., output = FALSE)$text.tidy
+  tidy_source(text = x, ..., output = FALSE)$text.tidy
 }
 
 assert(
-  'tidy.source() tries to keep R comments',
+  'tidy_source() tries to keep R comments',
   identical(tidy.res('1+1#asdf'), '1 + 1  #asdf'),
   identical(tidy.res('paste(1 #asdf\n,2)'), 'paste(1  #asdf\n, 2)'),
   identical(tidy.res(c('# asdf', '1+1')), c('# asdf', '1 + 1'))
 )
 
 assert(
-  'tidy.source() preserves backslashes in comments',
+  'tidy_source() preserves backslashes in comments',
   identical(tidy.res('# \\a \\b \\c'), '# \\a \\b \\c')
 )
 
 assert(
-  'tidy.source() can preserve blank lines among non-empty code lines',
+  'tidy_source() can preserve blank lines among non-empty code lines',
   identical(tidy.res(c('if(TRUE){1+1', '', '}', '', '# a comment')),
             c('if (TRUE) {\n    1 + 1\n    \n}', '', '# a comment'))
 )
@@ -25,7 +25,7 @@ assert(
 x1 = paste(c('#', letters), collapse = ' ')
 x2 = c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z')
 if (R3) assert(
-  'long comments are wrapped in tidy.source()',
+  'long comments are wrapped in tidy_source()',
   identical(tidy.res(x1, width.cutoff = 20), x2),
   identical(
     tidy.res(rep(x1, 2), width.cutoff = 20),
@@ -44,7 +44,7 @@ x1 = '
 '
 x2 = c('', '# only a comment', '', '')
 if (R3) assert(
-  'tidy.source() can deal with code that only contains a comment',
+  'tidy_source() can deal with code that only contains a comment',
   identical(tidy.res(x1), c('', '# only a comment', '')),
   identical(tidy.res(x2), x2)
 )
@@ -54,7 +54,7 @@ x1 = '{if (TRUE) {
 }
 else 2}'
 assert(
-  'tidy.source() moves else back if it is in a standalone line',
+  'tidy_source() moves else back if it is in a standalone line',
   identical(tidy.res(x1), '{\n    if (TRUE) {\n        1\n    } else 2\n}')
 )
 
@@ -78,7 +78,7 @@ assert(
 )
 
 if (packageVersion('formatR') > '0.8') assert(
-  'when keep.comment=FALSE and everything is comment, tidy.source() returns character(0)',
+  'when keep.comment=FALSE and everything is comment, tidy_source() returns character(0)',
   identical(tidy.res('# a comment', keep.comment = FALSE), character(0))
 )
 

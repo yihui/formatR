@@ -1,14 +1,14 @@
-\name{tidy.eval}
-\alias{tidy.eval}
+\name{tidy_eval}
+\alias{tidy_eval}
 \title{Evaluate R code and mask the output by a prefix}
 \usage{
-tidy.eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.frame())
+tidy_eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.frame())
 }
 \arguments{
 \item{source}{the input filename (by default the clipboard; see
-\code{\link{tidy.source}})}
+\code{\link{tidy_source}})}
 
-\item{...}{other arguments passed to \code{\link{tidy.source}}}
+\item{...}{other arguments passed to \code{\link{tidy_source}}}
 
 \item{file}{the file to write by \code{\link{cat}}; by default the output is
 printed on screen}
@@ -31,10 +31,10 @@ masked in comments.
 \examples{
 library(formatR)
 ## evaluate simple code as a character vector
-tidy.eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
+tidy_eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 
 ## evaluate a file
-tidy.eval(file.path(system.file(package = "stats"), "demo", "nlm.R"))
+tidy_eval(file.path(system.file(package = "stats"), "demo", "nlm.R"))
 }
 \references{
 \url{http://yihui.name/formatR}

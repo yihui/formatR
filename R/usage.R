@@ -5,11 +5,11 @@
 #' exported or non-exported in a package. S3 methods will be marked.
 #' @param FUN the function name
 #' @param width the width of output (passed to \code{width.cutoff} in
-#'   \code{\link{tidy.source}})
+#'   \code{\link{tidy_source}})
 #' @param tidy whether or not to reformat the usage code
 #' @return The R code for the usage is returned as a character string
 #'   (invisibly).
-#' @seealso \code{\link{tidy.source}}
+#' @seealso \code{\link{tidy_source}}
 #' @export
 #' @examples library(formatR)
 #' usage(var)
@@ -55,7 +55,7 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE) {
     warning("'width' should no longer be specified as a proportion")
     width = width * getOption("width")
   }
-  tidy.res = tidy.source(text = res, output = FALSE, width.cutoff = width)
+  tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = width)
   cat(tidy.res$text.tidy, sep = '\n')
   invisible(tidy.res$text.tidy)
 }
