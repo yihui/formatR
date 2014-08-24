@@ -21,7 +21,7 @@
 #' tidy.eval(text = c('a<-1+1;a','matrix(rnorm(10),5)'))
 #'
 #' ## evaluate a file
-#' tidy.eval(source = file.path(system.file(package = 'stats'), 'demo', 'nlm.R'), keep.blank.line = TRUE)
+#' tidy.eval(file.path(system.file(package = 'stats'), 'demo', 'nlm.R'))
 tidy.eval = function(source = 'clipboard', ..., file = '', prefix = '## ', envir = parent.frame()) {
   txt = tidy.source(source, ..., output = FALSE)$text.tidy
   for(i in 1:length(txt)) {
