@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>An Introduction to formatR</title>
+<link rel="stylesheet" media="all" href="http://jashkenas.github.io/docco/resources/linear/public/stylesheets/normalize.css" />
+<link rel="stylesheet" media="all" href="http://jashkenas.github.io/docco/resources/linear/docco.css" />
+<style type="text/css">
+img{display:block;margin:auto;}
+.container{width:920px;}
+.page{width:800px;}
+.page pre{width:768px;}
+pre, code{font-size:90%;}
+</style>
+<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<script src="http://yandex.st/highlightjs/8.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="http://yihui.name/media/js/center-images.js"></script>
+
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="page">
+<!--
+%\VignetteEngine{knitr::docco_linear}
+%\VignetteIndexEntry{An Introduction to formatR}
+-->
+
+<h1>An Introduction to formatR</h1>
+
+<h2>1. Installation</h2>
+
+<p>To install from <a href="http://cran.rstudio.com/package=formatR">CRAN</a>, use</p>
+
+<pre><code class="r">install.packages(&quot;formatR&quot;)
+</code></pre>
+
+<p>To install the latest <a href="http://rforge.net/formatR">development version</a>, use</p>
+
+<pre><code class="r">install.packages(&quot;formatR&quot;, repos = &quot;http://rforge.net&quot;)
+</code></pre>
+
+<p>Or check out the <a href="https://github.com/yihui/formatR">Github repository</a> and install from source if you know what this means.</p>
+
+<p>This page is always based on the development version.</p>
+
+<h2>2. Reformat R code</h2>
+
+<p>The <a href="http://cran.r-project.org/package=formatR"><strong>formatR</strong></a> package was designed to reformat <a href="http://www.r-project.org">R</a> code to improve readability; the main workhorse is the function <code>tidy.source()</code>. Features include:</p>
+
+<ul>
+<li>long lines of code and comments are reorganized into appropriately shorter ones</li>
+<li>spaces and indent are added where necessary</li>
+<li>comments are preserved in most cases</li>
+<li>the number of spaces to indent the code (i.e. tab width) can be specified (default is 4)</li>
+<li>an <code>else</code> statement in a separate line without the leading <code>}</code> will be moved one line back</li>
+<li><code>=</code> as an assignment operator can be replaced with <code>&lt;-</code></li>
+<li>the left brace <code>{</code> can be moved to a new line</li>
+</ul>
+
+<p>Below is an example of what <code>tidy.source()</code> can do. The source code is:</p>
+
+<pre><code class="r">## comments are retained;
+# a comment block will be reflowed if it contains long comments;
+#&#39; roxygen comments will not be wrapped in any case
+1+1
+
+if(TRUE){
+x=1  # inline comments
+}else{
+x=2;print(&#39;Oh no... ask the right bracket to go away!&#39;)}
+1*3 # one space before this comment will become two!
+2+2+2    # only &#39;single quotes&#39; are allowed in comments
+
+lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### a linear model
+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line
+## here is a long long long long long long long long long long long long long comment which will be wrapped
+</code></pre>
+
+<p>We can copy the above code to clipboard, and type <code>tidy.source(width.cutoff = 70)</code> to get:</p>
+
+<pre><code class="r">## comments are retained; a comment block will be reflowed if it
+## contains long comments;
+#&#39; roxygen comments will not be wrapped in any case
+1 + 1
+
+if (TRUE) {
+    x = 1  # inline comments
+} else {
+    x = 2
+    print(&quot;Oh no... ask the right bracket to go away!&quot;)
+}
+1 * 3  # one space before this comment will become two!
+2 + 2 + 2  # only &#39;single quotes&#39; are allowed in comments
+
+lm(y ~ x1 + x2, data = data.frame(y = rnorm(100), x1 = rnorm(100), x2 = rnorm(100)))  ### a linear model
+1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
+    1 + 1 + 1 + 1 + 1  ## comments after a long line
+## here is a long long long long long long long long long long long long
+## long comment which will be wrapped
+</code></pre>
+
+<p>Two applications of <code>tidy.source()</code>:</p>
+
+<ul>
+<li><code>tidy.dir()</code> can reformat all R scripts under a directory</li>
+<li><p><code>usage()</code> can reformat the usage of a function, e.g. compare <code>usage()</code> with the default output of <code>args()</code>:</p>
+
+<pre><code class="r">library(formatR)
+usage(glm, width = 70)  # can set arbitrary width here
+## glm(formula, family = gaussian, data, weights, subset, na.action, start = NULL, 
+##     etastart, mustart, offset, control = list(...), model = TRUE, method = &quot;glm.fit&quot;, 
+##     x = FALSE, y = TRUE, contrasts = NULL, ...)
+args(glm)
+## function (formula, family = gaussian, data, weights, subset, 
+##     na.action, start = NULL, etastart, mustart, offset, control = list(...), 
+##     model = TRUE, method = &quot;glm.fit&quot;, x = FALSE, y = TRUE, contrasts = NULL, 
+##     ...) 
+## NULL
+</code></pre></li>
+</ul>
+
+<h2>3. The Graphical User Interface</h2>
+
+<p>If the <strong>shiny</strong> packages has been installed, the function <code>tidy.app()</code> can launch a Shiny app to reformat R code like this (<a href="https://yihui.shinyapps.io/formatR/">live demo</a>):</p>
+
+<pre><code class="r">formatR::tidy.app()
+</code></pre>
+
+<p><img src="http://i.imgur.com/CuEPthH.png" alt="R source code before tidying"/></p>
+
+<p>After hitting the <code>Tidy</code> button:</p>
+
+<p><img src="http://i.imgur.com/ulXmq9U.png" alt="R source code after tidying"/></p>
+
+<h2>4. Evaluate the code and mask output in comments</h2>
+
+<p>It is often a pain when trying to copy R code from other people&#39;s code which has been run in R and the prompt characters (usually <code>&gt;</code>) are attached in the beginning of code, because we have to remove all the prompts <code>&gt;</code> and <code>+</code> manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function <code>tidy.eval()</code>, which uses <code>tidy.source()</code> to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:</p>
+
+<pre><code class="r">tidy.eval(text = c(&quot;a&lt;-1+1;a  # print the value&quot;, &quot;matrix(rnorm(10),5)&quot;))
+</code></pre>
+
+<pre><code>a &lt;- 1 + 1
+a  # print the value
+## [1] 2
+
+matrix(rnorm(10), 5)
+##            [,1]       [,2]
+## [1,]  0.1871940 -1.2262683
+## [2,] -2.8014509  1.0201983
+## [3,] -0.5766116  0.5287316
+## [4,] -1.6568563 -0.1256175
+## [5,]  0.8038448  0.1983737
+</code></pre>
+
+<p>The default source of the code is from clipboard like <code>tidy.source()</code>, so we can copy our code to clipboard, and simply run this in R:</p>
+
+<pre><code class="r">library(formatR)
+tidy.eval()  # without specifying any arguments, it reads code from clipboard
+</code></pre>
+
+<h2>5. Showcase</h2>
+
+<p>We continue the example code in Section 2, using different arguments in <code>tidy.source()</code> such as <code>arrow</code>, <code>blank</code>, <code>indent</code>, <code>brace.newline</code> and <code>comment</code>, etc.</p>
+
+<h3>Replace <code>=</code> with <code>&lt;-</code></h3>
+
+<pre><code class="r">if (TRUE) {
+    x &lt;- 1  # inline comments
+} else {
+    x &lt;- 2
+    print(&quot;Oh no... ask the right bracket to go away!&quot;)
+}
+</code></pre>
+
+<h3>Discard blank lines</h3>
+
+<p>Note the 5th line (an empty line) was discarded:</p>
+
+<pre><code class="r">## comments are retained; a comment block will be reflowed if it contains
+## long comments;
+#&#39; roxygen comments will not be wrapped in any case
+1 + 1
+if (TRUE) {
+    x = 1  # inline comments
+} else {
+    x = 2
+    print(&quot;Oh no... ask the right bracket to go away!&quot;)
+}
+1 * 3  # one space before this comment will become two!
+</code></pre>
+
+<h3>Reindent code (2 spaces instead of 4)</h3>
+
+<pre><code class="r">if (TRUE) {
+  x = 1  # inline comments
+} else {
+  x = 2
+  print(&quot;Oh no... ask the right bracket to go away!&quot;)
+}
+</code></pre>
+
+<h3>Move left braces <code>{</code> to new lines</h3>
+
+<pre><code class="r">if (TRUE)
+{
+    x = 1  # inline comments
+} else
+{
+    x = 2
+    print(&quot;Oh no... ask the right bracket to go away!&quot;)
+}
+</code></pre>
+
+<h3>Discard comments</h3>
+
+<pre><code class="r">1 + 1
+if (TRUE) {
+    x = 1
+} else {
+    x = 2
+    print(&quot;Oh no... ask the right bracket to go away!&quot;)
+}
+1 * 3
+2 + 2 + 2
+lm(y ~ x1 + x2, data = data.frame(y = rnorm(100), x1 = rnorm(100), x2 = rnorm(100)))
+1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 
+    1 + 1 + 1 + 1
+</code></pre>
+
+<h2>6. Further notes</h2>
+
+<p>The tricks used in this packages are very dirty. There might be dangers in using the functions in <strong>formatR</strong>. Please read the next section carefully to know exactly how comments are preserved. The best strategy to avoid failure is to put comments in complete lines or after <em>complete</em> R expressions. Below are some known issues that <code>tidy.source()</code> may fail.</p>
+
+<h3>In-line comments after an incomplete expression or ;</h3>
+
+<pre><code class="r">1 + 2 + ## comments after an incomplete line
+    3 + 4
+x &lt;- ## this is not a complete expression
+     5
+x &lt;- 1; # you should not use ; here!
+</code></pre>
+
+<p>It is not a good idea to interrupt R code with comments and sometimes it can be confusing &ndash; comments should come after a complete R expression naturally; by the way, <code>tidy.source()</code> will move the comments after <code>{</code> to the next line, e.g.</p>
+
+<pre><code class="r">if (TRUE) {## comments
+}
+</code></pre>
+
+<p>will become</p>
+
+<pre><code class="r">if (TRUE) {
+    ## comments
+}
+</code></pre>
+
+<h3>Inappropriate blank lines</h3>
+
+<p>Blank lines are often used to separate complete chunks of R code, and arbitrary blank lines may cause failures in <code>tidy.source()</code> as well when the argument <code>blank = TRUE</code>, e.g.</p>
+
+<pre><code class="r">if (TRUE)
+
+{&#39;this is a BAD style of R programming!&#39;} else &#39;failure!&#39;
+</code></pre>
+
+<p>There should not be a blank line after the <code>if</code> statement. Of course <code>blank = FALSE</code> will not fail in this case.</p>
+
+<h3><code>?</code> with comments</h3>
+
+<p>We can use the question mark (<code>?</code>) to view the help page, but <strong>formatR</strong> package is unable to correctly format the code using <code>?</code> with comments, e.g.</p>
+
+<pre><code class="r">?sd  # help on sd()
+</code></pre>
+
+<p>In this case, it is recommended to use the function <code>help()</code> instead of the short-hand version <code>?</code>.</p>
+
+<h3><code>-&gt;</code> with comments</h3>
+
+<p>We can also use the right arrow <code>-&gt;</code> for assignment, e.g. <code>1:10 -&gt; x</code>. I believe this flexibility is worthless, and it is amazing that a language has three assignment operators: <code>&lt;-</code>, <code>=</code> and <code>-&gt;</code> (whereas almost all other languages uses <code>=</code> for assignment). Bad news for <strong>formatR</strong> is that it is unable to format code using both <code>-&gt;</code> and comments in a line, e.g.</p>
+
+<pre><code class="r">1:10 -&gt; x  # assignment with right arrow
+</code></pre>
+
+<p>I recommend you to use <code>&lt;-</code> or <code>=</code> consistently. What is more important is consistency. I always use <code>=</code> because it causes me no confusion (I do not believe it is ever possible for people to interpret <code>fun(a = 1)</code> as assigning <code>1</code> to a variable <code>a</code> instead of passing an argument value) and <code>&lt;-</code> is more dangerous because it works everywhere (you might have unconsciously created a new variable <code>a</code> in <code>fun(a &lt;- 1)</code>; see <a href="http://markmail.org/thread/tgt33474bkxz2hep">an example here</a>). The only disadvantage is that most R people use <code>&lt;-</code> so it may be difficult to collaborate with other people.</p>
+
+<h2>7. How does <code>tidy.source()</code> actually work?</h2>
+
+<p>The method to preserve comments is to protect them as strings in R expressions. For example, there is a single line of comments in the source code:</p>
+
+<pre><code class="r">  # asdf
+</code></pre>
+
+<p>It will be first masked as</p>
+
+<pre><code class="r">invisible(&quot;.IDENTIFIER1  # asdf.IDENTIFIER2&quot;)
+</code></pre>
+
+<p>which is a legal R expression, so <code>base::parse()</code> can deal with it and will no longer remove the disguised comments.  In the end the identifiers will be removed to restore the original comments, i.e. the strings <code>invisible(&quot;.IDENTIFIER1</code> and <code>.IDENTIFIER2&quot;)</code> are replaced with empty strings.</p>
+
+<p>Inline comments are handled differently: two spaces will be added before the hash symbol <code>#</code>, e.g.</p>
+
+<pre><code class="r">1+1#  comments
+</code></pre>
+
+<p>will become</p>
+
+<pre><code class="r">1+1  #  comments
+</code></pre>
+
+<p>Inline comments are first disguised as a weird operation with its preceding R code, which is essentially meaningless but syntactically correct!  For example,</p>
+
+<pre><code class="r">1+1 %InLiNe_IdEnTiFiEr% &quot;#  comments&quot;
+</code></pre>
+
+<p>then <code>base::parse()</code> will deal with this expression; again, the disguised comments will not be removed. In the end, inline comments will be freed as well (remove the operator <code>%InLiNe_IdEnTiFiEr%</code> and surrounding double quotes).</p>
+
+<p>All these special treatments to comments are due to the fact that <code>base::parse()</code> and <code>base::deparse()</code> can tidy the R code at the price of dropping all the comments.</p>
+
+<h2>8. Global options</h2>
+
+<p>There are global options which can override some arguments in <code>tidy.source()</code>:</p>
+
+<table><thead>
+<tr>
+<th>argument</th>
+<th>global option</th>
+<th>default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>comment</code></td>
+<td><code>options(&#39;formatR.comment&#39;)</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr>
+<td><code>blank</code></td>
+<td><code>options(&#39;formatR.blank&#39;)</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr>
+<td><code>arrow</code></td>
+<td><code>options(&#39;formatR.arrow&#39;)</code></td>
+<td><code>FALSE</code></td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>options(&#39;formatR.indent&#39;)</code></td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td><code>brace.newline</code></td>
+<td><code>options(&#39;formatR.brace.newline&#39;)</code></td>
+<td><code>FALSE</code></td>
+</tr>
+</tbody></table>
+
+<p>Also note that single lines of long comments will be wrapped into shorter ones automatically, but roxygen comments will not be wrapped (i.e., comments that begin with <code>#&#39;</code>).</p>
+
+<h2>9. Additional problems for R 2.15.x</h2>
+
+<p>You are strongly recommended to upgrade to R 3.0.x; if you use <code>R &lt; 3.0.0</code>, you will suffer from a few additional problems below.</p>
+
+<h3>Character strings with # in the beginning of a line</h3>
+
+<pre><code class="r">mod = &quot;1+1
+## comments here can bring troubles
+2+2&quot;
+</code></pre>
+
+<p>We need to write like this:</p>
+
+<pre><code class="r">mod = &quot;1+1\n## comments here can bring troubles\n2+2&quot;
+## or
+mod = paste(&quot;1+1&quot;, &quot;## comments here can bring troubles&quot;, &quot;2+2&quot;, sep = &#39;\n&#39;)
+</code></pre>
+
+<h3>Double quotes in comments</h3>
+
+<p>Note when <code>comment == TRUE</code>, you <em>must not write double quotes in the inline comments</em> and <em>must write literal <code>#</code> in double quotes</em>!! For example,</p>
+
+<pre><code class="r">1 + 1  # double quotes in &quot;comment&quot; are not allowed
+1 + 1  # here is a legitimate &#39;comment&#39; with single quotes
+
+&quot;a valid character string with # in it&quot;
+&#39;a # in single quotes is not allowed&#39;
+</code></pre>
+
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
