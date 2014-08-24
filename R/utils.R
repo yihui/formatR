@@ -1,10 +1,11 @@
 # replace `=` by `<-` in expressions
 replace_assignment = function(exp) {
-  library(codetools)
-  wc = makeCodeWalker(
-    call = function (e, w) {
-      cl = walkCode(e[[1]], w)
-      arg = lapply(as.list(e[-1]), function(a) if (missing(a)) NA else walkCode(a, w))
+  wc = codetools::makeCodeWalker(
+    call = function(e, w) {
+      cl = codetools::walkCode(e[[1]], w)
+      arg = lapply(as.list(e[-1]), function(a) if (missing(a)) NA else {
+        codetools::walkCode(a, w)
+      })
       as.call(c(list(cl), arg))
     },
     leaf = function(e, w) {
@@ -13,7 +14,7 @@ replace_assignment = function(exp) {
       if (identical(e, as.name("="))) e <- as.name("<-")
       e
     })
-  lapply(as.list(exp), walkCode, w = wc)
+  lapply(as.list(exp), codetools::walkCode, w = wc)
 }
 
 R3 = getRversion() >= '3.0.0'
