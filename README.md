@@ -1,6 +1,6 @@
 # formatR
 
-[![Build Status](https://travis-ci.org/yihui/formatR.png)](https://travis-ci.org/yihui/formatR)
+[![Build Status](https://travis-ci.org/yihui/formatR.svg)](https://travis-ci.org/yihui/formatR)
 
 Format R code automatically.
 
