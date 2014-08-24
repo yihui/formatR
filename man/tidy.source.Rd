@@ -2,29 +2,27 @@
 \alias{tidy.source}
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy.source(source = "clipboard", keep.comment = getOption("keep.comment", 
-    TRUE), keep.blank.line = getOption("keep.blank.line", 
-    TRUE), replace.assign = getOption("replace.assign", FALSE), 
-    left.brace.newline = getOption("left.brace.newline", FALSE), 
-    reindent.spaces = getOption("reindent.spaces", 4), output = TRUE, 
-    text = NULL, width.cutoff = getOption("width"), ...)
+tidy.source(source = "clipboard", comment = getOption("formatR.comment", 
+    TRUE), blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow", 
+    FALSE), brace.newline = getOption("formatR.brace.newline", FALSE), 
+    indent = getOption("formatR.indent", 4), output = TRUE, text = NULL, 
+    width.cutoff = getOption("width"), ...)
 }
 \arguments{
 \item{source}{a character string: location of the source code (default to be
 the clipboard; this means we can copy the code to clipboard and use
 \code{tidy.souce()} without specifying the argument \code{source})}
 
-\item{keep.comment}{whether to keep comments (\code{TRUE} by default)}
+\item{comment}{whether to keep comments (\code{TRUE} by default)}
 
-\item{keep.blank.line}{whether to keep blank lines (\code{TRUE} by default)}
+\item{blank}{whether to keep blank lines (\code{TRUE} by default)}
 
-\item{replace.assign}{whether to replace the assign operator \code{=} with
-\code{<-}}
+\item{arrow}{whether to replace the assign operator \code{=} with \code{<-}}
 
-\item{left.brace.newline}{whether to put the left brace \code{\{} to a new
-line (default \code{FALSE})}
+\item{brace.newline}{whether to put the left brace \code{\{} to a new line
+(default \code{FALSE})}
 
-\item{reindent.spaces}{number of spaces to indent the code (default 4)}
+\item{indent}{number of spaces to indent the code (default 4)}
 
 \item{output}{output to the console or a file using \code{\link{cat}}?}
 
@@ -54,12 +52,6 @@ lines and comments, which is different with \code{\link{parse}} and
 \code{=} means assignments, and reindent code by a specified number of spaces
 (default is 4).
 }
-\details{
-This function helps the users to tidy up their source code in a sense that
-necessary indents and spaces will be added, but comments will be preserved if
-\code{keep.comment = TRUE}. See the references to know how this function
-actually works.
-}
 \note{
 Be sure to read the reference to know other limitations.
 }
@@ -80,13 +72,13 @@ cat(src, sep = "\\n")
 tidy.source(text = src)
 
 ## preserve blank lines
-tidy.source(text = src, keep.blank.line = TRUE)
+tidy.source(text = src, blank = TRUE)
 
 ## indent with 2 spaces
-tidy.source(text = src, reindent.spaces = 2)
+tidy.source(text = src, indent = 2)
 
 ## discard comments!
-tidy.source(text = src, keep.comment = FALSE)
+tidy.source(text = src, comment = FALSE)
 
 ## wanna see the gory truth??
 tidy.source(text = src, output = FALSE)$text.mask
@@ -100,14 +92,14 @@ tidy.source(x)
 
 # to a file
 f = tempfile()
-tidy.source(x, keep.blank.line = TRUE, file = f)
+tidy.source(x, blank = TRUE, file = f)
 
 ## check the original code here and see the difference
 file.show(x)
 file.show(f)
 
 ## use global options
-options(keep.comment = TRUE, keep.blank.line = FALSE)
+options(comment = TRUE, blank = FALSE)
 tidy.source(x)
 
 ## if you've copied R code into the clipboard
@@ -125,8 +117,8 @@ Yihui Xie <\url{http://yihui.name}> with substantial contribution
   from Yixuan Qiu <\url{http://yixuan.cos.name}>
 }
 \references{
-\url{https://github.com/yihui/formatR/wiki/} (an introduction to
-  this package, with examples and further notes)
+\url{http://yihui.name/formatR} (an introduction to this package,
+  with examples and further notes)
 }
 \seealso{
 \code{\link{parse}}, \code{\link{deparse}}
