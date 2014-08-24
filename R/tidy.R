@@ -5,21 +5,15 @@
 #' \code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
 #' \code{=} means assignments, and reindent code by a specified number of spaces
 #' (default is 4).
-#'
-#' This function helps the users to tidy up their source code in a sense that
-#' necessary indents and spaces will be added, but comments will be preserved if
-#' \code{keep.comment = TRUE}. See the references to know how this function
-#' actually works.
 #' @param source a character string: location of the source code (default to be
 #'   the clipboard; this means we can copy the code to clipboard and use
 #'   \code{tidy.souce()} without specifying the argument \code{source})
-#' @param keep.comment whether to keep comments (\code{TRUE} by default)
-#' @param keep.blank.line whether to keep blank lines (\code{TRUE} by default)
-#' @param replace.assign whether to replace the assign operator \code{=} with
-#'   \code{<-}
-#' @param left.brace.newline whether to put the left brace \code{\{} to a new
-#'   line (default \code{FALSE})
-#' @param reindent.spaces number of spaces to indent the code (default 4)
+#' @param comment whether to keep comments (\code{TRUE} by default)
+#' @param blank whether to keep blank lines (\code{TRUE} by default)
+#' @param arrow whether to replace the assign operator \code{=} with \code{<-}
+#' @param brace.newline whether to put the left brace \code{\{} to a new line
+#'   (default \code{FALSE})
+#' @param indent number of spaces to indent the code (default 4)
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
@@ -44,14 +38,62 @@
 #' @export
 #' @example inst/examples/tidy.source.R
 tidy.source = function(
-  source = 'clipboard', keep.comment = getOption('keep.comment', TRUE),
-  keep.blank.line = getOption('keep.blank.line', TRUE),
-  replace.assign = getOption('replace.assign', FALSE),
-  left.brace.newline = getOption('left.brace.newline', FALSE),
-  reindent.spaces = getOption('reindent.spaces', 4),
+  source = 'clipboard', comment = getOption('formatR.comment', TRUE),
+  blank = getOption('formatR.blank', TRUE),
+  arrow = getOption('formatR.arrow', FALSE),
+  brace.newline = getOption('formatR.brace.newline', FALSE),
+  indent = getOption('formatR.indent', 4),
   output = TRUE, text = NULL,
   width.cutoff = getOption('width'), ...
 ) {
+  # compatibility with formatR <= v0.10
+  if (is.logical(getOption('keep.comment'))) {
+    warning("The option 'keep.comment' is deprecated; please use 'formatR.comment'")
+    options(formatR.comment = getOption('keep.comment'))
+  }
+  if (is.logical(getOption('keep.blank.line'))) {
+    warning("The option 'keep.blank.line' is deprecated; please use 'formatR.blank'")
+    options(formatR.blank = getOption('keep.blank.line'))
+  }
+  if (is.logical(getOption('replace.assign'))) {
+    warning("The option 'replace.assign' is deprecated; please use 'formatR.arrow'")
+    options(formatR.arrow = getOption('replace.assign'))
+  }
+  if (is.logical(getOption('left.brace.newline'))) {
+    warning("The option 'left.brace.newline' is deprecated; please use 'formatR.brace.newline'")
+    options(formatR.brace.newline = getOption('left.brace.newline'))
+  }
+  if (is.numeric(getOption('reindent.spaces'))) {
+    warning("The option 'reindent.spaces' is deprecated; please use 'formatR.indent'")
+    options(formatR.indent = getOption('reindent.spaces'))
+  }
+  extra = list(...)
+  if (is.logical(extra$keep.comment)) {
+    warning("The argument 'keep.comment' is deprecated; please use 'comment'")
+    comment = extra$keep.comment
+    extra$keep.comment = NULL
+  }
+  if (is.logical(extra$keep.blank.line)) {
+    warning("The argument 'keep.blank.line' is deprecated; please use 'blank'")
+    blank = extra$keep.blank.line
+    extra$keep.blank.line = NULL
+  }
+  if (is.logical(extra$replace.assign)) {
+    warning("The argument 'replace.assign' is deprecated; please use 'arrow'")
+    arrow = extra$replace.assign
+    extra$replace.assign = NULL
+  }
+  if (is.logical(extra$left.brace.newline)) {
+    warning("The argument 'left.brace.newline' is deprecated; please use 'brace.newline'")
+    brace.newline = extra$left.brace.newline
+    extra$left.brace.newline = NULL
+  }
+  if (is.numeric(extra$reindent.spaces)) {
+    warning("The argument 'reindent.spaces' is deprecated; please use 'indent'")
+    indent = extra$reindent.spaces
+    extra$reindent.spaces = NULL
+  }
+
   if (is.null(text)) {
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
       source = pipe('pbpaste')
@@ -64,19 +106,19 @@ tidy.source = function(
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
   }
-  if (keep.blank.line && R3) {
+  if (blank && R3) {
     one = paste(text, collapse = '\n') # record how many line breaks before/after
     n1 = attr(regexpr('^\n*', one), 'match.length')
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
-  if (keep.comment) text = mask_comments(text, width.cutoff, keep.blank.line)
-  text.mask = tidy_block(text, width.cutoff, replace.assign && length(grep('=', text)))
-  text.tidy = if (keep.comment) unmask.source(text.mask) else text.mask
-  text.tidy = reindent_lines(text.tidy, reindent.spaces)
-  if (left.brace.newline) text.tidy = move_leftbrace(text.tidy)
+  if (comment) text = mask_comments(text, width.cutoff, blank)
+  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
+  text.tidy = if (comment) unmask.source(text.mask) else text.mask
+  text.tidy = reindent_lines(text.tidy, indent)
+  if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
-  if (keep.blank.line && R3) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
-  if (output) cat(paste(text.tidy, collapse = '\n'), '\n', ...)
+  if (blank && R3) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
+  if (output) do.call(cat, c(list(paste(text.tidy, collapse = '\n'), '\n'), extra))
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }
 

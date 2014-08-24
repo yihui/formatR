@@ -12,6 +12,16 @@ BUG FIXES
   o the shebang #! is no longer treated as an R comment (thanks, Mirko
   Ebert, #36)
 
+MAJOR CHANGES
+
+  o the arguments of tidy.source() were renamed: `keep.comment` was renamed to
+  `comment`, `keep.blank.line` -> `blank`, `replace.assign` -> `arrow`,
+  `left.brace.newline` -> `brace.newline`, and `reindent.spaces` -> `indent`;
+  similarly, the corresponding global options were also renamed: now you should
+  use `options(formatR.comment)` instead of `options(keep.comment)`,
+  `keep.blank.line` -> `formatR.blank`, and so on; see `?tidy.source` and
+  http://yihui.name/formatR for details
+
 MINOR CHANGES
 
   o the usage() function returns the source code of the usage of a function

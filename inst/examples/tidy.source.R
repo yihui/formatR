@@ -14,13 +14,13 @@ cat(src, sep = '\n')
 tidy.source(text = src)
 
 ## preserve blank lines
-tidy.source(text = src, keep.blank.line = TRUE)
+tidy.source(text = src, blank = TRUE)
 
 ## indent with 2 spaces
-tidy.source(text = src, reindent.spaces = 2)
+tidy.source(text = src, indent = 2)
 
 ## discard comments!
-tidy.source(text = src, keep.comment = FALSE)
+tidy.source(text = src, comment = FALSE)
 
 ## wanna see the gory truth??
 tidy.source(text = src, output = FALSE)$text.mask
@@ -34,14 +34,14 @@ tidy.source(x)
 
 # to a file
 f = tempfile()
-tidy.source(x, keep.blank.line = TRUE, file = f)
+tidy.source(x, blank = TRUE, file = f)
 
 ## check the original code here and see the difference
 file.show(x)
 file.show(f)
 
 ## use global options
-options(keep.comment = TRUE, keep.blank.line = FALSE)
+options(comment = TRUE, blank = FALSE)
 tidy.source(x)
 
 ## if you've copied R code into the clipboard

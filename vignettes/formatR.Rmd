@@ -101,33 +101,33 @@ tidy.eval()  # without specifying any arguments, it reads code from clipboard
 
 ## 5. Showcase
 
-We continue the example code in Section 2, using different arguments in `tidy.source()` such as `replace.assign`, `keep.blank.line`, `reindent.spaces`, `left.brace.newline` and `keep.comment`, etc.
+We continue the example code in Section 2, using different arguments in `tidy.source()` such as `arrow`, `blank`, `indent`, `brace.newline` and `comment`, etc.
 
 ### Replace `=` with `<-`
 
-```{r example, eval=FALSE, echo=6, tidy.opts=list(replace.assign=TRUE)}
+```{r example, eval=FALSE, echo=6, tidy.opts=list(arrow=TRUE)}
 ```
 
 ### Discard blank lines
 
 Note the 5th line (an empty line) was discarded:
 
-```{r example, eval=FALSE, echo=1:6, tidy.opts=list(keep.blank.line = FALSE)}
+```{r example, eval=FALSE, echo=1:6, tidy.opts=list(blank = FALSE)}
 ```
 
 ### Reindent code (2 spaces instead of 4)
 
-```{r example, eval=FALSE, echo=6, tidy.opts=list(reindent.spaces = 2)}
+```{r example, eval=FALSE, echo=6, tidy.opts=list(indent = 2)}
 ```
 
 ### Move left braces `{` to new lines
 
-```{r example, eval=FALSE, echo=6, tidy.opts=list(left.brace.newline = TRUE)}
+```{r example, eval=FALSE, echo=6, tidy.opts=list(brace.newline = TRUE)}
 ```
 
 ### Discard comments
 
-```{r example, eval=FALSE, tidy.opts=list(keep.comment = FALSE)}
+```{r example, eval=FALSE, tidy.opts=list(comment = FALSE)}
 ```
 
 ## 6. Further notes
@@ -158,7 +158,7 @@ will become
 
 ### Inappropriate blank lines
 
-Blank lines are often used to separate complete chunks of R code, and arbitrary blank lines may cause failures in `tidy.source()` as well when the argument `keep.blank.line = TRUE`, e.g.
+Blank lines are often used to separate complete chunks of R code, and arbitrary blank lines may cause failures in `tidy.source()` as well when the argument `blank = TRUE`, e.g.
 
 ```r
 if (TRUE)
@@ -166,7 +166,7 @@ if (TRUE)
 {'this is a BAD style of R programming!'} else 'failure!'
 ```
 
-There should not be a blank line after the `if` statement. Of course `keep.blank.line = FALSE` will not fail in this case.
+There should not be a blank line after the `if` statement. Of course `blank = FALSE` will not fail in this case.
 
 ### `?` with comments
 
@@ -230,13 +230,13 @@ All these special treatments to comments are due to the fact that `base::parse()
 
 There are global options which can override some arguments in `tidy.source()`:
 
-| argument          | global option                | default |
-|-------------------|------------------------------|---------|
-| `keep.comment`    | `options('keep.comment')`    | `TRUE`  |
-| `keep.blank.line` | `options('keep.blank.line')` | `TRUE`  |
-| `replace.assign`  | `options('replace.assign')`  | `FALSE` |
-| `reindent.spaces` | `options('reindent.spaces')` | `4`     |
-| `left.brace.newline` | `options('left.brace.newline')` | `FALSE`     |
+| argument        | global option                      | default |
+|-----------------|------------------------------------|---------|
+| `comment`       | `options('formatR.comment')`       | `TRUE`  |
+| `blank`         | `options('formatR.blank')`         | `TRUE`  |
+| `arrow`         | `options('formatR.arrow')`         | `FALSE` |
+| `indent`        | `options('formatR.indent')`        | `4`     |
+| `brace.newline` | `options('formatR.brace.newline')` | `FALSE` |
 
 Also note that single lines of long comments will be wrapped into shorter ones automatically, but roxygen comments will not be wrapped (i.e., comments that begin with `#'`).
 
@@ -262,7 +262,7 @@ mod = paste("1+1", "## comments here can bring troubles", "2+2", sep = '\n')
 
 ### Double quotes in comments
 
-Note when `keep.comment == TRUE`, you _must not write double quotes in the inline comments_ and _must write literal `#` in double quotes_!! For example,
+Note when `comment == TRUE`, you _must not write double quotes in the inline comments_ and _must write literal `#` in double quotes_!! For example,
 
 ```r
 1 + 1  # double quotes in "comment" are not allowed
