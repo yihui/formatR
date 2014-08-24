@@ -7,21 +7,20 @@
 
 ## 1. Installation
 
-To install from [CRAN](http://cran.rstudio.com/package=formatR), use
+You can install **formatR** from [CRAN](http://cran.rstudio.com/package=formatR), or [RForge](http://rforge.net/formatR) if you want to test the latest development version:
 
 ```{r eval=FALSE}
-install.packages('formatR')
+install.packages('formatR', repos = 'http://cran.rstudio.com')
+#' to install the development version, run
+#' install.packages('formatR', repos = 'http://rforge.net')
 ```
 
-To install the latest [development version](http://rforge.net/formatR), use
+Or check out the [Github repository](https://github.com/yihui/formatR) and install from source if you know what this means. This page is always based on the development version.
 
-```{r eval=FALSE}
-install.packages('formatR', repos = 'http://rforge.net')
+```{r}
+library(formatR)
+sessionInfo()
 ```
-
-Or check out the [Github repository](https://github.com/yihui/formatR) and install from source if you know what this means.
-
-This page is always based on the development version.
 
 ## 2. Reformat R code
 
@@ -78,11 +77,11 @@ If the **shiny** packages has been installed, the function `tidy_app()` can laun
 formatR::tidy_app()
 ```
 
-![R source code before tidying](http://i.imgur.com/CuEPthH.png)
+![R source code before tidying](http://i.imgur.com/lUgtEAb.png)
 
 After hitting the `Tidy` button:
 
-![R source code after tidying](http://i.imgur.com/ulXmq9U.png)
+![R source code after tidying](http://i.imgur.com/TBZm0B8.png)
 
 ## 4. Evaluate the code and mask output in comments
 
