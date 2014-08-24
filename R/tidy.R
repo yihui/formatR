@@ -39,8 +39,8 @@
 #' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
 #'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
 #' @seealso \code{\link{parse}}, \code{\link{deparse}}
-#' @references \url{https://github.com/yihui/formatR/wiki/} (an introduction to
-#'   this package, with examples and further notes)
+#' @references \url{http://yihui.name/formatR} (an introduction to this package,
+#'   with examples and further notes)
 #' @export
 #' @example inst/examples/tidy.source.R
 tidy.source = function(
