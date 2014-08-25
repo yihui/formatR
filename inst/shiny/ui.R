@@ -1,7 +1,7 @@
 library(shiny)
 
 shinyUI(fluidPage(
-  title = 'Tidy R Code',
+  title = 'Tidy R Code with formatR (Yihui Xie)',
   helpText(),  # just a placeholder for a little bit top margin
   sidebarLayout(
     sidebarPanel(
