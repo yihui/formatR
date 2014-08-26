@@ -1,21 +1,26 @@
-# it is not really python, but there is no R support on Travis CI yet
 language: python
 
-# environment variables
 env:
-  - R_LIBS_USER=~/R R_MY_PKG="$(basename $TRAVIS_REPO_SLUG)"
+  - R_PKG=formatR
 
-# install dependencies
 install:
-  - sudo apt-add-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu `lsb_release -cs`/"
-  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-  - sudo apt-add-repository -y ppa:marutter/c2d4u
-  - sudo apt-get update
-  - sudo apt-get install r-base-dev r-cran-shiny
-  - "[ ! -d ~/R ] && mkdir ~/R"
-  - Rscript -e "install.packages('$R_MY_PKG', dep = TRUE, repos = 'http://cran.rstudio.org')"
+  - Rscript -e "install.packages('$R_PKG', dep = TRUE)"
 
-# run tests
 script:
-  - cd ..; rm -f *.tar.gz; R CMD build $R_MY_PKG
-  - R CMD check $R_MY_PKG*.tar.gz --no-manual
+  - cd ..
+  - rm -f *_*.tar.gz
+  - R CMD build code
+  - R CMD check --no-manual *_*.tar.gz
+
+after_success:
+  - cd ..
+  - R CMD INSTALL *_*.tar.gz
+  - rm -rf $R_PKG && git clone -b gh-pages git@github.com:yihui/$R_PKG.git
+  - cd $R_PKG && cp ~/R/$R_PKG/doc/formatR.html index.html
+  - git add index.html && git commit -m"update homepage" && git push origin gh-pages
+  - cd ..
+  - rm -rf *_*.tar.gz *.Rcheck
+
+after_failure:
+  - for i in `ls *.Rcheck/00*`; do cat $i; done
+  - rm -rf *.Rcheck
