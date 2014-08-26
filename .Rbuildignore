@@ -2,5 +2,5 @@ inst/examples
 .gitignore
 ^\.Rproj\.user$
 ^.*\.Rproj$
-.travis.yml
+^shippable
 inst/shiny/shinyapps
