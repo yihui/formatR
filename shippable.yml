@@ -7,20 +7,15 @@ install:
   - Rscript -e "install.packages('$R_PKG', dep = TRUE)"
 
 script:
-  - cd ..
-  - rm -f *_*.tar.gz
-  - R CMD build code
-  - R CMD check --no-manual *_*.tar.gz
+  - curl -s https://raw.githubusercontent.com/yihui/r-shippable/master/r-cmd-check | bash
 
 after_success:
   - cd ..
+  - R CMD build code
   - R CMD INSTALL *_*.tar.gz
   - rm -rf $R_PKG && git clone -b gh-pages git@github.com:yihui/$R_PKG.git
   - cd $R_PKG && cp ~/R/$R_PKG/doc/formatR.html index.html
   - git add index.html && git commit -m"update homepage" && git push origin gh-pages
-  - cd ..
-  - rm -rf *_*.tar.gz *.Rcheck
 
 after_failure:
-  - for i in `ls *.Rcheck/00*`; do cat $i; done
-  - rm -rf *.Rcheck
+  - cd ..; for i in `ls *.Rcheck/00*`; do cat $i; done
