@@ -15,13 +15,9 @@ install:
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
   - R CMD check $R_PKG*.tar.gz --no-manual
+  - cd $R_PKG
 
 # deploy to XRAN
 after_success:
-  - set -e
-  - R CMD INSTALL $R_PKG*.tar.gz
-  - rm -rf gh-pages && git clone -b gh-pages https://${GH_TOKEN}@github.com/yihui/${R_PKG}.git gh-pages
-  - cd gh-pages && cp ~/R/${R_PKG}/doc/formatR.html index.html
-  - git add index.html && git commit -m"update homepage $TRAVIS_BUILD_NUMBER" && git push origin gh-pages || true
-  - cd ../$R_PKG
+  - export R_VIGNETTE=formatR.html
   - "(wget -q -O - http://yihui.name/xran/r-xran | bash)"
