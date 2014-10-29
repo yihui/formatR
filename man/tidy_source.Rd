@@ -11,7 +11,7 @@ tidy_source(source = "clipboard", comment = getOption("formatR.comment",
 \arguments{
 \item{source}{a character string: location of the source code (default to be
 the clipboard; this means we can copy the code to clipboard and use
-\code{tidy.souce()} without specifying the argument \code{source})}
+\code{tidy_source()} without specifying the argument \code{source})}
 
 \item{comment}{whether to keep comments (\code{TRUE} by default)}
 

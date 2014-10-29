@@ -7,7 +7,7 @@
 #' (default is 4).
 #' @param source a character string: location of the source code (default to be
 #'   the clipboard; this means we can copy the code to clipboard and use
-#'   \code{tidy.source()} without specifying the argument \code{source})
+#'   \code{tidy_source()} without specifying the argument \code{source})
 #' @param comment whether to keep comments (\code{TRUE} by default)
 #' @param blank whether to keep blank lines (\code{TRUE} by default)
 #' @param arrow whether to replace the assign operator \code{=} with \code{<-}
