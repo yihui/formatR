@@ -166,6 +166,7 @@ move_leftbrace = function(text) {
 
 # parse but do not keep source (moved from knitr)
 parse_only = function(code) {
+  if (length(code) == 0) return(expression())
   op = options(keep.source = FALSE); on.exit(options(op))
   base::parse(text = code, srcfile = NULL)
 }
