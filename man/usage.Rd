@@ -1,3 +1,4 @@
+% Please edit documentation in R/usage.R
 \name{usage}
 \alias{usage}
 \title{Show the usage of a function}

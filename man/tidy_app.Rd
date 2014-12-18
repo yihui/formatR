@@ -1,3 +1,4 @@
+% Please edit documentation in R/shiny.R
 \name{tidy_app}
 \alias{tidy_app}
 \title{A Shiny app to format R code}

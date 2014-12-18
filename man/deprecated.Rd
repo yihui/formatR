@@ -1,3 +1,4 @@
+% Please edit documentation in R/deprecated.R
 \name{tidy.source}
 \alias{formatR-deprecated}
 \alias{tidy.dir}

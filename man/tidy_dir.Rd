@@ -1,3 +1,4 @@
+% Please edit documentation in R/tidy.R
 \name{tidy_dir}
 \alias{tidy_dir}
 \title{Format the R scripts under a directory}

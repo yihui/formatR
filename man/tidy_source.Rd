@@ -1,3 +1,4 @@
+% Please edit documentation in R/tidy.R
 \name{tidy_source}
 \alias{tidy_source}
 \title{Reformat R code while preserving blank lines and comments}
