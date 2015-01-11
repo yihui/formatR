@@ -7,6 +7,8 @@
 #' @param width the width of output (passed to \code{width.cutoff} in
 #'   \code{\link{tidy_source}})
 #' @param tidy whether or not to reformat the usage code
+#' @param output whether to write the output to the console (via
+#'   \code{\link{cat}})
 #' @return The R code for the usage is returned as a character string
 #'   (invisibly).
 #' @seealso \code{\link{tidy_source}}
@@ -22,7 +24,7 @@
 #' usage(usage)
 #'
 #' usage(barplot.default, width = 60)  # narrower output
-usage = function(FUN, width = getOption('width'), tidy = TRUE) {
+usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE) {
   fn = as.character(substitute(FUN))
   res = capture.output(do.call(argsAnywhere, list(fn)))
   if (identical(res, 'NULL')) return()
@@ -56,6 +58,6 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE) {
     width = width * getOption("width")
   }
   tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = width)
-  cat(tidy.res$text.tidy, sep = '\n')
+  if (output) cat(tidy.res$text.tidy, sep = '\n')
   invisible(tidy.res$text.tidy)
 }
