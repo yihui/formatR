@@ -3,7 +3,7 @@
 \alias{usage}
 \title{Show the usage of a function}
 \usage{
-usage(FUN, width = getOption("width"), tidy = TRUE)
+usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE)
 }
 \arguments{
 \item{FUN}{the function name}
@@ -11,7 +11,10 @@ usage(FUN, width = getOption("width"), tidy = TRUE)
 \item{width}{the width of output (passed to \code{width.cutoff} in
 \code{\link{tidy_source}})}
 
-\item{tidy}{whether or not to reformat the usage code}
+\item{tidy}{whether to reformat the usage code}
+
+\item{output}{whether to write the output to the console (via
+\code{\link{cat}})}
 }
 \value{
 The R code for the usage is returned as a character string

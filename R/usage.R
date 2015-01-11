@@ -6,7 +6,7 @@
 #' @param FUN the function name
 #' @param width the width of output (passed to \code{width.cutoff} in
 #'   \code{\link{tidy_source}})
-#' @param tidy whether or not to reformat the usage code
+#' @param tidy whether to reformat the usage code
 #' @param output whether to write the output to the console (via
 #'   \code{\link{cat}})
 #' @return The R code for the usage is returned as a character string
