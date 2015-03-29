@@ -5,11 +5,11 @@ Version: 1.0.3
 Date: 2014-08-25
 Author: Yihui Xie
 Maintainer: Yihui Xie <xie@yihui.name>
-Description: This package provides a function tidy_source() to format R source
-    code. Spaces and indent will be added to the code automatically, and
-    comments will be preserved under certain conditions, so that R code will be
-    more human-readable and tidy. There is also a Shiny app as a user interface
-    in this package (see tidy_app()).
+Description: Provides a function tidy_source() to format R source code. Spaces
+    and indent will be added to the code automatically, and comments will be
+    preserved under certain conditions, so that R code will be more
+    human-readable and tidy. There is also a Shiny app as a user interface in
+    this package (see tidy_app()).
 Suggests:
     codetools,
     shiny,
