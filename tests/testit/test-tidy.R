@@ -24,7 +24,7 @@ assert(
 
 x1 = paste(c('#', letters), collapse = ' ')
 x2 = c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z')
-if (R3) assert(
+assert(
   'long comments are wrapped in tidy_source()',
   identical(tidy.res(x1, width.cutoff = 20), x2),
   identical(
@@ -34,7 +34,7 @@ if (R3) assert(
   ),
   identical(tidy.res(c(x1, '1+1', x1), width.cutoff = 20), c(x2, '1 + 1', x2))
 )
-if (R3) assert(
+assert(
   'roxygen comments are not wrapped',
   identical(tidy.res(c(paste("#'", x1), '1*1')), c(paste("#'", x1), '1 * 1'))
 )
@@ -43,7 +43,7 @@ x1 = '
 # only a comment
 '
 x2 = c('', '# only a comment', '', '')
-if (R3) assert(
+assert(
   'tidy_source() can deal with code that only contains a comment',
   identical(tidy.res(x1), c('', '# only a comment', '')),
   identical(tidy.res(x2), x2)
@@ -96,10 +96,10 @@ assert(
 
 assert(
   '= can be replaced with <- when replace.assign=TRUE',
-  identical(tidy.res('x=1;c(x=1)', arrow=TRUE), c('x <- 1', 'c(x = 1)'))
+  identical(tidy.res('x=1;c(x=1)', arrow = TRUE), c('x <- 1', 'c(x = 1)'))
 )
 
-if (R3) assert(
+assert(
   'since R 3.0.0 comments can be written with double quotes in them',
   identical(tidy.res('1+1# hello "world"'), "1 + 1  # hello 'world'")
 )
@@ -107,7 +107,7 @@ if (R3) assert(
 x1 = 'x="
 # this is not a comment
 "'
-if (R3) assert(
+assert(
   'since R 3.0.0, # in the beginning of a line does not necessarily mean comments',
   identical(tidy.res(x1), 'x = "\\n# this is not a comment\\n"')
 )

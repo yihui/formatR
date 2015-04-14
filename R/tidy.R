@@ -106,7 +106,7 @@ tidy_source = function(
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
   }
-  if (blank && R3) {
+  if (blank) {
     one = paste(text, collapse = '\n') # record how many line breaks before/after
     n1 = attr(regexpr('^\n*', one), 'match.length')
     n2 = attr(regexpr('\n*$', one), 'match.length')
@@ -117,7 +117,7 @@ tidy_source = function(
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
-  if (blank && R3) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
+  if (blank) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
   if (output) do.call(cat, c(list(paste(text.tidy, collapse = '\n'), '\n'), extra))
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }
@@ -146,15 +146,13 @@ unmask_source = function(text.mask) {
   text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else', ' else', text.mask)
-  if (R3) {
-    if (any(grepl('\\\\\\\\', text.mask)) && (any(grepl(mat.comment, text.mask)) ||
-          any(grepl(inline.comment, text.mask)))) {
-      m = gregexpr(mat.comment, text.mask)
-      regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
-      m = gregexpr(inline.comment, text.mask)
-      regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
-    }
-  } else text.mask = restore_bs(text.mask)
+  if (any(grepl('\\\\\\\\', text.mask)) &&
+      (any(grepl(mat.comment, text.mask)) || any(grepl(inline.comment, text.mask)))) {
+    m = gregexpr(mat.comment, text.mask)
+    regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+    m = gregexpr(inline.comment, text.mask)
+    regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+  }
   text.tidy = gsub(pat.comment, '', text.mask)
   # inline comments should be termined by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)

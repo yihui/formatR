@@ -17,10 +17,8 @@ replace_assignment = function(exp) {
   lapply(as.list(exp), codetools::walkCode, w = wc)
 }
 
-R3 = getRversion() >= '3.0.0'
-
 ## mask comments to cheat R
-mask_comments = if (R3) function(x, width, keep.blank.line) {
+mask_comments = function(x, width, keep.blank.line) {
   d = utils::getParseData(parse(text = x, keep.source = TRUE))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -70,20 +68,6 @@ mask_comments = if (R3) function(x, width, keep.blank.line) {
   }
 
   unlist(lapply(split(d.text, d.line), paste, collapse = ' '), use.names = FALSE)
-
-} else function(x, width, keep.blank.line) {
-  x = gsub('\\\\', '\\\\\\\\', x)
-  # whole lines of comments
-  idx = grepl('^\\s*#', x)
-  x[idx] = gsub('"', "'", x[idx])
-  # wrap long comments
-  idx = idx & !grepl("^\\s*#+'", x)
-  if (grepl('^#!', x[1])) idx[1] = FALSE  # shebang comment
-  x = reflow_comments(x, idx, width)
-  idx = grepl('^\\s*#', x)
-  x[idx] = sprintf('invisible("%s%s%s")', begin.comment, x[idx], end.comment)
-  if (keep.blank.line) x = move_else(x)
-  mask_inline(x)
 }
 
 # no blank lines before an 'else' statement!
@@ -113,7 +97,7 @@ mask_inline = function(x) {
 }
 
 # reflow comments (excluding roxygen comments)
-reflow_comments = if (R3) function(x, width) {
+reflow_comments = function(x, width) {
   if (length(x) == 0) return(x)
   # returns a character vector of the same length as x
   b = sub('^(#+).*', '\\1', x)
@@ -122,17 +106,6 @@ reflow_comments = if (R3) function(x, width) {
       'invisible("%s%s%s")', begin.comment, paste(prefix, res), end.comment
     ), collapse = '\n')
   }, strwrap(sub('^#+', '', x), width = width, simplify = FALSE), b)
-} else function(text, idx = grepl('^\\s*#+', text), width = getOption('width')) {
-  r = rle(idx)$lengths; flag = idx[1] # code and comments alternate in text
-  unlist(lapply(split(text, rep(seq(length(r)), r)), function(x) {
-    if (flag) {
-      b = sub("^\\s*(#+)('?).*", '\\1\\2 ', x[1])
-      x = paste(b, paste(gsub("^\\s*(#+)('?)", '', x), collapse = '\n'))
-      x = strwrap(x, width = width, prefix = b, initial = '')
-    }
-    flag <<- !flag
-    x
-  }), use.names = FALSE)
 }
 
 # reindent lines with a different number of spaces
