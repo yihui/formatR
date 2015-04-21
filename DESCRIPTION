@@ -16,7 +16,7 @@ Suggests:
     codetools,
     shiny,
     testit,
-    knitr (>= 1.9)
+    knitr
 License: GPL
 URL: http://yihui.name/formatR
 BugReports: https://github.com/yihui/formatR/issues
