@@ -1,8 +1,8 @@
 Package: formatR
 Type: Package
 Title: Format R Code Automatically
-Version: 1.2
-Date: 2015-04-21
+Version: 1.2.1
+Date: 2015-09-18
 Author: Yihui Xie
 Maintainer: Yihui Xie <xie@yihui.name>
 Description: Provides a function tidy_source() to format R source code. Spaces
