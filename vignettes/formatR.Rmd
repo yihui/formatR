@@ -3,6 +3,11 @@
 %\VignetteIndexEntry{An Introduction to formatR}
 -->
 
+<script type="text/javascript">
+if (location.protocol === 'https:' && location.href.match('yihui.name') === null)
+  location.href = 'http://yihui.name/formatR';
+</script>
+
 # An Introduction to formatR
 
 ## 1. Installation
