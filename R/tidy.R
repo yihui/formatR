@@ -35,6 +35,7 @@
 #' @seealso \code{\link{parse}}, \code{\link{deparse}}
 #' @references \url{http://yihui.name/formatR} (an introduction to this package,
 #'   with examples and further notes)
+#' @import utils
 #' @export
 #' @example inst/examples/tidy.source.R
 tidy_source = function(
