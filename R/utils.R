@@ -19,7 +19,7 @@ replace_assignment = function(exp) {
 
 ## mask comments to cheat R
 mask_comments = function(x, width, keep.blank.line) {
-  d = utils::getParseData(parse(text = x, keep.source = TRUE))
+  d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
   d.line = d$line1; d.line2 = d$line2; d.token = d$token; d.text = d$text
@@ -143,6 +143,18 @@ parse_only = function(code) {
   op = options(keep.source = FALSE); on.exit(options(op))
   base::parse(text = code, srcfile = NULL)
 }
+
+# copied from highr
+parse_source = function(lines) {
+  # adapted from evaluate
+  src = srcfilecopy('<text>', lines = '')
+  if (length(grep('\n', lines))) lines = unlist(strsplit(
+    sub('$', '\n', as.character(lines)), '\n'
+  ))
+  src$lines = lines
+  parse(text = lines, srcfile = src)
+}
+
 
 # restore backslashes
 restore_bs = function(x) gsub('\\\\\\\\', '\\\\', x)
