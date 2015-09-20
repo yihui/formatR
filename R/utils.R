@@ -144,7 +144,10 @@ parse_only = function(code) {
 }
 
 # copied from highr
-parse_source = function(lines) {
+# TODO: eventually remove the hack for R <= 3.2.2
+parse_source = if (getRversion() > '3.2.2') function(lines) {
+  parse(text = lines, keep.source = TRUE)
+} else function(lines) {
   # adapted from evaluate
   src = srcfilecopy('<text>', lines = '')
   if (length(grep('\n', lines))) lines = unlist(strsplit(
