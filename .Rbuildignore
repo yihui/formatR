@@ -4,3 +4,4 @@ inst/examples
 ^.*\.Rproj$
 .travis.yml
 inst/shiny/shinyapps
+.Rhistory
