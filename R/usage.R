@@ -19,7 +19,7 @@
 #' usage(plot)
 #'
 #' usage(plot.default)  # default method
-#' usage(plot.lm)  # on the 'lm' class
+#' usage('plot.lm')  # on the 'lm' class
 #'
 #' usage(usage)
 #'
