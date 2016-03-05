@@ -52,7 +52,7 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE) {
   if (!isS3) res[1] = paste(fn, res[1])
   if ((n <- length(res)) > 1 && res[n] == 'NULL') res = res[-n]  # rm last element 'NULL'
   if (!tidy) {
-    cat(res, sep = '\n')
+    if (output) cat(res, sep = '\n')
     return(invisible(res))
   }
 
