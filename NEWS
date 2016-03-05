@@ -2,11 +2,11 @@
 
 NEW FEATURES
 
-	o `tidy_source()` can deal with multibyte characters that cannot represented
-	in the system native encoding now (on Windows)
+  o `tidy_source()` can deal with multibyte characters that cannot represented
+  in the system native encoding now (on Windows)
 
-	o `usage()` works for functions obtained from `::` or `:::` now, e.g.
-	`usage(formatR::tidy_source)`
+  o `usage()` works for functions obtained from `::` or `:::` now, e.g.
+  `usage(formatR::tidy_source)`
 
 		   CHANGES IN formatR VERSION 1.2
 
