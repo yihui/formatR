@@ -8,6 +8,10 @@ if (location.protocol === 'https:' && location.href.match('yihui.name') === null
   location.href = 'http://yihui.name/formatR';
 </script>
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy = TRUE)
+```
+
 # An Introduction to formatR
 
 ## 1. Installation
