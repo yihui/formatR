@@ -86,11 +86,11 @@ If the **shiny** packages has been installed, the function `tidy_app()` can laun
 formatR::tidy_app()
 ```
 
-![R source code before tidying](http://i.imgur.com/lUgtEAb.png)
+[![R source code before tidying](http://i.imgur.com/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
 
 After hitting the `Tidy` button:
 
-![R source code after tidying](http://i.imgur.com/TBZm0B8.png)
+[![R source code after tidying](http://i.imgur.com/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
 
 ## 4. Evaluate the code and mask output in comments
 
