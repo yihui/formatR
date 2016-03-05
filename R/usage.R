@@ -56,10 +56,6 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE) {
     return(invisible(res))
   }
 
-  if (width <= 1) {
-    warning("'width' should no longer be specified as a proportion")
-    width = width * getOption("width")
-  }
   tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = width)
   if (output) cat(tidy.res$text.tidy, sep = '\n')
   invisible(tidy.res$text.tidy)
