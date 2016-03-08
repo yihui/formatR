@@ -1,5 +1,10 @@
 		   CHANGES IN formatR VERSION 1.4
 
+MAJOR CHANGES
+
+  o the deprecated functions tidy.source(), tidy.dir(), and tidy.eval() have
+  been removed; use tidy_source(), tidy_dir() and tidy_eval() instead
+
 BUG FIXES
 
   o `tidy_source()` writes an extra space to the last line of code (thanks,
