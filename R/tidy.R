@@ -47,54 +47,6 @@ tidy_source = function(
   output = TRUE, text = NULL,
   width.cutoff = getOption('width'), ...
 ) {
-  # compatibility with formatR <= v0.10
-  if (is.logical(getOption('keep.comment'))) {
-    warning("The option 'keep.comment' is deprecated; please use 'formatR.comment'")
-    options(formatR.comment = getOption('keep.comment'))
-  }
-  if (is.logical(getOption('keep.blank.line'))) {
-    warning("The option 'keep.blank.line' is deprecated; please use 'formatR.blank'")
-    options(formatR.blank = getOption('keep.blank.line'))
-  }
-  if (is.logical(getOption('replace.assign'))) {
-    warning("The option 'replace.assign' is deprecated; please use 'formatR.arrow'")
-    options(formatR.arrow = getOption('replace.assign'))
-  }
-  if (is.logical(getOption('left.brace.newline'))) {
-    warning("The option 'left.brace.newline' is deprecated; please use 'formatR.brace.newline'")
-    options(formatR.brace.newline = getOption('left.brace.newline'))
-  }
-  if (is.numeric(getOption('reindent.spaces'))) {
-    warning("The option 'reindent.spaces' is deprecated; please use 'formatR.indent'")
-    options(formatR.indent = getOption('reindent.spaces'))
-  }
-  extra = list(...)
-  if (is.logical(extra$keep.comment)) {
-    warning("The argument 'keep.comment' is deprecated; please use 'comment'")
-    comment = extra$keep.comment
-    extra$keep.comment = NULL
-  }
-  if (is.logical(extra$keep.blank.line)) {
-    warning("The argument 'keep.blank.line' is deprecated; please use 'blank'")
-    blank = extra$keep.blank.line
-    extra$keep.blank.line = NULL
-  }
-  if (is.logical(extra$replace.assign)) {
-    warning("The argument 'replace.assign' is deprecated; please use 'arrow'")
-    arrow = extra$replace.assign
-    extra$replace.assign = NULL
-  }
-  if (is.logical(extra$left.brace.newline)) {
-    warning("The argument 'left.brace.newline' is deprecated; please use 'brace.newline'")
-    brace.newline = extra$left.brace.newline
-    extra$left.brace.newline = NULL
-  }
-  if (is.numeric(extra$reindent.spaces)) {
-    warning("The argument 'reindent.spaces' is deprecated; please use 'indent'")
-    indent = extra$reindent.spaces
-    extra$reindent.spaces = NULL
-  }
-
   if (is.null(text)) {
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
       source = pipe('pbpaste')
@@ -119,7 +71,7 @@ tidy_source = function(
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
   if (blank) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
-  if (output) do.call(cat, c(list(paste(text.tidy, collapse = '\n'), '\n'), extra))
+  if (output) cat(text.tidy, sep = '\n', ...)
   invisible(list(text.tidy = text.tidy, text.mask = text.mask))
 }
 

@@ -1,3 +1,10 @@
+		   CHANGES IN formatR VERSION 1.4
+
+BUG FIXES
+
+  o `tidy_source()` writes an extra space to the last line of code (thanks,
+  @mr-karan, #49)
+
 		   CHANGES IN formatR VERSION 1.3
 
 NEW FEATURES
