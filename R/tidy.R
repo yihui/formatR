@@ -52,7 +52,7 @@ tidy_source = function(
       source = pipe('pbpaste')
     }
   } else {
-    source = textConnection(text); on.exit(close(source))
+    source = textConnection(text); on.exit(close(source), add = TRUE)
   }
   text = readLines(source, warn = FALSE)
   if (length(text) == 0L || all(grepl('^\\s*$', text))) {
