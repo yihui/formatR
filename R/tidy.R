@@ -107,7 +107,7 @@ unmask_source = function(text.mask) {
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
   text.tidy = gsub(pat.comment, '', text.mask)
-  # inline comments should be termined by $ or \n
+  # inline comments should be terminated by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
   # the rest of inline comments should be appended by \n
   gsub(inline.comment, '  \\1\n', text.tidy)
