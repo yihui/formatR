@@ -109,7 +109,7 @@ x1 = 'x="
 "'
 assert(
   'since R 3.0.0, # in the beginning of a line does not necessarily mean comments',
-  identical(tidy.res(x1), 'x = "\\n# this is not a comment\\n"')
+  identical(tidy.res(x1), 'x = "\n# this is not a comment\n"')
 )
 
 assert(
@@ -121,4 +121,13 @@ x1 = paste0('x="', r <- rand_string(2000), '"')
 assert(
   'Long strings (> 1000 chars) can be preserved',
   tidy.res(x1) %==% paste0('x = "', r, '"')
+)
+
+x1 = 'x = "
+  this is a
+  character string
+"'
+assert(
+  'line breaks in strings are preserved instead of being replaced by \\n',
+  tidy.res(x1) %==% x1
 )

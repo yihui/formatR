@@ -64,6 +64,7 @@ tidy_source = function(
     n1 = attr(regexpr('^\n*', one), 'match.length')
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
+  on.exit(.env$line_break <- NULL, add = TRUE)
   if (comment) text = mask_comments(text, width.cutoff, blank)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
@@ -94,6 +95,8 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
 # Restore the real source code from the masked text
 unmask_source = function(text.mask) {
   if (length(text.mask) == 0) return(text.mask)
+  m = .env$line_break
+  if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
   text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)

@@ -1,5 +1,9 @@
 		   CHANGES IN formatR VERSION 1.4
 
+NEW FEATURES
+
+  o `tidy_source()` can preserve line breaks in character strings in source code
+
 MAJOR CHANGES
 
   o the deprecated functions tidy.source(), tidy.dir(), and tidy.eval() have

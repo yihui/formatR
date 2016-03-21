@@ -170,6 +170,7 @@ fix_parse_data = function(d, x) {
     di = d[i, , drop = FALSE]
     d[i, 'text'] = get_src_string(x, di$line1, di$line2, di$col1, di$col2)
   }
+  d[s, 'text'] = mask_line_break(d[s, 'text'])
   d
 }
 
@@ -178,4 +179,25 @@ get_src_string = function(x, l1, l2, c1, c2) {
   x[l1] = substr(x[l1], c1, nchar(x[l1]))
   x[l2] = substr(x[l2], 1, c2)
   paste(x[l1:l2], collapse = '\n')
+}
+
+# generate a random string
+CHARS = c(letters, LETTERS, 0:9)
+rand_string = function(len = 32) {
+  paste(sample(CHARS, len, replace = TRUE), collapse = '')
+}
+
+.env = new.env()
+.env$line_break = NULL
+
+mask_line_break = function(x) {
+  if (length(grep('\n', x)) == 0) return(x)
+  m = (function() {
+    for (i in 2:10) {
+      for (j in 1:100) if (length(grep(s <- rand_string(i), x)) == 0) return(s)
+    }
+  })()
+  if (is.null(m)) return(x)
+  .env$line_break = m
+  gsub('\n', m, x)
 }
