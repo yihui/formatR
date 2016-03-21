@@ -22,6 +22,7 @@ mask_comments = function(x, width, keep.blank.line) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
+  d = fix_parse_data(d, x)
   d.line = d$line1; d.line2 = d$line2; d.token = d$token; d.text = d$text
 
   # move else back
@@ -157,6 +158,24 @@ parse_source = if (getRversion() > '3.2.2') function(lines) {
   parse(text = lines, srcfile = src)
 }
 
-
 # restore backslashes
 restore_bs = function(x) gsub('\\\\\\\\', '\\\\', x)
+
+# a workaround for the R bug (long strings are truncated in getParseData()):
+# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=16354
+fix_parse_data = function(d, x) {
+  if (length(s <- which(d$token == 'STR_CONST')) == 0) return(d)
+  ws = s[grep('^\\[\\d+ (wide )?chars quoted with \'"\'\\]$', d$text[s])]
+  for (i in ws) {
+    di = d[i, , drop = FALSE]
+    d[i, 'text'] = get_src_string(x, di$line1, di$line2, di$col1, di$col2)
+  }
+  d
+}
+
+get_src_string = function(x, l1, l2, c1, c2) {
+  if (l1 == l2) return(substr(x[l1], c1, c2))
+  x[l1] = substr(x[l1], c1, nchar(x[l1]))
+  x[l2] = substr(x[l2], 1, c2)
+  paste(x[l1:l2], collapse = '\n')
+}

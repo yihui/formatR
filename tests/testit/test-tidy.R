@@ -116,3 +116,9 @@ assert(
   'the shebang is preserved',
   identical(tidy.res(c('#!/usr/bin/Rscript', '1+1')), c('#!/usr/bin/Rscript', '1 + 1'))
 )
+
+x1 = paste0('x="', r <- rand_string(2000), '"')
+assert(
+  'Long strings (> 1000 chars) can be preserved',
+  tidy.res(x1) %==% paste0('x = "', r, '"')
+)
