@@ -11,11 +11,14 @@ MAJOR CHANGES
 
 BUG FIXES
 
-  o `tidy_source()` writes an extra space to the last line of code (thanks,
-  @mr-karan, #49)
+  o `tidy_source()` should not write an extra space to the last line of code
+  (thanks, @mr-karan, #49)
 
   o long strings (> 1000 characters) in source code can be preserved now
   (thanks, @jholtman, #50)
+
+  o `tidy_source()` might move any lines of code starting with `else` back to
+  the previous lines (thanks, @Auburngrads, #51)
 
 		   CHANGES IN formatR VERSION 1.3
 

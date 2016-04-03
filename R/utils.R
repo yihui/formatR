@@ -75,7 +75,7 @@ mask_comments = function(x, width, keep.blank.line) {
 move_else = function(x) {
   blank = grepl('^\\s*$', x)
   if (!any(blank)) return(x)
-  else.line = grep('^\\s*else(\\W|)', x)
+  else.line = grep('^\\s*else(\\s+|$)', x)
   for (i in else.line) {
     j = i - 1
     while (blank[j]) {

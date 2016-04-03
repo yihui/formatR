@@ -58,6 +58,15 @@ assert(
   identical(tidy.res(x1), '{\n    if (TRUE) {\n        1\n    } else 2\n}')
 )
 
+x1 = '{x=1
+else.x=2
+}'
+
+assert(
+  'should not move any lines starting with `else` back to the previous line',
+  tidy.res(x1) %==% '{\n    x = 1\n    else.x = 2\n}'
+)
+
 x1 = 'if (TRUE) {# comment
 1
 }'

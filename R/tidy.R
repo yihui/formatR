@@ -101,7 +101,7 @@ unmask_source = function(text.mask) {
   ##   the identifier first to move the comments back to the same line
   text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)
   ## move 'else ...' back to the last line
-  text.mask = gsub('\n\\s*else', ' else', text.mask)
+  text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
   if (any(grepl('\\\\\\\\', text.mask)) &&
       (any(grepl(mat.comment, text.mask)) || any(grepl(inline.comment, text.mask)))) {
     m = gregexpr(mat.comment, text.mask)
