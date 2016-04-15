@@ -41,7 +41,7 @@ mask_comments = function(x, width, keep.blank.line) {
   c0 = d.line[-1] != d.line[-n]  # is there a line change?
   c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
   c2 = i & !c1  # inline comments
-  c3 = c1 & grepl("^#+'", d.text)  # roxygen comments
+  c3 = c1 & grepl("^#+[-'+]", d.text)  # roxygen or knitr spin() comments
   if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
 
   # reflow blocks of comments: first collapse them, then wrap them
