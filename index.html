@@ -38,7 +38,7 @@ if (location.protocol === 'https:' && location.href.match('yihui.name') === null
 
 <h2>1. Installation</h2>
 
-<p>You can install <strong>formatR</strong> from <a href="http://cran.rstudio.com/package=formatR">CRAN</a>, or <a href="http://yihui.name/xran">XRAN</a> if you want to test the latest development version:</p>
+<p>You can install <strong>formatR</strong> from <a href="https://cran.r-project.org/package=formatR">CRAN</a>, or <a href="http://yihui.name/xran">XRAN</a> if you want to test the latest development version:</p>
 
 <pre><code class="r">install.packages(&quot;formatR&quot;, repos = &quot;http://cran.rstudio.com&quot;)
 #&#39; to install the development version, run
@@ -51,7 +51,7 @@ if (location.protocol === 'https:' && location.href.match('yihui.name') === null
 sessionInfo()
 </code></pre>
 
-<pre><code>## R version 3.2.4 Revised (2016-03-16 r70338)
+<pre><code>## R version 3.3.0 (2016-05-03)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu precise (12.04.5 LTS)
 ## 
@@ -67,16 +67,16 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] formatR_1.3.4
+## [1] formatR_1.4
 ## 
 ## loaded via a namespace (and not attached):
-## [1] magrittr_1.5   tools_3.2.4    stringi_1.0-1  knitr_1.12.22 
-## [5] stringr_1.0.0  evaluate_0.8.3
+## [1] magrittr_1.5  tools_3.3.0   stringi_1.0-1 knitr_1.12.28 stringr_1.0.0
+## [6] evaluate_0.9
 </code></pre>
 
 <h2>2. Reformat R code</h2>
 
-<p>The <a href="http://cran.r-project.org/package=formatR"><strong>formatR</strong></a> package was designed to reformat <a href="http://www.r-project.org">R</a> code to improve readability; the main workhorse is the function <code>tidy_source()</code>. Features include:</p>
+<p>The <a href="https://cran.r-project.org/package=formatR"><strong>formatR</strong></a> package was designed to reformat <a href="https://www.r-project.org">R</a> code to improve readability; the main workhorse is the function <code>tidy_source()</code>. Features include:</p>
 
 <ul>
 <li>long lines of code and comments are reorganized into appropriately shorter ones</li>
