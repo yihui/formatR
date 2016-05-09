@@ -16,7 +16,7 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 ## 1. Installation
 
-You can install **formatR** from [CRAN](http://cran.rstudio.com/package=formatR), or [XRAN](http://yihui.name/xran) if you want to test the latest development version:
+You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or [XRAN](http://yihui.name/xran) if you want to test the latest development version:
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://cran.rstudio.com')
@@ -33,7 +33,7 @@ sessionInfo()
 
 ## 2. Reformat R code
 
-The [**formatR**](http://cran.r-project.org/package=formatR) package was designed to reformat [R](http://www.r-project.org) code to improve readability; the main workhorse is the function `tidy_source()`. Features include:
+The [**formatR**](https://cran.r-project.org/package=formatR) package was designed to reformat [R](https://www.r-project.org) code to improve readability; the main workhorse is the function `tidy_source()`. Features include:
 
 - long lines of code and comments are reorganized into appropriately shorter ones
 - spaces and indent are added where necessary
