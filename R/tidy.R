@@ -145,3 +145,22 @@ tidy_dir = function(path = '.', recursive = FALSE, ...) {
     try(tidy_source(f, file = f, ...))
   }
 }
+
+#' Format the R scripts of a specific file or vector of files
+#'
+#' The original script will be overwritten with reformatted code
+#' if reformatting was successful. You may need to back up the original
+#' first if you do not fully understand the tricks
+#' \code{\link{tidy_source}} is using.
+#' @details A wrapper of tidy_source to overwrite a file with tidied version
+#' @author edlee123
+#' @param fvec the file, or vector of files
+#' @param ... additional params of tidy_source
+#' @return Invisible \code{NULL}.
+#' @export
+tidy_file <- function(fvec, ...) {
+  for (f in fvec) {
+    message("tidying ", f)
+    try(tidy_source(f, file = f, ...))
+  }
+}
