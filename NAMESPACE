@@ -1,6 +1,7 @@
 export(tidy_app)
 export(tidy_dir)
 export(tidy_eval)
+export(tidy_file)
 export(tidy_source)
 export(usage)
 import(utils)
