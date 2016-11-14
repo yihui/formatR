@@ -3,7 +3,11 @@ Type: Package
 Title: Format R Code Automatically
 Version: 1.4
 Date: 2016-05-09
-Author: Yihui Xie
+Authors@R: c(
+    person("Yihui", "Xie", email = "xie@yihui.name", role = c("aut", "cre")),
+    person("Kohske", "Takahashi", role = "ctb"),
+    person("Ed", "Lee", role = "ctb")
+    )
 Maintainer: Yihui Xie <xie@yihui.name>
 Description: Provides a function tidy_source() to format R source code. Spaces
     and indent will be added to the code automatically, and comments will be
