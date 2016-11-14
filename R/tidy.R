@@ -117,19 +117,20 @@ unmask_source = function(text.mask) {
 }
 
 
-#' Format the R scripts under a directory
+#' Format all R scripts under a directory, or specified R scripts
 #'
-#' This function first looks for all the R scripts under a directory (using the
-#' pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy_source}} to tidy
-#' these scripts. The original scripts will be overwritten with reformatted code
-#' if reformatting was successful. You may need to back up the original
-#' directory first if you do not fully understand the tricks
-#' \code{\link{tidy_source}} is using.
+#' \code{tidy_dir()} first looks for all the R scripts under a directory (using
+#' the pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy_source}} to
+#' tidy these scripts. The original scripts will be overwritten with reformatted
+#' code if reformatting was successful. You may need to back up the original
+#' directory first if you do not fully understand the tricks used by
+#' \code{\link{tidy_source}}. \code{tidy_file()} formats specified R scripts.
 #' @param path the directory
 #' @param recursive whether to recursively look for R scripts under \code{path}
 #' @param ... other arguments to be passed to \code{\link{tidy_source}}
+#' @param file a vector of filenames
 #' @return Invisible \code{NULL}.
-#' @author Yihui Xie <\url{http://yihui.name}>
+#' @author Yihui Xie (\code{tidy_dir}) and Ed Lee (\code{tidy_file})
 #' @seealso \code{\link{tidy_source}}
 #' @export
 #' @examples
@@ -139,27 +140,15 @@ unmask_source = function(text.mask) {
 #' file.copy(system.file('demo', package = 'base'), path, recursive=TRUE)
 #' tidy_dir(path, recursive=TRUE)
 tidy_dir = function(path = '.', recursive = FALSE, ...) {
-  flist = list.files(path, pattern = '[.][RrSsQq]$', full.names = TRUE, recursive = recursive)
-  for (f in flist) {
-    message('tidying ', f)
-    try(tidy_source(f, file = f, ...))
-  }
+  tidy_file(list.files(
+    path, pattern = '[.][RrSsQq]$', full.names = TRUE, recursive = recursive
+  ), ...)
 }
 
-#' Format the R scripts of a specific file or vector of files
-#'
-#' The original script will be overwritten with reformatted code
-#' if reformatting was successful. You may need to back up the original
-#' first if you do not fully understand the tricks
-#' \code{\link{tidy_source}} is using.
-#' @details A wrapper of tidy_source to overwrite a file with tidied version
-#' @author edlee123
-#' @param fvec the file, or vector of files
-#' @param ... additional params of tidy_source
-#' @return Invisible \code{NULL}.
 #' @export
-tidy_file <- function(fvec, ...) {
-  for (f in fvec) {
+#' @rdname tidy_dir
+tidy_file = function(file, ...) {
+  for (f in file) {
     message("tidying ", f)
     try(tidy_source(f, file = f, ...))
   }
