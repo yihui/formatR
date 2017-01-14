@@ -94,7 +94,7 @@ After hitting the `Tidy` button:
 
 ## 4. Evaluate the code and mask output in comments
 
-It is often a pain when trying to copy R code from other people's code which has been run in R and the prompt characters (usually `> `) are attached in the beginning of code, because we have to remove all the prompts `> ` and `+ ` manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function `tidy.eval()`, which uses `tidy_source()` to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:
+It is often a pain when trying to copy R code from other people's code which has been run in R and the prompt characters (usually `> `) are attached in the beginning of code, because we have to remove all the prompts `> ` and `+ ` manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function `tidy_eval()`, which uses `tidy_source()` to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:
 
 ```{r comment=NA}
 set.seed(123)
