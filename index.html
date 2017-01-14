@@ -5,7 +5,7 @@
 <title>An Introduction to formatR</title>
 <link rel="stylesheet" media="all" href="https://jashkenas.github.io/docco/resources/linear/public/stylesheets/normalize.css" />
 <link rel="stylesheet" media="all" href="https://jashkenas.github.io/docco/resources/linear/docco.css" />
-<link href='https://yihui.github.io/media/css/docco-linear.css' rel='stylesheet' type='text/css'>
+<link href='https://yihui.name/media/css/docco-linear.css' rel='stylesheet' type='text/css'>
 <style type="text/css">
 img{display:block;margin:auto;}
 .container{width:auto;max-width:920px;}
@@ -16,7 +16,7 @@ pre, code{font-size:90%;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/r.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script src="https://yihui.github.io/media/js/center-images.js"></script>
+<script src="https://yihui.name/media/js/center-images.js"></script>
 
 
 </head>
@@ -51,7 +51,7 @@ if (location.protocol === 'https:' && location.href.match('yihui.name') === null
 sessionInfo()
 </code></pre>
 
-<pre><code>## R version 3.3.1 (2016-06-21)
+<pre><code>## R version 3.3.2 (2016-10-31)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu precise (12.04.5 LTS)
 ## 
@@ -70,7 +70,7 @@ sessionInfo()
 ## [1] formatR_1.4.1
 ## 
 ## loaded via a namespace (and not attached):
-## [1] magrittr_1.5  tools_3.3.1   stringi_1.1.2 knitr_1.15    stringr_1.1.0
+## [1] magrittr_1.5  tools_3.3.2   stringi_1.1.2 knitr_1.15.6  stringr_1.1.0
 ## [6] evaluate_0.10
 </code></pre>
 
@@ -165,7 +165,7 @@ args(glm)
 
 <h2>4. Evaluate the code and mask output in comments</h2>
 
-<p>It is often a pain when trying to copy R code from other people&#39;s code which has been run in R and the prompt characters (usually <code>&gt;</code>) are attached in the beginning of code, because we have to remove all the prompts <code>&gt;</code> and <code>+</code> manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function <code>tidy.eval()</code>, which uses <code>tidy_source()</code> to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:</p>
+<p>It is often a pain when trying to copy R code from other people&#39;s code which has been run in R and the prompt characters (usually <code>&gt;</code>) are attached in the beginning of code, because we have to remove all the prompts <code>&gt;</code> and <code>+</code> manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function <code>tidy_eval()</code>, which uses <code>tidy_source()</code> to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:</p>
 
 <pre><code class="r">set.seed(123)
 tidy_eval(text = c(&quot;a&lt;-1+1;a  # print the value&quot;, &quot;matrix(rnorm(10),5)&quot;))
