@@ -20,6 +20,7 @@ Suggests:
     codetools,
     shiny,
     testit,
+    rmarkdown,
     knitr
 License: GPL
 URL: http://yihui.name/formatR
