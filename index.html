@@ -162,11 +162,11 @@ x=<span class="dv">2</span>;<span class="kw">print</span>(<span class="st">'Oh n
 <span class="dv">2+2+2</span>    <span class="co"># only 'single quotes' are allowed in comments</span>
 
 <span class="kw">lm</span>(y~x1+x2, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">y=</span><span class="kw">rnorm</span>(<span class="dv">100</span>),<span class="dt">x1=</span><span class="kw">rnorm</span>(<span class="dv">100</span>),<span class="dt">x2=</span><span class="kw">rnorm</span>(<span class="dv">100</span>)))  ### a linear model
-<span class="dv">1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1</span>  ## comments after a long line
+<span class="dv">1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1</span>  <span class="co"># comment after a long line</span>
 ## here is a long long long long long long long long long long long long long comment which will be wrapped</code></pre></div>
-<p>We can copy the above code to clipboard, and type <code>tidy_source(width.cutoff = 70)</code> to get:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## comments are retained; a comment block will be reflowed if it
-## contains long comments;
+<p>We can copy the above code to clipboard, and type <code>tidy_source(width.cutoff = 50)</code> to get:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## comments are retained; a comment block will be
+## reflowed if it contains long comments;
 <span class="co">#' roxygen comments will not be wrapped in any case</span>
 <span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span>
 
@@ -179,20 +179,24 @@ if (<span class="ot">TRUE</span>) {
 <span class="dv">1</span> *<span class="st"> </span><span class="dv">3</span>  <span class="co"># one space before this comment will become two!</span>
 <span class="dv">2</span> +<span class="st"> </span><span class="dv">2</span> +<span class="st"> </span><span class="dv">2</span>  <span class="co"># only 'single quotes' are allowed in comments</span>
 
-<span class="kw">lm</span>(y ~<span class="st"> </span>x1 +<span class="st"> </span>x2, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">x1 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">x2 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>)))  ### a linear model
-<span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>
-<span class="st">    </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span>  ## comments after a long line
-## here is a long long long long long long long long long long long long
-## long comment which will be wrapped</code></pre></div>
+<span class="kw">lm</span>(y ~<span class="st"> </span>x1 +<span class="st"> </span>x2, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">x1 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), 
+    <span class="dt">x2 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>)))  ### a linear model
+<span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>
+<span class="st">    </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span>  <span class="co"># comment after a long line</span>
+## here is a long long long long long long long long
+## long long long long long comment which will be
+## wrapped</code></pre></div>
 <p>Two applications of <code>tidy_source()</code>:</p>
 <ul>
 <li><code>tidy_dir()</code> can reformat all R scripts under a directory</li>
 <li><p><code>usage()</code> can reformat the usage of a function, e.g. compare <code>usage()</code> with the default output of <code>args()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(formatR)
-<span class="kw">usage</span>(glm, <span class="dt">width =</span> <span class="dv">70</span>)  <span class="co"># can set arbitrary width here</span>
-## glm(formula, family = gaussian, data, weights, subset, na.action, start = NULL, 
-##     etastart, mustart, offset, control = list(...), model = TRUE, method = &quot;glm.fit&quot;, 
-##     x = FALSE, y = TRUE, contrasts = NULL, ...)
+<span class="kw">usage</span>(glm, <span class="dt">width =</span> <span class="dv">40</span>)  <span class="co"># can set arbitrary width here</span>
+## glm(formula, family = gaussian, data, weights, 
+##     subset, na.action, start = NULL, etastart, 
+##     mustart, offset, control = list(...), 
+##     model = TRUE, method = &quot;glm.fit&quot;, x = FALSE, 
+##     y = TRUE, contrasts = NULL, ...)
 <span class="kw">args</span>(glm)
 ## function (formula, family = gaussian, data, weights, subset, 
 ##     na.action, start = NULL, etastart, mustart, offset, control = list(...), 
@@ -227,7 +231,8 @@ matrix(rnorm(10), 5)
 ## [5,]  0.12928774 -0.4456620</code></pre>
 <p>The default source of the code is from clipboard like <code>tidy_source()</code>, so we can copy our code to clipboard, and simply run this in R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(formatR)
-<span class="kw">tidy_eval</span>()  <span class="co"># without specifying any arguments, it reads code from clipboard</span></code></pre></div>
+<span class="kw">tidy_eval</span>()
+<span class="co"># without specifying any arguments, it reads code from clipboard</span></code></pre></div>
 </div>
 <div id="showcase" class="section level1">
 <h1>5. Showcase</h1>
@@ -287,9 +292,10 @@ if (<span class="ot">TRUE</span>) {
 }
 <span class="dv">1</span> *<span class="st"> </span><span class="dv">3</span>
 <span class="dv">2</span> +<span class="st"> </span><span class="dv">2</span> +<span class="st"> </span><span class="dv">2</span>
-<span class="kw">lm</span>(y ~<span class="st"> </span>x1 +<span class="st"> </span>x2, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">x1 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">x2 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>)))
-<span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>
-<span class="st">    </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span></code></pre></div>
+<span class="kw">lm</span>(y ~<span class="st"> </span>x1 +<span class="st"> </span>x2, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">x1 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), 
+    <span class="dt">x2 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>)))
+<span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>
+<span class="st">    </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">1</span></code></pre></div>
 </div>
 </div>
 <div id="further-notes" class="section level1">
