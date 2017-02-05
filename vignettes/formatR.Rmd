@@ -69,13 +69,13 @@ x=2;print('Oh no... ask the right bracket to go away!')}
 2+2+2    # only 'single quotes' are allowed in comments
 
 lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### a linear model
-1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line
+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  # comment after a long line
 ## here is a long long long long long long long long long long long long long comment which will be wrapped
 ```
 
-We can copy the above code to clipboard, and type `tidy_source(width.cutoff = 70)` to get:
+We can copy the above code to clipboard, and type `tidy_source(width.cutoff = 50)` to get:
 
-```{r example, eval=FALSE, tidy.opts=list(width.cutoff=70)}
+```{r example, eval=FALSE, tidy.opts=list(width.cutoff=50)}
 ```
 
 Two applications of `tidy_source()`:
@@ -84,7 +84,7 @@ Two applications of `tidy_source()`:
 - `usage()` can reformat the usage of a function, e.g. compare `usage()` with the default output of `args()`:
     ```{r collapse=TRUE}
     library(formatR)
-    usage(glm, width=70)  # can set arbitrary width here
+    usage(glm, width = 40)  # can set arbitrary width here
     args(glm)
     ```
 
@@ -115,7 +115,8 @@ The default source of the code is from clipboard like `tidy_source()`, so we can
 
 ```{r eval=FALSE}
 library(formatR)
-tidy_eval()  # without specifying any arguments, it reads code from clipboard
+tidy_eval()
+# without specifying any arguments, it reads code from clipboard
 ```
 
 # 5. Showcase
@@ -146,7 +147,7 @@ Note the 5th line (an empty line) was discarded:
 
 ## Discard comments
 
-```{r example, eval=FALSE, tidy.opts=list(comment = FALSE)}
+```{r example, eval=FALSE, tidy.opts=list(comment = FALSE, width.cutoff = 50)}
 ```
 
 # 6. Further notes
