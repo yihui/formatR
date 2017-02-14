@@ -14,5 +14,4 @@ before_install:
   - "curl -L https://yihui.name/xran/.gitconfig -o ~/.gitconfig"
 
 after_success:
-  - export R_VIGNETTE=formatR.html
   - "(curl -L https://yihui.name/xran/r-xran | bash)"
