@@ -21,6 +21,7 @@ if (location.protocol === 'https:' && location.href.match('yihui.name') === null
 </script>
 
 ```{r setup, include=FALSE}
+options(formatR.indent = 4, width = 70)
 knitr::opts_chunk$set(tidy = TRUE)
 ```
 
@@ -96,11 +97,11 @@ If the **shiny** packages has been installed, the function `tidy_app()` can laun
 formatR::tidy_app()
 ```
 
-[![R source code before tidying](http://i.imgur.com/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
+[![R source code before tidying](https://db.yihui.name/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
 
 After hitting the `Tidy` button:
 
-[![R source code after tidying](http://i.imgur.com/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
+[![R source code after tidying](https://db.yihui.name/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
 
 # 4. Evaluate the code and mask output in comments
 
