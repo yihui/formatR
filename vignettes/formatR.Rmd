@@ -211,6 +211,12 @@ I recommend you to use `<-` or `=` consistently. What is more important is consi
 
 # 7. How does `tidy_source()` actually work?
 
+In a nutshell, `tidy_source(text = code)` is basically `deparse(parse(text = code))`, but actually it is more complicated only because of one thing: `deparse()` drops comments, e.g.,
+
+```{r}
+deparse(parse(text = '1+2-3*4/5 # a comment'))
+```
+
 The method to preserve comments is to protect them as strings in R expressions. For example, there is a single line of comments in the source code:
 
 ```r
