@@ -28,6 +28,8 @@
 #' usage(barplot.default, width = 60)  # narrower output
 usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
                  indent.by.FUN = FALSE) {
+  stopifnot(width >= 20L)
+
   fn = as.character(substitute(FUN))
   res = capture.output(if (is.function(FUN)) args(FUN) else {
     do.call(argsAnywhere, list(fn))
@@ -66,8 +68,21 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
     # default value for tidy_source()
     getOption('formatR.indent', 4)
   }
+  w = width
+  exceed.width = TRUE
+  while (exceed.width && w >= 20L) {
     tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = w,
                            indent = indent)
+    exceed.width = any(line_lengths(tidy.res$text.tidy) > width)
+    w = w - 1L
+  }
+
   if (output) cat(tidy.res$text.tidy, sep = '\n')
   invisible(tidy.res$text.tidy)
+}
+
+line_lengths = function(x) {
+  unlist(lapply(x, function(.) {
+    nchar(trimws(strsplit(., split = "\n")[[1L]], which = "right"))
+  }))
 }
