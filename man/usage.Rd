@@ -4,7 +4,7 @@
 \alias{usage}
 \title{Show the usage of a function}
 \usage{
-usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE)
+usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, indent.by.FUN = FALSE)
 }
 \arguments{
 \item{FUN}{the function name}
@@ -16,6 +16,9 @@ usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE)
 
 \item{output}{whether to write the output to the console (via
 \code{\link{cat}})}
+
+\item{indent.by.FUN}{\code{TRUE} or \code{FALSE}: Should subsequent lines be
+indented by the width of the function name?}
 }
 \value{
 The R code for the usage is returned as a character string

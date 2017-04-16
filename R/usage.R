@@ -9,6 +9,8 @@
 #' @param tidy whether to reformat the usage code
 #' @param output whether to write the output to the console (via
 #'   \code{\link{cat}})
+#' @param indent.by.FUN \code{TRUE} or \code{FALSE}: Should subsequent lines be
+#'   indented by the width of the function name?
 #' @return The R code for the usage is returned as a character string
 #'   (invisibly).
 #' @seealso \code{\link{tidy_source}}
@@ -24,7 +26,8 @@
 #' usage(usage)
 #'
 #' usage(barplot.default, width = 60)  # narrower output
-usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE) {
+usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
+                 indent.by.FUN = FALSE) {
   fn = as.character(substitute(FUN))
   res = capture.output(if (is.function(FUN)) args(FUN) else {
     do.call(argsAnywhere, list(fn))
@@ -56,7 +59,15 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE) {
     return(invisible(res))
   }
 
-  tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = width)
+  indent <- if (indent.by.FUN) {
+    # indent by function name plus "("
+    nchar(if (isS3) gen else fn) + 1L
+  } else {
+    # default value for tidy_source()
+    getOption('formatR.indent', 4)
+  }
+    tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = w,
+                           indent = indent)
   if (output) cat(tidy.res$text.tidy, sep = '\n')
   invisible(tidy.res$text.tidy)
 }
