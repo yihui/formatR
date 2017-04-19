@@ -2,9 +2,14 @@
 % Please edit documentation in R/usage.R
 \name{usage}
 \alias{usage}
+\alias{usage2}
 \title{Show the usage of a function}
 \usage{
-usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, indent.by.FUN = FALSE)
+usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
+  indent.by.FUN = FALSE)
+
+usage2(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
+  indent.by.FUN = FALSE)
 }
 \arguments{
 \item{FUN}{the function name}
@@ -36,7 +41,7 @@ usage(var)
 usage(plot)
 
 usage(plot.default)  # default method
-usage("plot.lm")  # on the 'lm' class
+usage('plot.lm')  # on the 'lm' class
 
 usage(usage)
 
