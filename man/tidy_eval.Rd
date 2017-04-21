@@ -36,7 +36,7 @@ library(formatR)
 tidy_eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 
 ## evaluate a file
-tidy_eval(file.path(system.file(package = "stats"), "demo", "nlm.R"))
+tidy_eval(system.file("format", "messy.R", package = "formatR"))
 }
 \references{
 \url{http://yihui.name/formatR}
