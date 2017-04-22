@@ -96,7 +96,7 @@ If the **shiny** packages has been installed, the function `tidy_app()` can laun
 ```r
 formatR::tidy_app()
 ```
-```{r include=FALSE, results='asis'}
+```{r echo=FALSE, results='asis'}
 if (in_CI <- !is.na(Sys.getenv('CI', NA))) cat('<!--')
 ```
 [![R source code before tidying](https://db.yihui.name/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
@@ -104,7 +104,7 @@ if (in_CI <- !is.na(Sys.getenv('CI', NA))) cat('<!--')
 After hitting the `Tidy` button:
 
 [![R source code after tidying](https://db.yihui.name/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
-```{r include=FALSE, results='asis'}
+```{r echo=FALSE, results='asis'}
 if (in_CI) cat('\n-->')
 ```
 # 4. Evaluate the code and mask output in comments
