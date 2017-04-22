@@ -1,16 +1,107 @@
+deparse_collapse = function(x) {
+  d = deparse(x)
+  if (length(d) > 1L) {
+    paste(trimws(d, which = 'both'), collapse = '')
+  } else {
+    d
+  }
+}
+
+count_tokens = function(.call) {
+  if (length(.call) == 1L) {
+    # +2 for '()'
+    return(nchar(.call) + 2L)
+  }
+  # +1 for value-delimiting '(', ',', or ')'
+  cnt_val = nchar(vapply(.call, deparse_collapse, character(1L))) + 1L
+  nms = names(.call[-1L])
+  if (is.null(nms)) nms = character(length(.call[-1L]))
+  # nchar() of argument names
+  cnt_nm = nchar(nms)
+  # +3 for ' = ', for argument-value pairs
+  cnt_nm[cnt_nm != 0L] = cnt_nm[cnt_nm != 0L] + 3L
+  # +1 for space before name, beyond the first argument
+  cnt_nm[-1L] = cnt_nm[-1L] + 1L
+  # function itself is not a named component
+  cnt_nm = c(0L, cnt_nm)
+  cumsum(cnt_val + cnt_nm)
+}
+
+# counts is a strictly increasing, positive integer vector
+find_breaks = function(counts, width, indent, track, counted = 0L) {
+  if (!length(counts)) {
+    return(list(breaks = NULL, overflow = NULL))
+  }
+  overflow = NULL
+  buffer = if (counted == 0L) 0L else indent
+  fits_on_line = counts - counted + buffer <= width
+  i = which.min(fits_on_line) - 1L
+  if (i == 0L) {
+    if (fits_on_line[[1L]]) {
+      # all components of fits_on_line are TRUE
+      i = length(counts)
+    } else {
+      # all components of fits_on_line are FALSE
+      overflow = track(counted, counts[1L], buffer)
+      i = 1L
+    }
+  }
+  rest = Recall(counts[-(1L:i)], width, indent, track, counts[i])
+  list(
+    breaks   = c(counts[i], rest$breaks),
+    overflow = c(overflow, rest$overflow)
+  )
+}
+
+overflow_message = function(overflow, width, indent, text) {
+  header = sprintf('Could not fit all lines to width %s (with indent %s):',
+                   width, indent)
+  idxs = seq_along(overflow)
+  args = vapply(idxs[idxs %% 3L == 1L], function(i) {
+    l = paste(c(rep(' ', overflow[i + 2L]),
+                trimws(substr(text, overflow[i] + 1L, overflow[i + 1L]),
+                       which = 'left')), collapse = '')
+    sprintf('(%s) \"%s\"', nchar(l), l)
+  }, character(1L))
+  paste(c(header, args), collapse = '\n')
+}
+
+tidy_usage = function(nm, usg, width, indent, fail) {
+  text = paste(trimws(usg, which = 'both'), collapse = ' ')
+  text = sub(sprintf('^%s\\s*', nm), nm, text)
+  expr = parse(text = text)[[1L]]
+  track_overflow = if (fail == 'none') function(...) NULL else base::c
+  breaks = find_breaks(count_tokens(expr), width, indent, track_overflow)
+  if (length(breaks$overflow)) {
+    signal = switch(fail, stop = 'stop', warn = 'warning')
+    msg = overflow_message(breaks$overflow, width, indent, text)
+    getFromNamespace(signal, 'base')(msg, call. = FALSE)
+  }
+  breaks = c(0L, breaks$breaks)
+  newline = paste(c('\n', character(indent)), collapse = ' ')
+  paste(
+    vapply(1L:(length(breaks) - 1L), function(i) {
+      trimws(substr(text, breaks[i] + 1L, breaks[i + 1L]), which = 'left')
+    }, character(1L)),
+    collapse = newline
+  )
+}
+
 #' Show the usage of a function
 #'
 #' Print the reformatted usage of a function. The arguments of the function are
 #' searched by \code{\link{argsAnywhere}}, so the function can be either
 #' exported or non-exported in a package. S3 methods will be marked.
 #' @param FUN the function name
-#' @param width the width of output (passed to \code{width.cutoff} in
-#'   \code{\link{tidy_source}})
+#' @param width the width of output
 #' @param tidy whether to reformat the usage code
 #' @param output whether to write the output to the console (via
 #'   \code{\link{cat}})
 #' @param indent.by.FUN \code{TRUE} or \code{FALSE}: Should subsequent lines be
 #'   indented by the width of the function name?
+#' @param fail a character string that determines whether to generate a warning,
+#'   stop, or do neither, if it is impossible to fulfill the width constraint
+#'   (default is \code{"warn"})
 #' @return The R code for the usage is returned as a character string
 #'   (invisibly).
 #' @seealso \code{\link{tidy_source}}
@@ -27,7 +118,61 @@
 #'
 #' usage(barplot.default, width = 60)  # narrower output
 usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
-                 indent.by.FUN = FALSE) {
+                 indent.by.FUN = FALSE, fail = c('warn', 'stop', 'none')) {
+  fail = match.arg(fail)
+  fn = as.character(substitute(FUN))
+  res = capture.output(if (is.function(FUN)) args(FUN) else {
+    do.call(argsAnywhere, list(fn))
+  })
+  if (identical(res, 'NULL')) return()
+  res[1] = substring(res[1], 9)  # rm 'function ' in the beginning
+  isS3 = FALSE
+  if (length(fn) == 3 && (fn[1] %in% c('::', ':::'))) fn = fn[3]
+  if (grepl('.', fn, fixed = TRUE)) {
+    n = length(parts <- strsplit(fn, '.', fixed = TRUE)[[1]])
+    for (i in 2:n) {
+      gen = paste(parts[1L:(i - 1)], collapse = ".")
+      cl = paste(parts[i:n], collapse = ".")
+      if (gen == "" || cl == "") next
+      if (!is.null(f <- getS3method(gen, cl, TRUE)) && !is.null(environment(f))) {
+        res[1] = paste(gen, res[1])
+        header = if (cl == 'default')
+          '## Default S3 method:' else sprintf("## S3 method for class '%s'", cl)
+        res = c(header, res)
+        isS3 = TRUE
+        break
+      }
+    }
+  }
+  if (!isS3) res[1] = paste(fn, res[1])
+  if ((n <- length(res)) > 1 && res[n] == 'NULL') res = res[-n]  # rm last element 'NULL'
+  if (!tidy) {
+    if (output) cat(res, sep = '\n')
+    return(invisible(res))
+  }
+
+  nm  = if (isS3) gen else fn
+  usg = if (isS3) res[-1L] else res
+  indent = if (indent.by.FUN) {
+    # +1 for '('
+    nchar(nm) + 1L
+  } else {
+    # Default indent for tidy_source()
+    getOption('formatR.indent', 4L)
+  }
+  out = tidy_usage(nm, usg, width, indent, fail)
+  if (isS3) out = c(res[1L], out)
+
+  if (output) cat(out, sep = '\n')
+  invisible(out)
+}
+
+# Original implementation of usage() --------------------------------------
+
+#' @rdname usage
+#' @export
+usage_orig = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
+                      indent.by.FUN = FALSE) {
   fn = as.character(substitute(FUN))
   res = capture.output(if (is.function(FUN)) args(FUN) else {
     do.call(argsAnywhere, list(fn))
@@ -63,106 +208,11 @@ usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
     # indent by function name plus "("
     nchar(if (isS3) gen else fn) + 1L
   } else {
-    # default indent for tidy_source()
+    # for backward compatibility, use the default indent for tidy_source()
     getOption('formatR.indent', 4L)
   }
   tidy.res = tidy_source(text = res, output = FALSE, width.cutoff = width,
                          indent = indent)
   if (output) cat(tidy.res$text.tidy, sep = '\n')
   invisible(tidy.res$text.tidy)
-}
-
-# Alternative implementation of usage() -----------------------------------
-
-count_tokens = function(.call) {
-  # +1 for value-delimiting "(", ",", or ")"
-  nc_val = nchar(vapply(.call, deparse, character(1))) + 1L
-  # nchar() of argument names
-  nc_nm = nchar(names(.call[-1L]))
-  # +3 for ' = '
-  nc_nm[nc_nm != 0L] = nc_nm[nc_nm != 0L] + 3L
-  # +1 for space before name, beyond the first argument
-  nc_nm[-1L] = nc_nm[-1L] + 1L
-  # Function itself is not a named component
-  nc_nm = c(0L, nc_nm)
-
-  cumsum(nc_val + nc_nm)
-}
-
-find_breaks = function(counts, width, indent, counted = 0L) {
-  if (!length(counts)) {
-    return(integer())
-  }
-  buffer = if (counted == 0L) 0L else indent
-  i = which.min(counts - counted + buffer <= width) - 1L
-  if (i == 0L) i = length(counts)
-
-  c(counts[i], Recall(counts[-(1L:i)], width, indent, counts[i]))
-}
-
-tidy_usage = function(nm, usg, width, indent) {
-  text = paste(trimws(usg, which = 'both'), collapse = ' ')
-  text = sub(sprintf('^%s\\s*', nm), nm, text)
-  expr = parse(text = text)[[1L]]
-  breaks = c(0L, find_breaks(count_tokens(expr), width, indent))
-  newline = paste(c('\n', character(indent)), collapse = ' ')
-
-  paste(
-    vapply(1L:(length(breaks) - 1L), function(i) {
-      substr(text, breaks[i] + 1L, breaks[i + 1L])
-    }, character(1L)),
-    collapse = newline
-  )
-}
-
-#' @rdname usage
-#' @export
-usage2 = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
-                  indent.by.FUN = FALSE) {
-  fn = as.character(substitute(FUN))
-  res = capture.output(if (is.function(FUN)) args(FUN) else {
-    do.call(argsAnywhere, list(fn))
-  })
-  if (identical(res, 'NULL')) return()
-  res[1] = substring(res[1], 9)  # rm 'function ' in the beginning
-  isS3 = FALSE
-  if (length(fn) == 3 && (fn[1] %in% c('::', ':::'))) fn = fn[3]
-  if (grepl('.', fn, fixed = TRUE)) {
-    n = length(parts <- strsplit(fn, '.', fixed = TRUE)[[1]])
-    for (i in 2:n) {
-      gen = paste(parts[1L:(i - 1)], collapse = ".")
-      cl = paste(parts[i:n], collapse = ".")
-      if (gen == "" || cl == "") next
-      if (!is.null(f <- getS3method(gen, cl, TRUE)) && !is.null(environment(f))) {
-        res[1] = paste(gen, res[1])
-        header = if (cl == 'default')
-          '## Default S3 method:' else sprintf("## S3 method for class '%s'", cl)
-        res = c(header, res)
-        isS3 = TRUE
-        break
-      }
-    }
-  }
-  if (!isS3) res[1] = paste(fn, res[1])
-  if ((n <- length(res)) > 1 && res[n] == 'NULL') res = res[-n]  # rm last element 'NULL'
-  if (!tidy) {
-    if (output) cat(res, sep = '\n')
-    return(invisible(res))
-  }
-
-  # --- Function identical to usage() up to this point ---
-
-  nm  = if (isS3) gen else fn
-  usg = if (isS3) res[-1L] else res
-  indent = if (indent.by.FUN) {
-    nchar(nm)
-  } else {
-    # -1 from default indent for tidy_source() compensated by width of "("
-    getOption('formatR.indent', 4L) - 1L
-  }
-  out = tidy_usage(nm, usg, width, indent)
-  if (isS3) out = c(res[1L], out)
-
-  if (output) cat(out, sep = '\n')
-  invisible(out)
 }

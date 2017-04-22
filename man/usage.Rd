@@ -2,20 +2,19 @@
 % Please edit documentation in R/usage.R
 \name{usage}
 \alias{usage}
-\alias{usage2}
+\alias{usage_orig}
 \title{Show the usage of a function}
 \usage{
-usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
-  indent.by.FUN = FALSE)
+usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, 
+    indent.by.FUN = FALSE, fail = c("warn", "stop", "none"))
 
-usage2(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
-  indent.by.FUN = FALSE)
+usage_orig(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, 
+    indent.by.FUN = FALSE)
 }
 \arguments{
 \item{FUN}{the function name}
 
-\item{width}{the width of output (passed to \code{width.cutoff} in
-\code{\link{tidy_source}})}
+\item{width}{the width of output}
 
 \item{tidy}{whether to reformat the usage code}
 
@@ -24,6 +23,10 @@ usage2(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
 
 \item{indent.by.FUN}{\code{TRUE} or \code{FALSE}: Should subsequent lines be
 indented by the width of the function name?}
+
+\item{fail}{a character string that determines whether to generate a warning,
+stop, or do neither, if it is impossible to fulfill the width constraint
+(default is \code{"warn"})}
 }
 \value{
 The R code for the usage is returned as a character string
@@ -41,7 +44,7 @@ usage(var)
 usage(plot)
 
 usage(plot.default)  # default method
-usage('plot.lm')  # on the 'lm' class
+usage("plot.lm")  # on the 'lm' class
 
 usage(usage)
 
