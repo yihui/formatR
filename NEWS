@@ -5,6 +5,11 @@ NEW FEATURES
   o added a new function `tidy_file()` to format specified R scripts (thanks,
   @edlee123, #61)
 
+  o usage() was re-implemented by @egnha in #66; the major difference with the
+  previous version is that `width` means the maximum width (if possible) instead
+  of the minimum; it also gained two new arguments, `indent.by.FUN` and `fail`;
+  see ?formatR::usage for details
+
 		   CHANGES IN formatR VERSION 1.4
 
 NEW FEATURES

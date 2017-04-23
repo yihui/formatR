@@ -1,10 +1,11 @@
 Package: formatR
 Type: Package
 Title: Format R Code Automatically
-Version: 1.4.2
+Version: 1.4.3
 Date: 2016-05-09
 Authors@R: c(
     person("Yihui", "Xie", email = "xie@yihui.name", role = c("aut", "cre")),
+    person("Eugene", "Ha", role = "ctb"),
     person("Kohske", "Takahashi", role = "ctb"),
     person("Ed", "Lee", role = "ctb")
     )
