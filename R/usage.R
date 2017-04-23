@@ -33,20 +33,21 @@ find_breaks = function(counts, width, indent, track, counted = 0L) {
     return(list(breaks = NULL, overflow = NULL))
   }
   overflow = NULL
-  buffer = if (counted == 0L) 0L else indent
-  fits_on_line = counts - counted + buffer <= width
-  i = which.min(fits_on_line) - 1L
+  shift = if (counted == 0L) 0L else indent
+  fits = counts - counted + shift <= width
+  i = which.min(fits) - 1L
   if (i == 0L) {
-    if (fits_on_line[[1L]]) {
+    if (fits[[1L]]) {
       # all components of fits_on_line are TRUE
       i = length(counts)
     } else {
       # all components of fits_on_line are FALSE
-      overflow = track(counted, counts[1L], buffer)
+      overflow = track(counted, counts[1L], shift)
       i = 1L
     }
   }
-  rest = Recall(counts[-(1L:i)], width, indent, track, counts[i])
+  post_space = if (i == 1L && counted == 0L) 0L else 1L
+  rest = Recall(counts[-(1L:i)], width, indent, track, counts[i] + post_space)
   list(
     breaks   = c(counts[i], rest$breaks),
     overflow = c(overflow, rest$overflow)
@@ -60,7 +61,8 @@ overflow_message = function(overflow, width, indent, text) {
   args = vapply(idxs[idxs %% 3L == 1L], function(i) {
     l = paste(c(rep(' ', overflow[i + 2L]),
                 trimws(substr(text, overflow[i] + 1L, overflow[i + 1L]),
-                       which = 'left')), collapse = '')
+                       which = 'left')),
+              collapse = '')
     sprintf('(%s) \"%s\"', nchar(l), l)
   }, character(1L))
   paste(c(header, args), collapse = '\n')
