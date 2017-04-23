@@ -2,14 +2,10 @@
 % Please edit documentation in R/usage.R
 \name{usage}
 \alias{usage}
-\alias{usage_orig}
 \title{Show the usage of a function}
 \usage{
 usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, 
     indent.by.FUN = FALSE, fail = c("warn", "stop", "none"))
-
-usage_orig(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, 
-    indent.by.FUN = FALSE)
 }
 \arguments{
 \item{FUN}{the function name}
