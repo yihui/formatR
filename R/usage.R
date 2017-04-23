@@ -94,18 +94,21 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #' Print the reformatted usage of a function. The arguments of the function are
 #' searched by \code{\link{argsAnywhere}}, so the function can be either
 #' exported or non-exported in a package. S3 methods will be marked.
+#'
 #' @param FUN the function name
 #' @param width the width of output
 #' @param tidy whether to reformat the usage code
 #' @param output whether to write the output to the console (via
 #'   \code{\link{cat}})
-#' @param indent.by.FUN \code{TRUE} or \code{FALSE}: Should subsequent lines be
-#'   indented by the width of the function name?
+#' @param indent.by.FUN whether to indent subsequent lines by the width of the
+#'   function name
 #' @param fail a character string that determines whether to generate a warning,
-#'   stop, or do neither, if it is impossible to fulfill the width constraint
-#'   (default is \code{"warn"})
+#'   stop, or do neither, if the width constraint is unfulfillable (default is
+#'   \code{"warn"})
 #' @return The R code for the usage is returned as a character string
 #'   (invisibly).
+#' @details Line breaks in the output occur between arguments. In particular,
+#'   default values of arguments will not be split across lines.
 #' @seealso \code{\link{tidy_source}}
 #' @export
 #' @examples library(formatR)
@@ -118,7 +121,15 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #'
 #' usage(usage)
 #'
-#' usage(barplot.default, width = 60)  # narrower output
+#' usage(barplot.default, width = 60)  # output lines have 60 characters or less
+#'
+#' # indent by width of 'barplot('
+#' usage(barplot.default, width = 60, indent.by.FUN = TRUE)
+#'
+#' \dontrun{
+#' # a warning is raised because the width constraint is unfulfillable
+#' usage(barplot.default, width = 30)
+#' }
 usage = function(FUN, width = getOption('width'), tidy = TRUE, output = TRUE,
                  indent.by.FUN = FALSE, fail = c('warn', 'stop', 'none')) {
   fail = match.arg(fail)

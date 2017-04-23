@@ -17,12 +17,12 @@ usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
 \item{output}{whether to write the output to the console (via
 \code{\link{cat}})}
 
-\item{indent.by.FUN}{\code{TRUE} or \code{FALSE}: Should subsequent lines be
-indented by the width of the function name?}
+\item{indent.by.FUN}{whether to indent subsequent lines by the width of the
+function name}
 
 \item{fail}{a character string that determines whether to generate a warning,
-stop, or do neither, if it is impossible to fulfill the width constraint
-(default is \code{"warn"})}
+stop, or do neither, if the width constraint is unfulfillable (default is
+\code{"warn"})}
 }
 \value{
 The R code for the usage is returned as a character string
@@ -32,6 +32,10 @@ The R code for the usage is returned as a character string
 Print the reformatted usage of a function. The arguments of the function are
 searched by \code{\link{argsAnywhere}}, so the function can be either
 exported or non-exported in a package. S3 methods will be marked.
+}
+\details{
+Line breaks in the output occur between arguments. In particular,
+  default values of arguments will not be split across lines.
 }
 \examples{
 library(formatR)
@@ -44,7 +48,15 @@ usage("plot.lm")  # on the 'lm' class
 
 usage(usage)
 
-usage(barplot.default, width = 60)  # narrower output
+usage(barplot.default, width = 60)  # output lines have 60 characters or less
+
+# indent by width of 'barplot('
+usage(barplot.default, width = 60, indent.by.FUN = TRUE)
+
+\dontrun{
+# a warning is raised because the width constraint is unfulfillable
+usage(barplot.default, width = 30)
+}
 }
 \seealso{
 \code{\link{tidy_source}}
