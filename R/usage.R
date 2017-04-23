@@ -1,7 +1,7 @@
 deparse_collapse = function(x) {
   d = deparse(x)
   if (length(d) > 1L) {
-    paste(trimws(d, which = 'both'), collapse = '')
+    paste(trimws(d, which = 'both'), collapse = ' ')
   } else {
     d
   }
