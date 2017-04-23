@@ -4,18 +4,25 @@
 \alias{usage}
 \title{Show the usage of a function}
 \usage{
-usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE)
+usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, 
+    indent.by.FUN = FALSE, fail = c("warn", "stop", "none"))
 }
 \arguments{
 \item{FUN}{the function name}
 
-\item{width}{the width of output (passed to \code{width.cutoff} in
-\code{\link{tidy_source}})}
+\item{width}{the width of output}
 
 \item{tidy}{whether to reformat the usage code}
 
 \item{output}{whether to write the output to the console (via
 \code{\link{cat}})}
+
+\item{indent.by.FUN}{whether to indent subsequent lines by the width of the
+function name}
+
+\item{fail}{a character string that determines whether to generate a warning,
+stop, or do neither, if the width constraint is unfulfillable (default is
+\code{"warn"})}
 }
 \value{
 The R code for the usage is returned as a character string
@@ -25,6 +32,10 @@ The R code for the usage is returned as a character string
 Print the reformatted usage of a function. The arguments of the function are
 searched by \code{\link{argsAnywhere}}, so the function can be either
 exported or non-exported in a package. S3 methods will be marked.
+}
+\details{
+Line breaks in the output occur between arguments. In particular,
+  default values of arguments will not be split across lines.
 }
 \examples{
 library(formatR)
@@ -37,7 +48,15 @@ usage("plot.lm")  # on the 'lm' class
 
 usage(usage)
 
-usage(barplot.default, width = 60)  # narrower output
+usage(barplot.default, width = 60)  # output lines have 60 characters or less
+
+# indent by width of 'barplot('
+usage(barplot.default, width = 60, indent.by.FUN = TRUE)
+
+\dontrun{
+# a warning is raised because the width constraint is unfulfillable
+usage(barplot.default, width = 30)
+}
 }
 \seealso{
 \code{\link{tidy_source}}
