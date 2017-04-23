@@ -201,3 +201,10 @@ mask_line_break = function(x) {
   .env$line_break = m
   gsub('\n', m, x)
 }
+
+trimws = function(x, which = c('both', 'left', 'right')) {
+  switch(match.arg(which),
+    both = gsub('^\\s+|\\s+$', '', x),
+    left = gsub('^\\s+', '', x), right = gsub('\\s+$', '', x)
+  )
+}
