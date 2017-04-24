@@ -101,7 +101,7 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #' @param output whether to write the output to the console (via
 #'   \code{\link{cat}})
 #' @param indent.by.FUN whether to indent subsequent lines by the width of the
-#'   function name
+#'   function name (see \dQuote{Details})
 #' @param fail a character string that determines whether to generate a warning,
 #'   stop, or do neither, if the width constraint is unfulfillable (default is
 #'   \code{"warn"})
@@ -109,6 +109,10 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #'   (invisibly).
 #' @details Line breaks in the output occur between arguments. In particular,
 #'   default values of arguments will not be split across lines.
+#'
+#'   When \code{indent.by.FUN} is \code{FALSE}, indentation is set by the option
+#'   \code{\link{getOption}("formatR.indent", 4L)}, the default value of the
+#'   \code{indent} argument of \code{\link{tidy_source}}.
 #' @seealso \code{\link{tidy_source}}
 #' @export
 #' @examples library(formatR)

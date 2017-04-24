@@ -18,7 +18,7 @@ usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE,
 \code{\link{cat}})}
 
 \item{indent.by.FUN}{whether to indent subsequent lines by the width of the
-function name}
+function name (see \dQuote{Details})}
 
 \item{fail}{a character string that determines whether to generate a warning,
 stop, or do neither, if the width constraint is unfulfillable (default is
@@ -36,6 +36,10 @@ exported or non-exported in a package. S3 methods will be marked.
 \details{
 Line breaks in the output occur between arguments. In particular,
   default values of arguments will not be split across lines.
+
+  When \code{indent.by.FUN} is \code{FALSE}, indentation is set by the option
+  \code{\link{getOption}("formatR.indent", 4L)}, the default value of the
+  \code{indent} argument of \code{\link{tidy_source}}.
 }
 \examples{
 library(formatR)
