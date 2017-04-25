@@ -24,7 +24,7 @@ Suggests:
     rmarkdown,
     knitr
 License: GPL
-URL: http://yihui.name/formatR
+URL: https://yihui.name/formatR
 BugReports: https://github.com/yihui/formatR/issues
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

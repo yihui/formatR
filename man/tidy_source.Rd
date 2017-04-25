@@ -115,13 +115,13 @@ if (interactive()) {
 tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
 }
 \references{
-\url{http://yihui.name/formatR} (an introduction to this package,
+\url{https://yihui.name/formatR} (an introduction to this package,
   with examples and further notes)
 }
 \seealso{
 \code{\link{parse}}, \code{\link{deparse}}
 }
 \author{
-Yihui Xie <\url{http://yihui.name}> with substantial contribution
+Yihui Xie <\url{https://yihui.name}> with substantial contribution
   from Yixuan Qiu <\url{http://yixuan.cos.name}>
 }

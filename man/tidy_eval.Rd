@@ -39,5 +39,5 @@ tidy_eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 tidy_eval(system.file("format", "messy.R", package = "formatR"))
 }
 \references{
-\url{http://yihui.name/formatR}
+\url{https://yihui.name/formatR}
 }

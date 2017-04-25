@@ -30,10 +30,10 @@
 #'   character vector} \item{text.mask}{the code containing comments, which are
 #'   masked in assignments or with the weird operator}
 #' @note Be sure to read the reference to know other limitations.
-#' @author Yihui Xie <\url{http://yihui.name}> with substantial contribution
+#' @author Yihui Xie <\url{https://yihui.name}> with substantial contribution
 #'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
 #' @seealso \code{\link{parse}}, \code{\link{deparse}}
-#' @references \url{http://yihui.name/formatR} (an introduction to this package,
+#' @references \url{https://yihui.name/formatR} (an introduction to this package,
 #'   with examples and further notes)
 #' @import utils
 #' @export
