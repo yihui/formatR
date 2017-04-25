@@ -27,12 +27,12 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 # 1. Installation
 
-You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or [XRAN](http://yihui.name/xran) if you want to test the latest development version:
+You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or [XRAN](https://xran.yihui.name) if you want to test the latest development version:
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://cran.rstudio.com')
 #' to install the development version, run
-#' install.packages('formatR', repos = 'http://yihui.name/xran')
+#' install.packages('formatR', repos = 'https://xran.yihui.name')
 ```
 
 Or check out the [Github repository](https://github.com/yihui/formatR) and install from source if you know what this means. This page is always based on the development version.
