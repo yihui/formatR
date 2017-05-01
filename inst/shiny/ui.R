@@ -20,7 +20,7 @@ shinyUI(fluidPage(
       checkboxInput('arg_assign', 'Replace = with <-', FALSE),
       checkboxInput('arg_brace', 'Put { on a new line', FALSE),
       numericInput ('arg_indent', 'Number of spaces for indentation', 4, min = 0),
-      numericInput ('arg_width', 'Minimum line width', 70, min = 20, max = 500),
+      numericInput ('arg_width', 'Maximum line width', 70, min = 20, max = 500),
       submitButton ('Tidy My Code', icon('toggle-right'))
     ),
     mainPanel(
