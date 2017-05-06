@@ -140,3 +140,50 @@ assert(
   'line breaks in strings are preserved instead of being replaced by \\n',
   tidy.res(x1) %==% x1
 )
+
+# test of magrittr newlines
+x1 = '
+library(magrittr)
+library(dplyr)
+
+iris$Sepal.Length %<>% sqrt
+
+iris$Sepal.Length %>% sqrt
+
+iris$Sepal.Length %T>% sqrt
+
+'
+
+x2 = "\nlibrary(magrittr)\nlibrary(dplyr)\n\niris$Sepal.Length %<>% sqrt\n\niris$Sepal.Length %>% sqrt\n\niris$Sepal.Length %T>% sqrt\n\n"
+
+assert(
+  'no line wrapping when only one magrittr pipe in a line \\n',
+  paste(tidy.res(x1), collapse='\n') %==% x2
+)
+
+x1 = '
+iris %>% group_by(Species) %>%
+summarize(meanlen = mean(Sepal.Length)) %$% arrange(meanlen) %>%meanlen
+'
+
+x2 = "\niris %>%\n group_by(Species) %>%\n summarize(meanlen = mean(Sepal.Length)) %$%\n arrange(meanlen) %>%\n meanlen\n"
+
+assert(
+  'when user wrapped part of a line already, magrittr line wrapping still
+  wraps appropriately\\n',
+  paste(tidy.res(x1), collapse='\n') %==% x2
+)
+
+
+x1 = '
+iris %>% group_by(Species) %>% summarize(meanlen = mean(Sepal.Length)) %>% arrange(meanlen) %$% meanlen %>% sum()
+'
+
+x2 =  "\niris %>%\n group_by(Species) %>%\n summarize(meanlen = mean(Sepal.Length)) %>%\n arrange(meanlen) %$%\n meanlen %>%\n sum()\n"
+
+assert(
+  'when an expression is longer than width.cutoff, the tidy_block introduces
+   newline at expression level. the magrittr_wrap will
+  adjust for this and remove it to prevent the extra line wrapping',
+  paste(tidy.res(x1), collapse='\n') %==% x2
+)
