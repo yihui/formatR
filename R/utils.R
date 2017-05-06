@@ -208,3 +208,61 @@ trimws = function(x, which = c('both', 'left', 'right')) {
     left = gsub('^\\s+', '', x), right = gsub('\\s+$', '', x)
   )
 }
+
+# Wrap lines with magrittr pipes
+# Will wrap %>%, %$%, %T>%, %<>% magrittr pipe patterns.
+# Designed to be used after tidy_block in tidy_source.
+# tidy_block wraps lines at the expression level using parse / deparse,
+# and will add newline char when the expression is longer than the width limit.
+# This function also wraps for pipes, so it will remove the wrapping
+# introduced from tidy_block so it won't have extra wrapping.
+#' See test-tidy.R for unit tests.
+magrittr_wrap_lines <- function(text.tidy) {
+  # In tidy_source, the text.tidy should already
+  # be a vector of strings per rows.
+  code <- text.tidy
+  magrittr_patt = "(\\%>\\%|\\%\\$\\%|\\%T>\\%|\\%<>\\%)"
+
+  # Find row indices with magrittr pipes in them
+  ind = grep(pattern = magrittr_patt , x = code, value = FALSE)
+
+  # In rows with magrittr operators, wrap them necessary
+  replace_lines = list()
+  if (length(ind) > 0) {
+    for (i in 1:length(ind)) {
+      # print(i)
+      original_line = code[ind[i]]
+      remove_tidy_block_newline_chars = gsub("\\s{4,}", " ", original_line)
+      split_lines = strsplit(remove_tidy_block_newline_chars,
+                             split = magrittr_patt)
+      pipes_position_obj = gregexpr(magrittr_patt, code[ind[i]])
+      found_pipes = regmatches(code[ind[i]], pipes_position_obj)
+      num_new_lines = length(split_lines[[1]])
+      num_pipes = length(found_pipes[[1]])
+
+      # See unit tests
+      newlines = if (num_pipes == 1) {
+        # Do nothing, no line split
+        code[ind[i]]
+      } else if (num_new_lines > 2 & (num_pipes < num_new_lines)) {
+        # Typial situation:  number of terms == num_pipes + 1
+        c(paste0(split_lines[[1]][1:(num_new_lines - 1)], found_pipes[[1]]),
+          split_lines[[1]][num_new_lines])
+      } else if (length(num_new_lines) == length(found_pipes[[1]])) {
+        # User has already split some pipe terms to newline (not all tho)
+        c(paste0(split_lines[[1]], found_pipes[[1]]))
+      } else {
+        # Do nothing
+        code[ind[i]]
+      }
+      replace_lines[[i]] = newlines
+    }
+    # Replace the concerned lines
+    replaced_code = as.list(code)
+    for (i in 1:length(ind)) replaced_code[[ind[i]]] = replace_lines[i]
+    newcode = unlist(replaced_code)
+    paste(newcode, collapse = '\n')
+  } else {
+    code
+  }
+}

@@ -13,6 +13,8 @@
 #' @param arrow whether to replace the assign operator \code{=} with \code{<-}
 #' @param brace.newline whether to put the left brace \code{\{} to a new line
 #'   (default \code{FALSE})
+#' @param magrittr.newline whether to wrap lines on magrittr operators
+#'   such as \code{%>%}, \code{%$%}
 #' @param indent number of spaces to indent the code (default 4)
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
@@ -43,6 +45,7 @@ tidy_source = function(
   blank = getOption('formatR.blank', TRUE),
   arrow = getOption('formatR.arrow', FALSE),
   brace.newline = getOption('formatR.brace.newline', FALSE),
+  magrittr.newline = getOption('formatR.magrittr.newline', TRUE),
   indent = getOption('formatR.indent', 4),
   output = TRUE, text = NULL,
   width.cutoff = getOption('width'), ...
@@ -68,6 +71,7 @@ tidy_source = function(
   if (comment) text = mask_comments(text, width.cutoff, blank)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
+  text.tidy = if (magrittr.newline) magrittr_wrap_lines(text.tidy)
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
@@ -85,6 +89,8 @@ inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 
 # wrapper around parse() and deparse()
+# this is used to 1) expression width wrapping  and 2) replace '=' with
+# Note: magrittr_wrap_lines will know to remove any extra width wrapping
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
