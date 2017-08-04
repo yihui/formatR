@@ -87,7 +87,7 @@ begin.comment = '.BeGiN_TiDy_IdEnTiFiEr_HaHaHa'
 end.comment = '.HaHaHa_EnD_TiDy_IdEnTiFiEr'
 pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
 mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.comment)
-inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
+inline.comment = ' %\u1d166%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 
 # wrapper around deparse() that enforces a strict maximum line width
@@ -131,7 +131,7 @@ unmask_source = function(text.mask) {
   if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
-  text.mask = gsub('%InLiNe_IdEnTiFiEr%[ ]*\n', '%InLiNe_IdEnTiFiEr%', text.mask)
+  text.mask = gsub('%\u1d166%[ ]*\n', '%\u1d166%', text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
   if (any(grepl('\\\\\\\\', text.mask)) &&

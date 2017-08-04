@@ -2,7 +2,7 @@ Package: formatR
 Type: Package
 Title: Format R Code Automatically
 Version: 1.5
-Date: 2017-04-26
+Date: 2017-08-04
 Authors@R: c(
     person("Yihui", "Xie", email = "xie@yihui.name", role = c("aut", "cre")),
     person("Eugene", "Ha", role = "ctb"),
@@ -28,3 +28,4 @@ URL: https://yihui.name/formatR
 BugReports: https://github.com/yihui/formatR/issues
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
+Encoding: UTF-8
