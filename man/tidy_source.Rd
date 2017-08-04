@@ -4,11 +4,12 @@
 \alias{tidy_source}
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy_source(source = "clipboard", comment = getOption("formatR.comment", 
-    TRUE), blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow", 
-    FALSE), brace.newline = getOption("formatR.brace.newline", FALSE), 
-    indent = getOption("formatR.indent", 4), output = TRUE, text = NULL, 
-    width.cutoff = getOption("width"), ...)
+tidy_source(source = "clipboard", comment = getOption("formatR.comment",
+  TRUE), blank = getOption("formatR.blank", TRUE),
+  arrow = getOption("formatR.arrow", FALSE),
+  brace.newline = getOption("formatR.brace.newline", FALSE),
+  indent = getOption("formatR.indent", 4), output = TRUE, text = NULL,
+  width.cutoff = getOption("width"), width.strict = FALSE, ...)
 }
 \arguments{
 \item{source}{a character string: location of the source code (default to be
@@ -38,6 +39,12 @@ ignored}
 determining the cutoff at which line-breaking is tried (default to be
 \code{getOption("width")})}
 
+\item{width.strict}{if \code{TRUE}, rather than being passed
+directly to \code{\link{deparse}}, \code{width.cutoff} is treated
+as a hard upper bound on the row width, with the argument to
+\code{\link{deparse}} chosen adaptively to achieve this upper
+bound, if possible}
+
 \item{...}{other arguments passed to \code{\link{cat}}, e.g. \code{file}
 (this can be useful for batch-processing R scripts, e.g.
 \code{tidy_source(source = 'input.R', file = 'output.R')})}
@@ -61,14 +68,14 @@ Be sure to read the reference to know other limitations.
 library(formatR)
 
 ## a messy R script
-messy = system.file("format", "messy.R", package = "formatR")
+messy = system.file('format', 'messy.R', package = 'formatR')
 tidy_source(messy)
 
 ## use the 'text' argument
 src = readLines(messy)
 
 ## source code
-cat(src, sep = "\\n")
+cat(src, sep = '\\n')
 
 ## the formatted version
 tidy_source(text = src)
@@ -106,13 +113,13 @@ tidy_source(x)
 
 ## if you've copied R code into the clipboard
 if (interactive()) {
-    tidy_source("clipboard")
-    ## write into clipboard again
-    tidy_source("clipboard", file = "clipboard")
+tidy_source("clipboard")
+## write into clipboard again
+tidy_source("clipboard", file = "clipboard")
 }
 
 ## the if-else structure
-tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
+tidy_source(text=c('{if(TRUE)1 else 2; if(FALSE){1+1',"## comments",'} else 2}'))
 }
 \references{
 \url{https://yihui.name/formatR} (an introduction to this package,

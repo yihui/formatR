@@ -23,6 +23,11 @@
 #' @param width.cutoff passed to \code{\link{deparse}}: integer in [20, 500]
 #'   determining the cutoff at which line-breaking is tried (default to be
 #'   \code{getOption("width")})
+#' @param width.strict if \code{TRUE}, rather than being passed
+#'   directly to \code{\link{deparse}}, \code{width.cutoff} is treated
+#'   as a hard upper bound on the row width, with the argument to
+#'   \code{\link{deparse}} chosen adaptively to achieve this upper
+#'   bound, if possible
 #' @param ... other arguments passed to \code{\link{cat}}, e.g. \code{file}
 #'   (this can be useful for batch-processing R scripts, e.g.
 #'   \code{tidy_source(source = 'input.R', file = 'output.R')})
@@ -45,7 +50,8 @@ tidy_source = function(
   brace.newline = getOption('formatR.brace.newline', FALSE),
   indent = getOption('formatR.indent', 4),
   output = TRUE, text = NULL,
-  width.cutoff = getOption('width'), ...
+  width.cutoff = getOption('width'),
+  width.strict = FALSE, ...
 ) {
   if (is.null(text)) {
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
@@ -66,7 +72,7 @@ tidy_source = function(
   }
   on.exit(.env$line_break <- NULL, add = TRUE)
   if (comment) text = mask_comments(text, width.cutoff, blank)
-  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
+  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)), width.strict)
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
@@ -84,12 +90,38 @@ mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.com
 inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 
+# wrapper around deparse() that enforces a strict maximum line width
+strict_deparse = function(..., max.width, width.cutoff=getOption('width')){
+  wcmin = 19L # If deparse() can't manage it with width.cutoff <= 20, issue a warning.
+  wcmax = 500L
+  # A binary search to find the greatest width.cutoff such that the width of the longest line <= max.width.
+  repeat{
+    guess = ceiling((wcmin+wcmax)/2)
+    if(guess<20){
+      # If it's induced by a comment, don't complain.
+      if(!length(grep(pat.comment,deparse(..., width.cutoff=500L)))) 
+        warning("Unable to find a suitable adaptive cut-off. Falling back to width.cutoff.")
+      return(trimws(deparse(..., width.cutoff=width.cutoff), "right"))
+    }
+    o = trimws(deparse(..., width.cutoff=guess), "right")
+
+    if(wcmax==wcmin) break
+    
+    l = max(nchar(o))
+    if(l>max.width) wcmax = guess-1 else wcmin = guess
+  }
+  o
+}
+
 # wrapper around parse() and deparse()
-tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
+tidy_block = function(text, width = getOption('width'), arrow = FALSE, width.strict = FALSE) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
-  sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
+  if(width.strict)
+    sapply(exprs, function(e) paste(strict_deparse(e, max.width=width, width.cutoff=width), collapse = '\n'))
+  else
+    sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
 
 # Restore the real source code from the masked text
