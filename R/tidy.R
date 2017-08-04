@@ -91,10 +91,10 @@ inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 
 # wrapper around deparse() that enforces a strict maximum line width
-strict_deparse = function(..., max.width, width.cutoff=getOption('width')){
+strict_deparse = function(..., width.max, width.cutoff=getOption('width')){
   wcmin = 19L # If deparse() can't manage it with width.cutoff <= 20, issue a warning.
   wcmax = 500L
-  # A binary search to find the greatest width.cutoff such that the width of the longest line <= max.width.
+  # A binary search to find the greatest width.cutoff such that the width of the longest line <= width.max.
   repeat{
     guess = ceiling((wcmin+wcmax)/2)
     if(guess<20){
@@ -108,7 +108,7 @@ strict_deparse = function(..., max.width, width.cutoff=getOption('width')){
     if(wcmax==wcmin) break
     
     l = max(nchar(o))
-    if(l>max.width) wcmax = guess-1 else wcmin = guess
+    if(l>width.max) wcmax = guess-1 else wcmin = guess
   }
   o
 }
@@ -119,7 +119,7 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE, width.str
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   if(width.strict)
-    sapply(exprs, function(e) paste(strict_deparse(e, max.width=width, width.cutoff=width), collapse = '\n'))
+    sapply(exprs, function(e) paste(strict_deparse(e, width.max=width, width.cutoff=width), collapse = '\n'))
   else
     sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
 }
