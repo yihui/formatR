@@ -4,7 +4,7 @@ subtitle: Format R code automatically
 author: Yihui Xie
 date: "`r Sys.Date()`"
 show_toc: true
-slug: formatR
+slug: formatr
 githubEditURL: https://github.com/yihui/formatR/edit/master/vignettes/formatR.Rmd
 output:
   knitr:::html_vignette:
@@ -107,6 +107,7 @@ After hitting the `Tidy` button:
 ```{r echo=FALSE, results='asis'}
 if (ignore_img) cat('\n-->')
 ```
+
 # 4. Evaluate the code and mask output in comments
 
 It is often a pain when trying to copy R code from other people's code which has been run in R and the prompt characters (usually `> `) are attached in the beginning of code, because we have to remove all the prompts `> ` and `+ ` manually before we are able to run the code. However, it will be convenient for the reader to understand the code if the output of the code can be attached. This motivates the function `tidy_eval()`, which uses `tidy_source()` to reformat the source code, evaluates the code in chunks, and attaches the output of each chunk as comments which will not actually break the original source code. Here is an example:
@@ -157,7 +158,7 @@ Note the 5th line (an empty line) was discarded:
 
 # 6. Further notes
 
-The tricks used in this packages are very dirty. There might be dangers in using the functions in **formatR**. Please read the next section carefully to know exactly how comments are preserved. The best strategy to avoid failure is to put comments in complete lines or after _complete_ R expressions. Below are some known issues that `tidy_source()` may fail.
+The tricks used in this packages are very dirty. There might be dangers in using the functions in **formatR**. Please read the next section carefully to know exactly how comments are preserved. The best strategy to avoid failure is to put comments in complete lines or after _complete_ R expressions. Below are some known cases in which `tidy_source()` fails.
 
 ## In-line comments after an incomplete expression or ;
 
@@ -203,6 +204,19 @@ We can use the question mark (`?`) to view the help page, but **formatR** packag
 
 In this case, it is recommended to use the function `help()` instead of the short-hand version `?`.
 
+## `!!` and `!!!` from the **rlang** package
+
+The syntactic shortcuts `!!` and `!!!` from the **rlang** packages will be ruined by `tidy_source()`, e.g.,
+
+```{r bang-bang, tidy=FALSE, eval=FALSE}
+rlang::quo(mean(!! 1:10 * 2))
+```
+
+will be reformatted as:
+
+```{r bang-bang, eval=FALSE}
+```
+
 ## `->` with comments
 
 We can also use the right arrow `->` for assignment, e.g. `1:10 -> x`. I believe this flexibility is worthless, and it is amazing that a language has three assignment operators: `<-`, `=` and `->` (whereas almost all other languages uses `=` for assignment). Bad news for **formatR** is that it is unable to format code using both `->` and comments in a line, e.g.
@@ -212,6 +226,10 @@ We can also use the right arrow `->` for assignment, e.g. `1:10 -> x`. I believe
 ```
 
 I recommend you to use `<-` or `=` consistently. What is more important is consistency. I always use `=` because it causes me no confusion (I do not believe it is ever possible for people to interpret `fun(a = 1)` as assigning `1` to a variable `a` instead of passing an argument value) and `<-` is more dangerous because it works everywhere (you might have unconsciously created a new variable `a` in `fun(a <- 1)`; see [an example here](https://stat.ethz.ch/pipermail/r-devel/2011-December/062786.html)). The only disadvantage is that most R people use `<-` so it may be difficult to collaborate with other people.
+
+## The pipe operator `%>%`
+
+Although `tidy_source()` won't ruin your code that contains the pipes, you won't be happy with it: your line breaks after the pipes won't be preserved. See [#54](https://github.com/yihui/formatR/issues/54).
 
 # 7. How does `tidy_source()` actually work?
 
