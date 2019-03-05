@@ -4,11 +4,12 @@
 \alias{tidy_source}
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy_source(source = "clipboard", comment = getOption("formatR.comment", 
-    TRUE), blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow", 
-    FALSE), brace.newline = getOption("formatR.brace.newline", FALSE), 
-    indent = getOption("formatR.indent", 4), output = TRUE, text = NULL, 
-    width.cutoff = getOption("width"), ...)
+tidy_source(source = "clipboard", comment = getOption("formatR.comment", TRUE), 
+    blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow", 
+        FALSE), brace.newline = getOption("formatR.brace.newline", FALSE), 
+    indent = getOption("formatR.indent", 4), wrap = getOption("formatR.wrap", 
+        TRUE), output = TRUE, text = NULL, width.cutoff = getOption("width"), 
+    ...)
 }
 \arguments{
 \item{source}{a character string: location of the source code (default to be
@@ -25,6 +26,9 @@ the clipboard; this means we can copy the code to clipboard and use
 (default \code{FALSE})}
 
 \item{indent}{number of spaces to indent the code (default 4)}
+
+\item{wrap}{whether to wrap comments to the linewidth determined by
+\code{width.cutoff} (note that roxygen comments will never be wrapped)}
 
 \item{output}{output to the console or a file using \code{\link{cat}}?}
 
@@ -115,8 +119,8 @@ if (interactive()) {
 tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
 }
 \references{
-\url{https://yihui.name/formatR} (an introduction to this package,
-  with examples and further notes)
+\url{https://yihui.name/formatR} (an introduction to this
+  package, with examples and further notes)
 }
 \seealso{
 \code{\link{parse}}, \code{\link{deparse}}
