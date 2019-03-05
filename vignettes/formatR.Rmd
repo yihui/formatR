@@ -209,19 +209,6 @@ We can use the question mark (`?`) to view the help page, but **formatR** packag
 
 In this case, it is recommended to use the function `help()` instead of the short-hand version `?`.
 
-## `!!` and `!!!` from the **rlang** package
-
-The syntactic shortcuts `!!` and `!!!` from the **rlang** packages will be ruined by `tidy_source()`, e.g.,
-
-```{r bang-bang, tidy=FALSE, eval=FALSE}
-rlang::quo(mean(!! 1:10 * 2))
-```
-
-will be reformatted as:
-
-```{r bang-bang, eval=FALSE}
-```
-
 ## `->` with comments
 
 We can also use the right arrow `->` for assignment, e.g. `1:10 -> x`. I believe this flexibility is worthless, and it is amazing that a language has three assignment operators: `<-`, `=` and `->` (whereas almost all other languages uses `=` for assignment). Bad news for **formatR** is that it is unable to format code using both `->` and comments in a line, e.g.
