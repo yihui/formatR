@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, width, keep.blank.line) {
+mask_comments = function(x, width, keep.blank.line, wrap = TRUE) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -42,7 +42,9 @@ mask_comments = function(x, width, keep.blank.line) {
   c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
   c2 = i & !c1  # inline comments
   c3 = c1 & grepl("^#+[-'+]", d.text)  # roxygen or knitr spin() comments
-  if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
+  if (wrap) {
+    if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
+  } else c3 = c1  # comments not to be wrapped
 
   # reflow blocks of comments: first collapse them, then wrap them
   i1 = which(c1 & !c3) # do not wrap roxygen comments

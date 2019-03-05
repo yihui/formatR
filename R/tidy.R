@@ -14,6 +14,8 @@
 #' @param brace.newline whether to put the left brace \code{\{} to a new line
 #'   (default \code{FALSE})
 #' @param indent number of spaces to indent the code (default 4)
+#' @param wrap whether to wrap comments to the linewidth determined by
+#'   \code{width.cutoff} (note that roxygen comments will never be wrapped)
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
@@ -33,8 +35,8 @@
 #' @author Yihui Xie <\url{https://yihui.name}> with substantial contribution
 #'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
 #' @seealso \code{\link{parse}}, \code{\link{deparse}}
-#' @references \url{https://yihui.name/formatR} (an introduction to this package,
-#'   with examples and further notes)
+#' @references \url{https://yihui.name/formatR} (an introduction to this
+#'   package, with examples and further notes)
 #' @import utils
 #' @export
 #' @example inst/examples/tidy.source.R
@@ -44,6 +46,7 @@ tidy_source = function(
   arrow = getOption('formatR.arrow', FALSE),
   brace.newline = getOption('formatR.brace.newline', FALSE),
   indent = getOption('formatR.indent', 4),
+  wrap = getOption('formatR.wrap', TRUE),
   output = TRUE, text = NULL,
   width.cutoff = getOption('width'), ...
 ) {
@@ -65,7 +68,7 @@ tidy_source = function(
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
   on.exit(.env$line_break <- NULL, add = TRUE)
-  if (comment) text = mask_comments(text, width.cutoff, blank)
+  if (comment) text = mask_comments(text, width.cutoff, blank, wrap)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
   text.tidy = reindent_lines(text.tidy, indent)

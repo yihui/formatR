@@ -1,3 +1,11 @@
+		   CHANGES IN formatR VERSION 1.6
+
+NEW FEATURES
+
+  o Added a new argument `wrap` to `tidy_source()` so that users can choose not
+  to wrap comments via `tidy_source(..., wrap = FALSE)`, or set the global
+  option `options(formatR.wrap = FALSE)` (thanks, @YongLiedu, #73).
+
 		   CHANGES IN formatR VERSION 1.5
 
 NEW FEATURES
