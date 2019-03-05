@@ -71,7 +71,7 @@ x=2;print('Oh no... ask the right bracket to go away!')}
 
 lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### a linear model
 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  # comment after a long line
-## here is a long long long long long long long long long long long long long comment which will be wrapped
+## here is a long long long long long long long long long long long long long comment that may be wrapped
 ```
 
 We can copy the above code to clipboard, and type `tidy_source(width.cutoff = 50)` to get:
@@ -149,6 +149,11 @@ Note the 5th line (an empty line) was discarded:
 ## Move left braces `{` to new lines
 
 ```{r example, eval=FALSE, echo=6, tidy.opts=list(brace.newline = TRUE)}
+```
+
+## Do not wrap comments
+
+```{r example, eval=FALSE, echo=11:12, tidy.opts=list(wrap = FALSE)}
 ```
 
 ## Discard comments
