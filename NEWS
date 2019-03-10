@@ -1,6 +1,9 @@
 		   CHANGES IN formatR VERSION 1.7
 
+MAJOR CHANGES
 
+  o `tidy_source()` will try to preserve the character encoding of the `text`
+  argument in the output.
 
 		   CHANGES IN formatR VERSION 1.6
 

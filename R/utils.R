@@ -210,3 +210,11 @@ trimws = function(x, which = c('both', 'left', 'right')) {
     left = gsub('^\\s+', '', x), right = gsub('\\s+$', '', x)
   )
 }
+
+restore_encoding = function(x, enc) {
+  if (length(enc) != 1) return(x)
+  xenc = special_encoding(x)
+  iconv(x, if (length(xenc) == 0) '' else xenc, enc)
+}
+
+special_encoding = function(x) setdiff(Encoding(x), 'unknown')
