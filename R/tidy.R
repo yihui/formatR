@@ -54,10 +54,8 @@ tidy_source = function(
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
       source = pipe('pbpaste')
     }
-  } else {
-    source = textConnection(text); on.exit(close(source), add = TRUE)
+    text = readLines(source, warn = FALSE)
   }
-  text = readLines(source, warn = FALSE)
   if (length(text) == 0L || all(grepl('^\\s*$', text))) {
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
