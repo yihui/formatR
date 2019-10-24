@@ -5,3 +5,4 @@ inst/examples
 .travis.yml
 inst/shiny/shinyapps
 .Rhistory
+^\.github$
