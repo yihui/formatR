@@ -25,5 +25,5 @@ License: GPL
 URL: https://github.com/yihui/formatR
 BugReports: https://github.com/yihui/formatR/issues
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 Encoding: UTF-8

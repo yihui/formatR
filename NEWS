@@ -107,7 +107,7 @@ MAJOR CHANGES
   similarly, the corresponding global options were also renamed: now you should
   use `options(formatR.comment)` instead of `options(keep.comment)`,
   `keep.blank.line` -> `formatR.blank`, and so on; see `?tidy_source` and
-  http://yihui.name/formatR for details
+  http://yihui.org/formatR for details
 
 MINOR CHANGES
 

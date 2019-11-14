@@ -4,7 +4,13 @@
 \alias{tidy_eval}
 \title{Evaluate R code and mask the output by a prefix}
 \usage{
-tidy_eval(source = "clipboard", ..., file = "", prefix = "## ", envir = parent.frame())
+tidy_eval(
+  source = "clipboard",
+  ...,
+  file = "",
+  prefix = "## ",
+  envir = parent.frame()
+)
 }
 \arguments{
 \item{source}{the input filename (by default the clipboard; see
@@ -39,5 +45,5 @@ tidy_eval(text = c("a<-1+1;a", "matrix(rnorm(10),5)"))
 tidy_eval(system.file("format", "messy.R", package = "formatR"))
 }
 \references{
-\url{https://yihui.name/formatR}
+\url{https://yihui.org/formatR}
 }

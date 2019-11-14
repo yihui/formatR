@@ -5,4 +5,4 @@
 
 Format R code automatically.
 
-See the package homepage <https://yihui.name/formatR> for more information.
+See the package homepage <https://yihui.org/formatR> for more information.

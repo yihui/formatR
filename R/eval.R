@@ -15,7 +15,7 @@
 #' @return Evaluated R code with corresponding output (printed on screen or
 #'   written in a file).
 #' @export
-#' @references \url{https://yihui.name/formatR}
+#' @references \url{https://yihui.org/formatR}
 #' @examples library(formatR)
 #' ## evaluate simple code as a character vector
 #' tidy_eval(text = c('a<-1+1;a','matrix(rnorm(10),5)'))
