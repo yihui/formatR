@@ -175,7 +175,7 @@ x <- ## this is not a complete expression
 x <- 1; # you should not use ; here!
 ```
 
-It is not a good idea to interrupt R code with comments and sometimes it can be confusing -- comments should come after a complete R expression naturally; by the way, `tidy_source()` will move the comments after `{` to the next line, e.g.
+Code with comments after incomplete R expression cannot be reformatted by **formatR**. By the way, `tidy_source()` will move comments after `{` to the next line, e.g.,
 
 ```{r comment-brace, tidy=FALSE, eval=FALSE}
 if (TRUE) {## comments
