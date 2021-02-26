@@ -14,7 +14,7 @@ Description: Provides a function tidy_source() to format R source code. Spaces
     human-readable and tidy. There is also a Shiny app as a user interface in
     this package (see tidy_app()).
 Depends:
-    R (>= 3.0.2)
+    R (>= 3.2.3)
 Suggests:
     codetools,
     shiny,

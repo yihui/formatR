@@ -4,6 +4,8 @@ MAJOR CHANGES
 
   o White spaces on blank lines are removed now (thanks, @nylander, #88).
 
+  o This package requires R >= 3.2.3 now.
+
 		   CHANGES IN formatR VERSION 1.7
 
 MAJOR CHANGES

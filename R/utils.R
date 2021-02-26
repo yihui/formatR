@@ -146,18 +146,8 @@ parse_only = function(code) {
   base::parse(text = code, keep.source = FALSE)
 }
 
-# copied from highr
-# TODO: eventually remove the hack for R <= 3.2.2
-parse_source = if (getRversion() > '3.2.2') function(lines) {
+parse_source = function(lines) {
   parse(text = lines, keep.source = TRUE)
-} else function(lines) {
-  # adapted from evaluate
-  src = srcfilecopy('<text>', lines = '')
-  if (length(grep('\n', lines))) lines = unlist(strsplit(
-    sub('$', '\n', as.character(lines)), '\n'
-  ))
-  src$lines = lines
-  parse(text = lines, srcfile = src)
 }
 
 # restore backslashes
