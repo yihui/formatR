@@ -88,6 +88,7 @@ pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
 mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.comment)
 inline.comment = ' %InLiNe_IdEnTiFiEr%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
+blank.comment2 = sprintf('(\n)\\s+invisible\\("%s%s"\\)(\n|$)', begin.comment, end.comment)
 
 # wrapper around parse() and deparse()
 tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
@@ -114,6 +115,8 @@ unmask_source = function(text.mask) {
     m = gregexpr(inline.comment, text.mask)
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
+  # remove white spaces on blank lines
+  text.mask = gsub(blank.comment2, '\\1\\2', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
   # inline comments should be terminated by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)

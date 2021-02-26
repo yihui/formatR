@@ -1,6 +1,8 @@
 		   CHANGES IN formatR VERSION 1.8
 
+MAJOR CHANGES
 
+  o White spaces on blank lines are removed now (thanks, @nylander, #88).
 
 		   CHANGES IN formatR VERSION 1.7
 
