@@ -79,7 +79,7 @@ tidy_source(messy)
 src = readLines(messy)
 
 ## source code
-cat(src, sep = "\\n")
+cat(src, sep = "\n")
 
 ## the formatted version
 tidy_source(text = src)

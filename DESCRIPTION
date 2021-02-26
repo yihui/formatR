@@ -1,7 +1,7 @@
 Package: formatR
 Type: Package
 Title: Format R Code Automatically
-Version: 1.7.1
+Version: 1.7.2
 Authors@R: c(
     person("Yihui", "Xie", role = c("aut", "cre"), email = "xie@yihui.name", comment = c(ORCID = "0000-0003-0645-5666")),
     person("Eugene", "Ha", role = "ctb"),
@@ -25,5 +25,5 @@ License: GPL
 URL: https://github.com/yihui/formatR
 BugReports: https://github.com/yihui/formatR/issues
 VignetteBuilder: knitr
-RoxygenNote: 7.0.0
+RoxygenNote: 7.1.1
 Encoding: UTF-8
