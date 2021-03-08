@@ -17,7 +17,7 @@ vignette: >
 <script type="text/javascript">
 // redirect from CRAN to my personal website
 if (location.protocol === 'https:' && location.href.match('yihui.org') === null)
-  location.href = 'https://yihui.org/formatR';
+  location.href = 'https://yihui.org/formatr';
 </script>
 
 ```{r setup, include=FALSE}
@@ -27,12 +27,16 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 # 1. Installation
 
-You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or [XRAN](https://xran.yihui.org) if you want to test the latest development version:
+You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or https://yihui.r-universe.dev if you want to test the latest development version:
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://cran.rstudio.com')
-#' to install the development version, run
-#' install.packages('formatR', repos = 'https://xran.yihui.org')
+# or development version
+options(repos = c(
+  yihui = 'https://yihui.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'
+))
+install.packages('formatR')
 ```
 
 Or check out the [Github repository](https://github.com/yihui/formatR) and install from source if you know what this means. This page is always based on the development version.
