@@ -134,5 +134,5 @@ tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 
 }
 \author{
 Yihui Xie <\url{https://yihui.org}> with substantial contribution
-  from Yixuan Qiu <\url{http://yixuan.cos.name}>
+  from Yixuan Qiu <\url{https://yixuan.blog}>
 }
