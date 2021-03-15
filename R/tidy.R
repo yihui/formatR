@@ -72,7 +72,8 @@ tidy_source = function(
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
   on.exit(.env$line_break <- NULL, add = TRUE)
-  # preserve line breaks after infix operators such as %>%
+  # insert enough spaces into infix operators such as %>% so the lines can be
+  # broken after the operators
   spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
   if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
