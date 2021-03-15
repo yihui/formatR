@@ -19,7 +19,7 @@ assert(
 assert(
   'tidy_source() can preserve blank lines among non-empty code lines',
   identical(tidy.res(c('if(TRUE){1+1', '', '}', '', '# a comment')),
-            c('if (TRUE) {\n    1 + 1\n    \n}', '', '# a comment'))
+            c('if (TRUE) {\n    1 + 1\n\n}', '', '# a comment'))
 )
 
 x1 = paste(c('#', letters), collapse = ' ')
@@ -99,7 +99,7 @@ if(F){
 '
 assert(
   'keep.blank.line=FALSE removes blank lines',
-  identical(tidy.res(x1), c('1 + 1', '', 'if (F) {\n    \n}', '')),
+  identical(tidy.res(x1), c('1 + 1', '', 'if (F) {\n\n}', '')),
   identical(tidy.res(x1, blank = FALSE), c('1 + 1', 'if (F) {\n}'))
 )
 

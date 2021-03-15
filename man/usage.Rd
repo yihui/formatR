@@ -4,8 +4,14 @@
 \alias{usage}
 \title{Show the usage of a function}
 \usage{
-usage(FUN, width = getOption("width"), tidy = TRUE, output = TRUE, 
-    indent.by.FUN = FALSE, fail = c("warn", "stop", "none"))
+usage(
+  FUN,
+  width = getOption("width"),
+  tidy = TRUE,
+  output = TRUE,
+  indent.by.FUN = FALSE,
+  fail = c("warn", "stop", "none")
+)
 }
 \arguments{
 \item{FUN}{the function name}
