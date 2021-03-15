@@ -72,9 +72,12 @@ tidy_source = function(
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
   on.exit(.env$line_break <- NULL, add = TRUE)
-  if (comment) text = mask_comments(text, width.cutoff, blank, wrap)
+  # insert enough spaces into infix operators such as %>% so the lines can be
+  # broken after the operators
+  spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
+  if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
-  text.tidy = if (comment) unmask_source(text.mask) else text.mask
+  text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
@@ -104,7 +107,7 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
 }
 
 # Restore the real source code from the masked text
-unmask_source = function(text.mask) {
+unmask_source = function(text.mask, spaces) {
   if (length(text.mask) == 0) return(text.mask)
   m = .env$line_break
   if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
@@ -123,6 +126,8 @@ unmask_source = function(text.mask) {
   # remove white spaces on blank lines
   text.mask = gsub(blank.comment2, '\\1\\2', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
+  # restore infix operators such as %>%
+  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.tidy)
   # inline comments should be terminated by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
   # the rest of inline comments should be appended by \n

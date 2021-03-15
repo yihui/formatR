@@ -140,3 +140,22 @@ assert(
   'line breaks in strings are preserved instead of being replaced by \\n',
   tidy.res(x1) %==% x1
 )
+
+# tests for magrittr newlines
+
+x1 = '
+iris %>% group_by(Species) %>%
+summarize(meanlen = mean(Sepal.Length)) %$% arrange(meanlen) %>%meanlen
+'
+
+x2 = '
+iris %>%
+  group_by(Species) %>%
+  summarize(meanlen = mean(Sepal.Length)) %$%
+  arrange(meanlen) %>%
+  meanlen
+'
+
+assert('magrittr lines are wrapped after the pipes', {
+  (paste(tidy.res(x1, indent = 2), collapse = '\n') %==% x2)
+})

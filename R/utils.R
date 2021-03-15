@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, width, keep.blank.line, wrap = TRUE) {
+mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -69,9 +69,13 @@ mask_comments = function(x, width, keep.blank.line, wrap = TRUE) {
     if (blank[i] > 0)
       d.text[i] = paste(c(d.text[i], rep(blank.comment, blank[i])), collapse = '\n')
   }
+  # break lines after some infix operators such as %>%
+  d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\\2', spaces, '\\3'), d.text)
 
   unlist(lapply(split(d.text, d.line), paste, collapse = ' '), use.names = FALSE)
 }
+
+infix_ops = '[>$]|T>|<>'
 
 # no blank lines before an 'else' statement!
 move_else = function(x) {

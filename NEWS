@@ -1,5 +1,9 @@
 		   CHANGES IN formatR VERSION 1.9
 
+NEW FEATURES
+
+  o Lines will be wrapped after operators `%>%`, `%T%`, `%$%`, and `%<>%` now
+  (thanks, @g4challenge #54, @jzelner #62, @edlee123 #68).
 
 		   CHANGES IN formatR VERSION 1.8
 
