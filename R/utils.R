@@ -216,20 +216,21 @@ trimws = function(x, which = c('both', 'left', 'right')) {
 # and will add newline char when the expression is longer than the width limit.
 # This function also wraps for pipes, so it will remove the wrapping
 # introduced from tidy_block so it won't have extra wrapping.
-# See test-tidy.R for unit tests.
+#' See test-tidy.R for unit tests.
 magrittr_wrap_lines <- function(text.tidy) {
-  # In tidy_source, the text.tidy should already be a vector of
-  # strings per rows.
+  # In tidy_source, the text.tidy should already
+  # be a vector of strings per rows.
   code <- text.tidy
   magrittr_patt = "(\\%>\\%|\\%\\$\\%|\\%T>\\%|\\%<>\\%)"
 
   # Find row indices with magrittr pipes in them
-  ind = grep(pattern = magrittr_patt, x = code, value = FALSE)
+  ind = grep(pattern = magrittr_patt , x = code, value = FALSE)
 
   # In rows with magrittr operators, wrap them necessary
   replace_lines = list()
   if (length(ind) > 0) {
     for (i in 1:length(ind)) {
+      # print(i)
       original_line = code[ind[i]]
       remove_tidy_block_newline_chars = gsub("\\s{4,}", " ", original_line)
       split_lines = strsplit(remove_tidy_block_newline_chars,
@@ -244,12 +245,11 @@ magrittr_wrap_lines <- function(text.tidy) {
         # Do nothing, no line split
         code[ind[i]]
       } else if (num_new_lines > 2 & (num_pipes < num_new_lines)) {
-        # Typical situation: number of terms == num_pipes + 1
-        c(paste0(split_lines[[1]][1:(num_new_lines - 1)],
-                 found_pipes[[1]]), split_lines[[1]][num_new_lines])
+        # Typial situation:  number of terms == num_pipes + 1
+        c(paste0(split_lines[[1]][1:(num_new_lines - 1)], found_pipes[[1]]),
+          split_lines[[1]][num_new_lines])
       } else if (length(num_new_lines) == length(found_pipes[[1]])) {
-        # Case where user has already split some pipe terms to newline (not all
-        # terms)
+        # User has already split some pipe terms to newline (not all tho)
         c(paste0(split_lines[[1]], found_pipes[[1]]))
       } else {
         # Do nothing
@@ -261,7 +261,7 @@ magrittr_wrap_lines <- function(text.tidy) {
     replaced_code = as.list(code)
     for (i in 1:length(ind)) replaced_code[[ind[i]]] = replace_lines[i]
     newcode = unlist(replaced_code)
-    paste(newcode, collapse = "\n")
+    paste(newcode, collapse = '\n')
   } else {
     code
   }
