@@ -5,6 +5,11 @@ NEW FEATURES
   o Lines will be wrapped after operators `%>%`, `%T%`, `%$%`, and `%<>%` now
   (thanks, @g4challenge #54, @jzelner #62, @edlee123 #68).
 
+BUG FIXES
+
+  o When the text in the clipboard on macOS does not have a final EOL,
+  `tidy_source()` fails to read the last line (thanks, @edlee123, #54).
+
 		   CHANGES IN formatR VERSION 1.8
 
 MAJOR CHANGES
