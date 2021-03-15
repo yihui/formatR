@@ -52,9 +52,14 @@ tidy_source = function(
 ) {
   if (is.null(text)) {
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
-      source = pipe('pbpaste')
+      source = pipe('pbpaste'); on.exit(close(source), add = TRUE)
+      # use readChar() instead of readLines() in case users didn't copy the last
+      # \n into clipboard, e.g., https://github.com/yihui/formatR/issues/54
+      text = readChar(source, getOption('formatR.clipboard.size', 1e5))
+      text = unlist(strsplit(text, '\n'))
+    } else {
+      text = readLines(source, warn = FALSE)
     }
-    text = readLines(source, warn = FALSE)
   }
   enc = special_encoding(text)
   if (length(text) == 0L || all(grepl('^\\s*$', text))) {
