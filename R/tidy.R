@@ -35,7 +35,7 @@
 #' @author Yihui Xie <\url{https://yihui.org}> with substantial contribution
 #'   from Yixuan Qiu <\url{https://yixuan.blog}>
 #' @seealso \code{\link{parse}}, \code{\link{deparse}}
-#' @references \url{https://yihui.org/formatR} (an introduction to this
+#' @references \url{https://yihui.org/formatR/} (an introduction to this
 #'   package, with examples and further notes)
 #' @import utils
 #' @export

@@ -17,7 +17,7 @@ vignette: >
 <script type="text/javascript">
 // redirect from CRAN to my personal website
 if (location.protocol === 'https:' && location.href.match('yihui.org') === null)
-  location.href = 'https://yihui.org/formatr';
+  location.href = 'https://yihui.org/formatr/';
 </script>
 
 ```{r setup, include=FALSE}

@@ -126,7 +126,7 @@ if (interactive()) {
 tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 2}"))
 }
 \references{
-\url{https://yihui.org/formatR} (an introduction to this
+\url{https://yihui.org/formatR/} (an introduction to this
   package, with examples and further notes)
 }
 \seealso{
