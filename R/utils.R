@@ -222,18 +222,11 @@ magrittr_wrap_lines <- function(text.tidy) {
   # strings per rows.
   code <- text.tidy
   magrittr_patt = "(\\%>\\%|\\%\\$\\%|\\%T>\\%|\\%<>\\%)"
-  comment_mask_patt = paste0('invisible\\(\\"', begin.comment)
 
-  # Find row indices with magrittr pipes in them & exclude those that are masked
-  magrittr_ind = c(grep(pattern = magrittr_patt, x = code, value = FALSE))
-  exclude_mask_ind = c(grep(pattern = comment_mask_patt, code))
-  if (length(magrittr_ind) > 0 & length(exclude_mask_ind) > 0) {
-    ind = magrittr_ind[magrittr_ind != exclude_mask_ind]
-  } else{
-    ind = magrittr_ind
-  }
+  # Find row indices with magrittr pipes in them
+  ind = grep(pattern = magrittr_patt, x = code, value = FALSE)
 
-  # Wrapping rows with magrittr operators, and excluding comments
+  # In rows with magrittr operators, wrap them necessary
   replace_lines = list()
   if (length(ind) > 0) {
     for (i in 1:length(ind)) {

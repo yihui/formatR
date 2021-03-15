@@ -14,7 +14,7 @@
 #' @param brace.newline whether to put the left brace \code{\{} to a new line
 #'   (default \code{FALSE})
 #' @param magrittr.newline whether to wrap lines on magrittr operators
-#'   such as %>%, %$%,  (default \code{TRUE})
+#'   such as \code{%>%}, \code{%$%},  (default \code{TRUE})
 #' @param indent number of spaces to indent the code (default 4)
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
@@ -71,8 +71,8 @@ tidy_source = function(
   on.exit(.env$line_break <- NULL, add = TRUE)
   if (comment) text = mask_comments(text, width.cutoff, blank)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
-  text.mask = if (magrittr.newline) magrittr_wrap_lines(text.mask)
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
+  text.tidy = if (magrittr.newline) magrittr_wrap_lines(text.tidy)
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end

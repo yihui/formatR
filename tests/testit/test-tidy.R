@@ -187,31 +187,3 @@ assert(
   adjust for this and remove it to prevent the extra line wrapping',
   paste(tidy.res(x1), collapse='\n') %==% x2
 )
-
-x = '
-x <- "The pipe %>% is %$% great!"
-'
-
-x1 = '
-# Testing two pipes %>% and %$% in a comment block
-
-'
-assert(
-  " no magrittr wrap comments, test 1:
-when there are multiple magrittr pipes in a comment it wont wrap
-the coment",
-  paste(tidy.res(x1), collapse='\n') %==% x1
-)
-
-
-x1 = "
-#\' @importFrom magrittr %>% %$%
-
-"
-
-assert(
-  " no magrittr wrap comments, test 2:
- when there are multiple magrittr pipes in a comment it wont just wrap
-the coment",
-paste(tidy.res(x1), collapse='\n') %==% x1
-)
