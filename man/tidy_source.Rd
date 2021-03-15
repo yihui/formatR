@@ -4,11 +4,10 @@
 \alias{tidy_source}
 \title{Reformat R code while preserving blank lines and comments}
 \usage{
-tidy_source(source = "clipboard", comment = getOption("formatR.comment",
-    TRUE), blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow",
-    FALSE), brace.newline = getOption("formatR.brace.newline", FALSE),
-    magrittr.newline = getOption("formatR.magrittr.newline", TRUE),
-    indent = getOption("formatR.indent", 4), output = TRUE, text = NULL,
+tidy_source(source = "clipboard", comment = getOption("formatR.comment", 
+    TRUE), blank = getOption("formatR.blank", TRUE), arrow = getOption("formatR.arrow", 
+    FALSE), brace.newline = getOption("formatR.brace.newline", FALSE), 
+    indent = getOption("formatR.indent", 4), output = TRUE, text = NULL, 
     width.cutoff = getOption("width"), ...)
 }
 \arguments{
