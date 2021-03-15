@@ -14,7 +14,7 @@
 #' @param brace.newline whether to put the left brace \code{\{} to a new line
 #'   (default \code{FALSE})
 #' @param magrittr.newline whether to wrap lines on magrittr operators
-#'   such as \code{%>%}, \code{%$%},  (default \code{TRUE})
+#'   such as \code{%>%}, \code{%$%}
 #' @param indent number of spaces to indent the code (default 4)
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
@@ -45,8 +45,7 @@ tidy_source = function(
   blank = getOption('formatR.blank', TRUE),
   arrow = getOption('formatR.arrow', FALSE),
   brace.newline = getOption('formatR.brace.newline', FALSE),
-  magrittr.newline = getOption(
-    'formatR.magrittr.newline', TRUE),
+  magrittr.newline = getOption('formatR.magrittr.newline', TRUE),
   indent = getOption('formatR.indent', 4),
   output = TRUE, text = NULL,
   width.cutoff = getOption('width'), ...
