@@ -31,10 +31,12 @@ shinyUI(fluidPage(
       ),
       tags$textarea(
         id = 'demo', style = 'display: none;',
-        paste(
+        paste(c(
           readLines(system.file('format', 'messy.R', package = 'formatR')),
-          collapse = '\n'
-        )
+          '',
+          '# and pipes on a single line',
+          'mtcars %>% subset(am==0) %>% lm(mpg~hp, data=.)'
+        ), collapse = '\n')
       )
     )
   )

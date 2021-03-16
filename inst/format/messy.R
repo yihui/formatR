@@ -14,6 +14,3 @@ lm(y~x1+x2, data=df)
 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  ## comments after a long line
 
 ## here is a long long long long long long long long long long long long long long long long long long long long comment
-
-# and pipes on a single line
-mtcars %>% subset(am==0) %>% lm(mpg~hp, data=.)
