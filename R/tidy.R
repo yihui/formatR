@@ -100,7 +100,7 @@ begin.comment = '.BeGiN_TiDy_IdEnTiFiEr_HaHaHa'
 end.comment = '.HaHaHa_EnD_TiDy_IdEnTiFiEr'
 pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
 mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.comment)
-inline.comment = ' %\U200B%[ ]*"([ ]*#[^"]*)"'
+inline.comment = ' %\b%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 blank.comment2 = sprintf('(\n)\\s+invisible\\("%s%s"\\)(\n|$)', begin.comment, end.comment)
 
@@ -145,7 +145,7 @@ unmask_source = function(text.mask, spaces) {
   if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
   ## if the comments were separated into the next line, then remove '\n' after
   ##   the identifier first to move the comments back to the same line
-  text.mask = gsub('(%\U200B%)[ ]*\n', '\\1', text.mask)
+  text.mask = gsub('(%\b%)[ ]*\n', '\\1', text.mask)
   ## move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
   if (any(grepl('\\\\\\\\', text.mask)) &&
