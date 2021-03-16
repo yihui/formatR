@@ -14,6 +14,8 @@
 #' @param brace.newline whether to put the left brace \code{\{} to a new line
 #'   (default \code{FALSE})
 #' @param indent number of spaces to indent the code (default 4)
+#' @param wrap whether to wrap comments to the linewidth determined by
+#'   \code{width.cutoff} (note that roxygen comments will never be wrapped)
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
@@ -35,11 +37,11 @@
 #'   character vector} \item{text.mask}{the code containing comments, which are
 #'   masked in assignments or with the weird operator}
 #' @note Be sure to read the reference to know other limitations.
-#' @author Yihui Xie <\url{https://yihui.name}> with substantial contribution
-#'   from Yixuan Qiu <\url{http://yixuan.cos.name}>
+#' @author Yihui Xie <\url{https://yihui.org}> with substantial contribution
+#'   from Yixuan Qiu <\url{https://yixuan.blog}>
 #' @seealso \code{\link{parse}}, \code{\link{deparse}}
-#' @references \url{https://yihui.name/formatR} (an introduction to this package,
-#'   with examples and further notes)
+#' @references \url{https://yihui.org/formatR/} (an introduction to this
+#'   package, with examples and further notes)
 #' @import utils
 #' @export
 #' @example inst/examples/tidy.source.R
@@ -49,18 +51,23 @@ tidy_source = function(
   arrow = getOption('formatR.arrow', FALSE),
   brace.newline = getOption('formatR.brace.newline', FALSE),
   indent = getOption('formatR.indent', 4),
+  wrap = getOption('formatR.wrap', TRUE),
   output = TRUE, text = NULL,
   width.cutoff = getOption('width'),
   width.strict = FALSE, ...
 ) {
   if (is.null(text)) {
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
-      source = pipe('pbpaste')
+      source = pipe('pbpaste'); on.exit(close(source), add = TRUE)
+      # use readChar() instead of readLines() in case users didn't copy the last
+      # \n into clipboard, e.g., https://github.com/yihui/formatR/issues/54
+      text = readChar(source, getOption('formatR.clipboard.size', 1e5))
+      text = unlist(strsplit(text, '\n'))
+    } else {
+      text = readLines(source, warn = FALSE)
     }
-  } else {
-    source = textConnection(text); on.exit(close(source), add = TRUE)
   }
-  text = readLines(source, warn = FALSE)
+  enc = special_encoding(text)
   if (length(text) == 0L || all(grepl('^\\s*$', text))) {
     if (output) cat('\n', ...)
     return(list(text.tidy = text, text.mask = text))
@@ -71,15 +78,21 @@ tidy_source = function(
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
   on.exit(.env$line_break <- NULL, add = TRUE)
-  if (comment) text = mask_comments(text, width.cutoff, blank)
+  # insert enough spaces into infix operators such as %>% so the lines can be
+  # broken after the operators
+  spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
+  if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
   text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)), width.strict)
-  text.tidy = if (comment) unmask_source(text.mask) else text.mask
+  text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
   if (blank) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
   if (output) cat(text.tidy, sep = '\n', ...)
-  invisible(list(text.tidy = text.tidy, text.mask = text.mask))
+  invisible(list(
+    text.tidy = restore_encoding(text.tidy, enc),
+    text.mask = restore_encoding(text.mask, enc)
+  ))
 }
 
 ## if you have variable names like this in your code, then you really beat me...
@@ -89,6 +102,7 @@ pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
 mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.comment)
 inline.comment = ' %\u1d166%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
+blank.comment2 = sprintf('(\n)\\s+invisible\\("%s%s"\\)(\n|$)', begin.comment, end.comment)
 
 # wrapper around deparse() that enforces a strict maximum line width
 strict_deparse = function(..., width.max, width.cutoff=getOption('width')){
@@ -99,14 +113,14 @@ strict_deparse = function(..., width.max, width.cutoff=getOption('width')){
     guess = ceiling((wcmin+wcmax)/2)
     if(guess<20){
       # If it's induced by a comment, don't complain.
-      if(!length(grep(pat.comment,deparse(..., width.cutoff=500L)))) 
+      if(!length(grep(pat.comment,deparse(..., width.cutoff=500L))))
         warning("Unable to find a suitable adaptive cut-off. Falling back to width.cutoff.")
       return(trimws(deparse(..., width.cutoff=width.cutoff), "right"))
     }
     o = trimws(deparse(..., width.cutoff=guess), "right")
 
     if(wcmax==wcmin) break
-    
+
     l = max(nchar(o))
     if(l>width.max) wcmax = guess-1 else wcmin = guess
   }
@@ -125,7 +139,7 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE, width.str
 }
 
 # Restore the real source code from the masked text
-unmask_source = function(text.mask) {
+unmask_source = function(text.mask, spaces) {
   if (length(text.mask) == 0) return(text.mask)
   m = .env$line_break
   if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
@@ -141,7 +155,11 @@ unmask_source = function(text.mask) {
     m = gregexpr(inline.comment, text.mask)
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
+  # remove white spaces on blank lines
+  text.mask = gsub(blank.comment2, '\\1\\2', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
+  # restore infix operators such as %>%
+  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.tidy)
   # inline comments should be terminated by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
   # the rest of inline comments should be appended by \n

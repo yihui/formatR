@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, width, keep.blank.line) {
+mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -42,7 +42,9 @@ mask_comments = function(x, width, keep.blank.line) {
   c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
   c2 = i & !c1  # inline comments
   c3 = c1 & grepl("^#+[-'+]", d.text)  # roxygen or knitr spin() comments
-  if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
+  if (wrap) {
+    if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
+  } else c3 = c1  # comments not to be wrapped
 
   # reflow blocks of comments: first collapse them, then wrap them
   i1 = which(c1 & !c3) # do not wrap roxygen comments
@@ -67,9 +69,13 @@ mask_comments = function(x, width, keep.blank.line) {
     if (blank[i] > 0)
       d.text[i] = paste(c(d.text[i], rep(blank.comment, blank[i])), collapse = '\n')
   }
+  # break lines after some infix operators such as %>%
+  d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\\2', spaces, '\\3'), d.text)
 
   unlist(lapply(split(d.text, d.line), paste, collapse = ' '), use.names = FALSE)
 }
+
+infix_ops = '[>$]|T>|<>'
 
 # no blank lines before an 'else' statement!
 move_else = function(x) {
@@ -144,18 +150,8 @@ parse_only = function(code) {
   base::parse(text = code, keep.source = FALSE)
 }
 
-# copied from highr
-# TODO: eventually remove the hack for R <= 3.2.2
-parse_source = if (getRversion() > '3.2.2') function(lines) {
+parse_source = function(lines) {
   parse(text = lines, keep.source = TRUE)
-} else function(lines) {
-  # adapted from evaluate
-  src = srcfilecopy('<text>', lines = '')
-  if (length(grep('\n', lines))) lines = unlist(strsplit(
-    sub('$', '\n', as.character(lines)), '\n'
-  ))
-  src$lines = lines
-  parse(text = lines, srcfile = src)
 }
 
 # restore backslashes
@@ -208,3 +204,11 @@ trimws = function(x, which = c('both', 'left', 'right')) {
     left = gsub('^\\s+', '', x), right = gsub('\\s+$', '', x)
   )
 }
+
+restore_encoding = function(x, enc) {
+  if (length(enc) != 1) return(x)
+  xenc = special_encoding(x)
+  iconv(x, if (length(xenc) == 0) '' else xenc, enc)
+}
+
+special_encoding = function(x) setdiff(Encoding(x), 'unknown')

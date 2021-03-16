@@ -1,7 +1,8 @@
 # formatR
 
-[![Build Status](https://travis-ci.org/yihui/formatR.svg)](https://travis-ci.org/yihui/formatR)
+[![R-CMD-check](https://github.com/yihui/formatR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yihui/formatR/actions/workflows/R-CMD-check.yaml)
+[![CRAN release](https://www.r-pkg.org/badges/version/formatR)](https://cran.r-project.org/package=formatR)
 
 Format R code automatically.
 
-See the package homepage <http://yihui.name/formatR> for more information.
+See the package homepage <https://yihui.org/formatR/> for more information.

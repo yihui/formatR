@@ -16,8 +16,8 @@ vignette: >
 
 <script type="text/javascript">
 // redirect from CRAN to my personal website
-if (location.protocol === 'https:' && location.href.match('yihui.name') === null)
-  location.href = 'https://yihui.name/formatR';
+if (location.protocol === 'https:' && location.href.match('yihui.org') === null)
+  location.href = 'https://yihui.org/formatr/';
 </script>
 
 ```{r setup, include=FALSE}
@@ -27,12 +27,16 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 # 1. Installation
 
-You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or [XRAN](https://xran.yihui.name) if you want to test the latest development version:
+You can install **formatR** from [CRAN](https://cran.r-project.org/package=formatR), or https://yihui.r-universe.dev if you want to test the latest development version:
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://cran.rstudio.com')
-#' to install the development version, run
-#' install.packages('formatR', repos = 'https://xran.yihui.name')
+# or development version
+options(repos = c(
+  yihui = 'https://yihui.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'
+))
+install.packages('formatR')
 ```
 
 Or check out the [Github repository](https://github.com/yihui/formatR) and install from source if you know what this means. This page is always based on the development version.
@@ -71,7 +75,7 @@ x=2;print('Oh no... ask the right bracket to go away!')}
 
 lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### a linear model
 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  # comment after a long line
-## here is a long long long long long long long long long long long long long comment which will be wrapped
+## here is a long long long long long long long long long long long long long comment that may be wrapped
 ```
 
 We can copy the above code to clipboard, and type `tidy_source(width.cutoff = 50)` to get:
@@ -99,11 +103,11 @@ formatR::tidy_app()
 ```{r echo=FALSE, results='asis'}
 if (ignore_img <- Sys.getenv('USER', '') != 'yihui') cat('<!--')
 ```
-[![R source code before tidying](https://db.yihui.name/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
+[![R source code before tidying](https://db.yihui.org/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
 
 After hitting the `Tidy` button:
 
-[![R source code after tidying](https://db.yihui.name/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
+[![R source code after tidying](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
 ```{r echo=FALSE, results='asis'}
 if (ignore_img) cat('\n-->')
 ```
@@ -146,9 +150,27 @@ Note the 5th line (an empty line) was discarded:
 ```{r example, eval=FALSE, echo=6, tidy.opts=list(indent = 2)}
 ```
 
+## The pipe operator `%>%`
+
+Since **formatR** 1.9, code lines contains operators `%>%`, `%T%`, `%$%`, and/or `%<>%` will be automatically wrapped after these operators. For example,
+
+```{r, pipe-code, eval=FALSE, tidy=FALSE}
+mtcars %>% subset(am == 0) %>% lm(mpg~hp, data=.)
+```
+
+will be reformatted to:
+
+```{r, pipe-code, eval=FALSE, tidy=TRUE}
+```
+
 ## Move left braces `{` to new lines
 
 ```{r example, eval=FALSE, echo=6, tidy.opts=list(brace.newline = TRUE)}
+```
+
+## Do not wrap comments
+
+```{r example, eval=FALSE, echo=11:12, tidy.opts=list(wrap = FALSE)}
 ```
 
 ## Discard comments
@@ -170,7 +192,7 @@ x <- ## this is not a complete expression
 x <- 1; # you should not use ; here!
 ```
 
-It is not a good idea to interrupt R code with comments and sometimes it can be confusing -- comments should come after a complete R expression naturally; by the way, `tidy_source()` will move the comments after `{` to the next line, e.g.
+Code with comments after incomplete R expression cannot be reformatted by **formatR**. By the way, `tidy_source()` will move comments after `{` to the next line, e.g.,
 
 ```{r comment-brace, tidy=FALSE, eval=FALSE}
 if (TRUE) {## comments
@@ -204,19 +226,6 @@ We can use the question mark (`?`) to view the help page, but **formatR** packag
 
 In this case, it is recommended to use the function `help()` instead of the short-hand version `?`.
 
-## `!!` and `!!!` from the **rlang** package
-
-The syntactic shortcuts `!!` and `!!!` from the **rlang** packages will be ruined by `tidy_source()`, e.g.,
-
-```{r bang-bang, tidy=FALSE, eval=FALSE}
-rlang::quo(mean(!! 1:10 * 2))
-```
-
-will be reformatted as:
-
-```{r bang-bang, eval=FALSE}
-```
-
 ## `->` with comments
 
 We can also use the right arrow `->` for assignment, e.g. `1:10 -> x`. I believe this flexibility is worthless, and it is amazing that a language has three assignment operators: `<-`, `=` and `->` (whereas almost all other languages uses `=` for assignment). Bad news for **formatR** is that it is unable to format code using both `->` and comments in a line, e.g.
@@ -226,10 +235,6 @@ We can also use the right arrow `->` for assignment, e.g. `1:10 -> x`. I believe
 ```
 
 I recommend you to use `<-` or `=` consistently. What is more important is consistency. I always use `=` because it causes me no confusion (I do not believe it is ever possible for people to interpret `fun(a = 1)` as assigning `1` to a variable `a` instead of passing an argument value) and `<-` is more dangerous because it works everywhere (you might have unconsciously created a new variable `a` in `fun(a <- 1)`; see [an example here](https://stat.ethz.ch/pipermail/r-devel/2011-December/062786.html)). The only disadvantage is that most R people use `<-` so it may be difficult to collaborate with other people.
-
-## The pipe operator `%>%`
-
-Although `tidy_source()` won't ruin your code that contains the pipes, you won't be happy with it: your line breaks after the pipes won't be preserved. See [#54](https://github.com/yihui/formatR/issues/54).
 
 # 7. How does `tidy_source()` actually work?
 
