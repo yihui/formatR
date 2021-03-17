@@ -93,16 +93,6 @@ move_else = function(x) {
   x
 }
 
-# a literal # must be writen in double quotes, e.g. "# is not comment"
-mask_inline = function(x) {
-  # move comments after { to the next line
-  if (length(idx <- grep('\\{\\s*#.*$', x))) {
-    p = paste('{\ninvisible("', begin.comment, '\\1', end.comment, '")', sep = '')
-    x[idx] = gsub('\\{\\s*(#.*)$', p, x[idx])
-  }
-  gsub('(#[^"]*)$', ' %\b% "\\1"', x)
-}
-
 # reflow comments (excluding roxygen comments)
 reflow_comments = function(x, width) {
   if (length(x) == 0) return(x)
