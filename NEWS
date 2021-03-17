@@ -12,6 +12,10 @@ NEW FEATURES
   contains an extremely long string, there is no way to break it into shorter
   lines automatically (thanks, @krivit @pablo14, #71).
 
+  o The value of the argument `width.cutoff` can be specified in the global
+  option `formatR.width` now. By default, the value is still taken from the
+  global option `width` like before.
+
 BUG FIXES
 
   o When the text in the clipboard on macOS does not have a final EOL,
