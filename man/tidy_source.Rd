@@ -12,10 +12,9 @@ tidy_source(
   brace.newline = getOption("formatR.brace.newline", FALSE),
   indent = getOption("formatR.indent", 4),
   wrap = getOption("formatR.wrap", TRUE),
+  width.cutoff = getOption("formatR.width", getOption("width")),
   output = TRUE,
   text = NULL,
-  width.cutoff = getOption("width"),
-  width.strict = FALSE,
   ...
 )
 }
@@ -38,6 +37,12 @@ the clipboard; this means we can copy the code to clipboard and use
 \item{wrap}{whether to wrap comments to the linewidth determined by
 \code{width.cutoff} (note that roxygen comments will never be wrapped)}
 
+\item{width.cutoff}{Passed to \code{\link{deparse}()}: an integer in
+\code{[20, 500]} determining the cutoff at which line-breaking is tried
+(default to be \code{getOption("width")}). In other words, this is the
+\emph{lower bound} of the line width. See \sQuote{Details} if an upper
+bound is desired instead.}
+
 \item{output}{output to the console or a file using \code{\link{cat}}?}
 
 \item{text}{an alternative way to specify the input: if it is \code{NULL},
@@ -45,16 +50,6 @@ the function will read the source code from the \code{source} argument;
 alternatively, if \code{text} is a character vector containing the source
 code, it will be used as the input and the \code{source} argument will be
 ignored}
-
-\item{width.cutoff}{passed to \code{\link{deparse}}: integer in [20, 500]
-determining the cutoff at which line-breaking is tried (default to be
-\code{getOption("width")})}
-
-\item{width.strict}{if \code{TRUE}, rather than being passed
-directly to \code{\link{deparse}}, \code{width.cutoff} is treated
-as a hard upper bound on the row width, with the argument to
-\code{\link{deparse}} chosen adaptively to achieve this upper
-bound, if possible}
 
 \item{...}{other arguments passed to \code{\link{cat}}, e.g. \code{file}
 (this can be useful for batch-processing R scripts, e.g.
@@ -71,6 +66,16 @@ lines and comments, which is different with \code{\link{parse}} and
 \code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
 \code{=} means assignments, and reindent code by a specified number of spaces
 (default is 4).
+}
+\details{
+If the value of the argument \code{width.cutoff} is wrapped in
+\code{\link{I}()} (e.g., \code{I(60)}), it will be treated as the \emph{upper
+bound} on the line width, but this upper bound may not be satisfied. In this
+case, the function will perform a binary search for a width value that can
+make \code{deparse()} return code with line width smaller than or equal to
+the \code{width.cutoff} value. If the search fails to find such a value, it
+will emit a warning, which can be suppressed by the global option
+\code{options(formatR.width.warning = FALSE)}.
 }
 \note{
 Be sure to read the reference to know other limitations.

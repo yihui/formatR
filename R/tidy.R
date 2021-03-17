@@ -5,6 +5,15 @@
 #' \code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
 #' \code{=} means assignments, and reindent code by a specified number of spaces
 #' (default is 4).
+#'
+#' If the value of the argument \code{width.cutoff} is wrapped in
+#' \code{\link{I}()} (e.g., \code{I(60)}), it will be treated as the \emph{upper
+#' bound} on the line width, but this upper bound may not be satisfied. In this
+#' case, the function will perform a binary search for a width value that can
+#' make \code{deparse()} return code with line width smaller than or equal to
+#' the \code{width.cutoff} value. If the search fails to find such a value, it
+#' will emit a warning, which can be suppressed by the global option
+#' \code{options(formatR.width.warning = FALSE)}.
 #' @param source a character string: location of the source code (default to be
 #'   the clipboard; this means we can copy the code to clipboard and use
 #'   \code{tidy_source()} without specifying the argument \code{source})
@@ -16,20 +25,17 @@
 #' @param indent number of spaces to indent the code (default 4)
 #' @param wrap whether to wrap comments to the linewidth determined by
 #'   \code{width.cutoff} (note that roxygen comments will never be wrapped)
+#' @param width.cutoff Passed to \code{\link{deparse}()}: an integer in
+#'   \code{[20, 500]} determining the cutoff at which line-breaking is tried
+#'   (default to be \code{getOption("width")}). In other words, this is the
+#'   \emph{lower bound} of the line width. See \sQuote{Details} if an upper
+#'   bound is desired instead.
 #' @param output output to the console or a file using \code{\link{cat}}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
 #'   alternatively, if \code{text} is a character vector containing the source
 #'   code, it will be used as the input and the \code{source} argument will be
 #'   ignored
-#' @param width.cutoff passed to \code{\link{deparse}}: integer in [20, 500]
-#'   determining the cutoff at which line-breaking is tried (default to be
-#'   \code{getOption("width")})
-#' @param width.strict if \code{TRUE}, rather than being passed
-#'   directly to \code{\link{deparse}}, \code{width.cutoff} is treated
-#'   as a hard upper bound on the row width, with the argument to
-#'   \code{\link{deparse}} chosen adaptively to achieve this upper
-#'   bound, if possible
 #' @param ... other arguments passed to \code{\link{cat}}, e.g. \code{file}
 #'   (this can be useful for batch-processing R scripts, e.g.
 #'   \code{tidy_source(source = 'input.R', file = 'output.R')})
@@ -52,9 +58,8 @@ tidy_source = function(
   brace.newline = getOption('formatR.brace.newline', FALSE),
   indent = getOption('formatR.indent', 4),
   wrap = getOption('formatR.wrap', TRUE),
-  output = TRUE, text = NULL,
-  width.cutoff = getOption('width'),
-  width.strict = FALSE, ...
+  width.cutoff = getOption('formatR.width', getOption('width')),
+  output = TRUE, text = NULL, ...
 ) {
   if (is.null(text)) {
     if (source == 'clipboard' && Sys.info()['sysname'] == 'Darwin') {
@@ -78,11 +83,13 @@ tidy_source = function(
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
   on.exit(.env$line_break <- NULL, add = TRUE)
+  if (width.cutoff > 500) width.cutoff[1] = 500
+  if (width.cutoff < 20) width.cutoff[1] = 20
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
   if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
-  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)), width.strict)
+  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
   text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
   text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
@@ -104,38 +111,59 @@ inline.comment = ' %\b%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
 blank.comment2 = sprintf('(\n)\\s+invisible\\("%s%s"\\)(\n|$)', begin.comment, end.comment)
 
-# wrapper around deparse() that enforces a strict maximum line width
-strict_deparse = function(..., width.max, width.cutoff=getOption('width')){
-  wcmin = 19L # If deparse() can't manage it with width.cutoff <= 20, issue a warning.
-  wcmax = 500L
-  # A binary search to find the greatest width.cutoff such that the width of the longest line <= width.max.
-  repeat{
-    guess = ceiling((wcmin+wcmax)/2)
-    if(guess<20){
-      # If it's induced by a comment, don't complain.
-      if(!length(grep(pat.comment,deparse(..., width.cutoff=500L))))
-        warning("Unable to find a suitable adaptive cut-off. Falling back to width.cutoff.")
-      return(trimws(deparse(..., width.cutoff=width.cutoff), "right"))
-    }
-    o = trimws(deparse(..., width.cutoff=guess), "right")
+# first, perform a (semi-)binary search to find the greatest cutoff width such
+# that the width of the longest line <= `width`; if the search fails, use
+# brute-force to try all possible widths
+deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)) {
+  wmin = 20  # if deparse() can't manage it with width.cutoff <= 20, issue a warning
+  wmax = min(500, width + 10)  # +10 because a larger width may result in smaller actual width
 
-    if(wcmax==wcmin) break
+  r = seq(wmin, wmax)
+  k = setNames(rep(NA, length(r)), as.character(r))  # results of width checks
+  d = p = list()  # deparsed results and lines exceeding desired width
 
-    l = max(nchar(o))
-    if(l>width.max) wcmax = guess-1 else wcmin = guess
+  check_width = function(w) {
+    i = as.character(w)
+    if (!is.na(x <- k[i])) return(x)
+    x = deparse(expr, w)
+    x = gsub('\\s+$', '', x)
+    d[[i]] <<- x
+    x2 = grep(pat.comment, x, invert = TRUE, value = TRUE)  # don't check comments
+    p[[i]] <<- x2[nchar(x2, type = 'width') > width]
+    k[i] <<- length(p[[i]]) == 0
   }
-  o
+
+  # if the desired width happens to just work, return the result
+  if (check_width(w <- width)) return(d[[as.character(w)]])
+
+  repeat {
+    if (!any(is.na(k))) break  # has tried all possibilities
+    if (wmin >= wmax) break
+    w = ceiling((wmin + wmax)/2)
+    if (check_width(w)) wmin = w else wmax = wmax - 2
+  }
+
+  # try all the rest of widths if no suitable width has been found
+  if (!any(k, na.rm = TRUE)) for (i in r[is.na(k)]) check_width(i)
+  r = r[which(k)]
+  if ((n <- length(r)) > 0) return(d[[as.character(r[n])]])
+
+  i = as.character(width)
+  if (warn) warning(
+    'Unable to find a suitable cut-off to make the line widths smaller than ',
+    width, ' for the line(s) of code:\n', paste0('  ', p[[i]], collapse = '\n'),
+    call. = FALSE
+  )
+  d[[i]]
 }
 
 # wrapper around parse() and deparse()
-tidy_block = function(text, width = getOption('width'), arrow = FALSE, width.strict = FALSE) {
+tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
-  if(width.strict)
-    sapply(exprs, function(e) paste(strict_deparse(e, width.max=width, width.cutoff=width), collapse = '\n'))
-  else
-    sapply(exprs, function(e) paste(base::deparse(e, width), collapse = '\n'))
+  deparse = if (inherits(width, 'AsIs')) deparse2 else base::deparse
+  sapply(exprs, function(e) paste(deparse(e, width), collapse = '\n'))
 }
 
 # Restore the real source code from the masked text
