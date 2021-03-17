@@ -273,10 +273,10 @@ will become
 Inline comments are first disguised as a weird operation with its preceding R code, which is essentially meaningless but syntactically correct!  For example,
 
 ```r
-1+1 %InLiNe_IdEnTiFiEr% "#  comments"
+1+1 %\b% "#  comments"
 ```
 
-then `base::parse()` will deal with this expression; again, the disguised comments will not be removed. In the end, inline comments will be freed as well (remove the operator `%InLiNe_IdEnTiFiEr%` and surrounding double quotes).
+then `base::parse()` will deal with this expression; again, the disguised comments will not be removed. In the end, inline comments will be freed as well (remove the operator `%\b%` and surrounding double quotes).
 
 All these special treatments to comments are due to the fact that `base::parse()` and `base::deparse()` can tidy the R code at the price of dropping all the comments.
 
@@ -290,6 +290,8 @@ There are global options which can override some arguments in `tidy_source()`:
 | `blank`         | `options('formatR.blank')`         | `TRUE`  |
 | `arrow`         | `options('formatR.arrow')`         | `FALSE` |
 | `indent`        | `options('formatR.indent')`        | `4`     |
+| `wrap`          | `options('formatR.wrap')`          | `TRUE`  |
+| `width.cutoff`  | `options('formatR.width')`         | `options('width')` |
 | `brace.newline` | `options('formatR.brace.newline')` | `FALSE` |
 
-Also note that single lines of long comments will be wrapped into shorter ones automatically, but roxygen comments will not be wrapped (i.e., comments that begin with `#'`).
+Also note that single lines of long comments will be wrapped into shorter ones automatically when `wrap = TRUE`, but roxygen comments will not be wrapped (i.e., comments that begin with `#'`).

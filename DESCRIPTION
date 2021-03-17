@@ -4,9 +4,11 @@ Title: Format R Code Automatically
 Version: 1.8.2
 Authors@R: c(
     person("Yihui", "Xie", role = c("aut", "cre"), email = "xie@yihui.name", comment = c(ORCID = "0000-0003-0645-5666")),
+    person("Ed", "Lee", role = "ctb"),
     person("Eugene", "Ha", role = "ctb"),
     person("Kohske", "Takahashi", role = "ctb"),
-    person("Ed", "Lee", role = "ctb")
+    person("Pavel", "Krivitsky", role = "ctb"),
+    person()
     )
 Description: Provides a function tidy_source() to format R source code. Spaces
     and indent will be added to the code automatically, and comments will be

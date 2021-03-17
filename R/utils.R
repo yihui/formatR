@@ -62,7 +62,7 @@ mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
   # mask block and inline comments
   d.text[c1 & !c3] = reflow_comments(d.text[c1 & !c3], width)
   d.text[c3] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c3], end.comment)
-  d.text[c2] = sprintf('%%InLiNe_IdEnTiFiEr%% "%s"', d.text[c2])
+  d.text[c2] = sprintf('%%\b%% "%s"', d.text[c2])
 
   # add blank lines
   if (keep.blank.line) for (i in seq_along(d.text)) {
@@ -100,7 +100,7 @@ mask_inline = function(x) {
     p = paste('{\ninvisible("', begin.comment, '\\1', end.comment, '")', sep = '')
     x[idx] = gsub('\\{\\s*(#.*)$', p, x[idx])
   }
-  gsub('(#[^"]*)$', ' %InLiNe_IdEnTiFiEr% "\\1"', x)
+  gsub('(#[^"]*)$', ' %\b% "\\1"', x)
 }
 
 # reflow comments (excluding roxygen comments)
