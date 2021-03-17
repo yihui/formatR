@@ -19,5 +19,5 @@ assert(
   identical(reindent_lines(''), ''),
   identical(reindent_lines(c('', '')), c('', '')),
   identical(reindent_lines('    ', 2), '  '),
-  identical(reindent_lines('if (TRUE) {\n    1\n}', 2), 'if (TRUE) {\n  1\n}')
+  identical(reindent_lines(c('if (TRUE) {', '    1', '}'), 2), c('if (TRUE) {', '  1', '}'))
 )

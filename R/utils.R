@@ -110,11 +110,9 @@ reindent_lines = function(text, n = 2) {
   if (length(text) == 0) return(text)
   if (n == 4) return(text)  # no need to do anything
   s = paste(rep(' ', n), collapse = '')
-  unlist(lapply(strsplit(text, '\n'), function(x) {
-    t1 = gsub('^( *)(.*)', '\\1', x)
-    t2 = gsub('^( *)(.*)', '\\2', x)
-    paste(gsub(' {4}', s, t1), t2, sep = '', collapse = '\n')
-  }), use.names = FALSE)
+  t1 = gsub('^( *)(.*)', '\\1', text)
+  t2 = gsub('^( *)(.*)', '\\2', text)
+  paste0(gsub(' {4}', s, t1), t2)
 }
 
 # move { to the next line

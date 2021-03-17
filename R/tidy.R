@@ -89,9 +89,8 @@ tidy_source = function(
   # broken after the operators
   spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
   if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
-  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)))
+  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)), indent)
   text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
-  text.tidy = reindent_lines(text.tidy, indent)
   if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
   if (blank) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
@@ -158,12 +157,16 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
 }
 
 # wrapper around parse() and deparse()
-tidy_block = function(text, width = getOption('width'), arrow = FALSE) {
+tidy_block = function(text, width = getOption('width'), arrow = FALSE, indent = 4) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   deparse = if (inherits(width, 'AsIs')) deparse2 else base::deparse
-  sapply(exprs, function(e) paste(deparse(e, width), collapse = '\n'))
+  unlist(lapply(exprs, function(e) {
+    x = deparse(e, width)
+    x = reindent_lines(x, indent)
+    paste(x, collapse = '\n')
+  }))
 }
 
 # Restore the real source code from the masked text
@@ -171,10 +174,10 @@ unmask_source = function(text.mask, spaces) {
   if (length(text.mask) == 0) return(text.mask)
   m = .env$line_break
   if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
-  ## if the comments were separated into the next line, then remove '\n' after
-  ##   the identifier first to move the comments back to the same line
+  # if the comments were separated into the next line, then remove '\n' after
+  # the identifier first to move the comments back to the same line
   text.mask = gsub('(%\b%)[ ]*\n', '\\1', text.mask)
-  ## move 'else ...' back to the last line
+  # move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
   if (any(grepl('\\\\\\\\', text.mask)) &&
       (any(grepl(mat.comment, text.mask)) || any(grepl(inline.comment, text.mask)))) {
