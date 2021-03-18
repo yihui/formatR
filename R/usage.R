@@ -92,14 +92,14 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #' Show the usage of a function
 #'
 #' Print the reformatted usage of a function. The arguments of the function are
-#' searched by \code{\link{argsAnywhere}}, so the function can be either
+#' searched by \code{\link{argsAnywhere}()}, so the function can be either
 #' exported or non-exported in a package. S3 methods will be marked.
 #'
 #' @param FUN the function name
 #' @param width the width of output
 #' @param tidy whether to reformat the usage code
 #' @param output whether to write the output to the console (via
-#'   \code{\link{cat}})
+#'   \code{\link{cat}()})
 #' @param indent.by.FUN whether to indent subsequent lines by the width of the
 #'   function name (see \dQuote{Details})
 #' @param fail a character string that determines whether to generate a warning,
@@ -112,8 +112,8 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #'
 #'   When \code{indent.by.FUN} is \code{FALSE}, indentation is set by the option
 #'   \code{\link{getOption}("formatR.indent", 4L)}, the default value of the
-#'   \code{indent} argument of \code{\link{tidy_source}}.
-#' @seealso \code{\link{tidy_source}}
+#'   \code{indent} argument of \code{\link{tidy_source}()}.
+#' @seealso \code{\link{tidy_source}()}
 #' @export
 #' @examples library(formatR)
 #' usage(var)

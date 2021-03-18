@@ -21,7 +21,7 @@ usage(
 \item{tidy}{whether to reformat the usage code}
 
 \item{output}{whether to write the output to the console (via
-\code{\link{cat}})}
+\code{\link{cat}()})}
 
 \item{indent.by.FUN}{whether to indent subsequent lines by the width of the
 function name (see \dQuote{Details})}
@@ -36,7 +36,7 @@ The R code for the usage is returned as a character string
 }
 \description{
 Print the reformatted usage of a function. The arguments of the function are
-searched by \code{\link{argsAnywhere}}, so the function can be either
+searched by \code{\link{argsAnywhere}()}, so the function can be either
 exported or non-exported in a package. S3 methods will be marked.
 }
 \details{
@@ -45,7 +45,7 @@ Line breaks in the output occur between arguments. In particular,
 
   When \code{indent.by.FUN} is \code{FALSE}, indentation is set by the option
   \code{\link{getOption}("formatR.indent", 4L)}, the default value of the
-  \code{indent} argument of \code{\link{tidy_source}}.
+  \code{indent} argument of \code{\link{tidy_source}()}.
 }
 \examples{
 library(formatR)
@@ -69,5 +69,5 @@ usage(barplot.default, width = 30)
 }
 }
 \seealso{
-\code{\link{tidy_source}}
+\code{\link{tidy_source}()}
 }

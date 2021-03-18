@@ -14,12 +14,12 @@ tidy_eval(
 }
 \arguments{
 \item{source}{the input filename (by default the clipboard; see
-\code{\link{tidy_source}})}
+\code{\link{tidy_source}()})}
 
-\item{...}{other arguments passed to \code{\link{tidy_source}}}
+\item{...}{other arguments passed to \code{\link{tidy_source}()}}
 
-\item{file}{the file to write by \code{\link{cat}}; by default the output is
-printed on screen}
+\item{file}{the file to write by \code{\link{cat}()}; by default the output
+is printed on screen}
 
 \item{prefix}{the prefix to mask the output}
 

@@ -4,10 +4,10 @@
 #' the source code without really breaking the source code, since the output is
 #' masked in comments.
 #' @param source the input filename (by default the clipboard; see
-#'   \code{\link{tidy_source}})
-#' @param ... other arguments passed to \code{\link{tidy_source}}
-#' @param file the file to write by \code{\link{cat}}; by default the output is
-#'   printed on screen
+#'   \code{\link{tidy_source}()})
+#' @param ... other arguments passed to \code{\link{tidy_source}()}
+#' @param file the file to write by \code{\link{cat}()}; by default the output
+#'   is printed on screen
 #' @param prefix the prefix to mask the output
 #' @param envir the environment in which to evaluate the code (by default the
 #'   parent environment; if we do not want to mess up with the parent

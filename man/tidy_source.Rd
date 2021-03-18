@@ -43,7 +43,7 @@ the clipboard; this means we can copy the code to clipboard and use
 \emph{lower bound} of the line width. See \sQuote{Details} if an upper
 bound is desired instead.}
 
-\item{output}{output to the console or a file using \code{\link{cat}}?}
+\item{output}{output to the console or a file using \code{\link{cat}()}?}
 
 \item{text}{an alternative way to specify the input: if it is \code{NULL},
 the function will read the source code from the \code{source} argument;
@@ -51,7 +51,7 @@ alternatively, if \code{text} is a character vector containing the source
 code, it will be used as the input and the \code{source} argument will be
 ignored}
 
-\item{...}{other arguments passed to \code{\link{cat}}, e.g. \code{file}
+\item{...}{other arguments passed to \code{\link{cat}()}, e.g. \code{file}
 (this can be useful for batch-processing R scripts, e.g.
 \code{tidy_source(source = 'input.R', file = 'output.R')})}
 }
@@ -62,8 +62,8 @@ A list with components \item{text.tidy}{the reformatted code as a
 }
 \description{
 This function returns reformatted source code; it tries to preserve blank
-lines and comments, which is different with \code{\link{parse}} and
-\code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
+lines and comments, which is different with \code{\link{parse}()} and
+\code{\link{deparse}()}. It can also replace \code{=} with \code{<-} where
 \code{=} means assignments, and reindent code by a specified number of spaces
 (default is 4).
 }
@@ -142,7 +142,7 @@ tidy_source(text = c("{if(TRUE)1 else 2; if(FALSE){1+1", "## comments", "} else 
   package, with examples and further notes)
 }
 \seealso{
-\code{\link{parse}}, \code{\link{deparse}}
+\code{\link{parse}()}, \code{\link{deparse}()}
 }
 \author{
 Yihui Xie <\url{https://yihui.org}> with substantial contribution

@@ -1,8 +1,8 @@
 #' Reformat R code while preserving blank lines and comments
 #'
 #' This function returns reformatted source code; it tries to preserve blank
-#' lines and comments, which is different with \code{\link{parse}} and
-#' \code{\link{deparse}}. It can also replace \code{=} with \code{<-} where
+#' lines and comments, which is different with \code{\link{parse}()} and
+#' \code{\link{deparse}()}. It can also replace \code{=} with \code{<-} where
 #' \code{=} means assignments, and reindent code by a specified number of spaces
 #' (default is 4).
 #'
@@ -30,13 +30,13 @@
 #'   (default to be \code{getOption("width")}). In other words, this is the
 #'   \emph{lower bound} of the line width. See \sQuote{Details} if an upper
 #'   bound is desired instead.
-#' @param output output to the console or a file using \code{\link{cat}}?
+#' @param output output to the console or a file using \code{\link{cat}()}?
 #' @param text an alternative way to specify the input: if it is \code{NULL},
 #'   the function will read the source code from the \code{source} argument;
 #'   alternatively, if \code{text} is a character vector containing the source
 #'   code, it will be used as the input and the \code{source} argument will be
 #'   ignored
-#' @param ... other arguments passed to \code{\link{cat}}, e.g. \code{file}
+#' @param ... other arguments passed to \code{\link{cat}()}, e.g. \code{file}
 #'   (this can be useful for batch-processing R scripts, e.g.
 #'   \code{tidy_source(source = 'input.R', file = 'output.R')})
 #' @return A list with components \item{text.tidy}{the reformatted code as a
@@ -45,7 +45,7 @@
 #' @note Be sure to read the reference to know other limitations.
 #' @author Yihui Xie <\url{https://yihui.org}> with substantial contribution
 #'   from Yixuan Qiu <\url{https://yixuan.blog}>
-#' @seealso \code{\link{parse}}, \code{\link{deparse}}
+#' @seealso \code{\link{parse}()}, \code{\link{deparse}()}
 #' @references \url{https://yihui.org/formatR/} (an introduction to this
 #'   package, with examples and further notes)
 #' @import utils
@@ -102,7 +102,8 @@ tidy_source = function(
   ))
 }
 
-## if you have variable names like this in your code, then you really beat me...
+# some tokens that should be rare to appear in code from real world, mainly to
+# protect comments and blank lines
 begin.comment = '.BeGiN_TiDy_IdEnTiFiEr_HaHaHa'
 end.comment = '.HaHaHa_EnD_TiDy_IdEnTiFiEr'
 pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
@@ -205,18 +206,18 @@ unmask_source = function(text.mask, spaces) {
 #' Format all R scripts under a directory, or specified R scripts
 #'
 #' \code{tidy_dir()} first looks for all the R scripts under a directory (using
-#' the pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy_source}} to
+#' the pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy_source}()} to
 #' tidy these scripts. The original scripts will be overwritten with reformatted
 #' code if reformatting was successful. You may need to back up the original
 #' directory first if you do not fully understand the tricks used by
-#' \code{\link{tidy_source}}. \code{tidy_file()} formats specified R scripts.
+#' \code{\link{tidy_source}()}. \code{tidy_file()} formats specified R scripts.
 #' @param path the directory
 #' @param recursive whether to recursively look for R scripts under \code{path}
-#' @param ... other arguments to be passed to \code{\link{tidy_source}}
+#' @param ... other arguments to be passed to \code{\link{tidy_source}()}
 #' @param file a vector of filenames
 #' @return Invisible \code{NULL}.
 #' @author Yihui Xie (\code{tidy_dir}) and Ed Lee (\code{tidy_file})
-#' @seealso \code{\link{tidy_source}}
+#' @seealso \code{\link{tidy_source}()}
 #' @export
 #' @examples
 #' library(formatR)
