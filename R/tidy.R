@@ -123,6 +123,8 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
   k = setNames(rep(NA, length(r)), as.character(r))  # results of width checks
   d = p = list()  # deparsed results and lines exceeding desired width
 
+  # pattern for pipe operators like %>%
+  pat.infix = paste0('(%)(', infix_ops, ') {', width, '}(%)$')
   check_width = function(w) {
     i = as.character(w)
     if (!is.na(x <- k[i])) return(x)
@@ -130,6 +132,7 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
     x = gsub('\\s+$', '', x)
     d[[i]] <<- x
     x2 = grep(pat.comment, x, invert = TRUE, value = TRUE)  # don't check comments
+    x2 = gsub(pat.infix, '\\1\\2\\3', x2)  # remove extra spaces in %>% operators
     p[[i]] <<- x2[nchar(x2, type = 'width') > width]
     k[i] <<- length(p[[i]]) == 0
   }
