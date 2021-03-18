@@ -116,20 +116,17 @@ reindent_lines = function(text, n = 2) {
 }
 
 # move { to the next line
-move_leftbrace = function(text) {
-  if (!length(text)) return(text)
-  # the reason to use lapply() here is that text is a vector of source code with
-  # each element being a complete R expression; we do not want to break the
-  # expression structure; same reason for reindent_lines() above
-  unlist(lapply(strsplit(text, '\n'), function(x) {
-    if (length(x) > 1L && length(idx <- grep('(\\)|else) \\{$', x))) {
-      # indent the same amount of spaces as the { lines
-      pre = gsub('^( *)(.*)', '\\1', x[idx])
-      x[idx] = mapply(gsub, '(\\)|else) \\{$', sprintf('\\1\n%s{', pre), x[idx],
-                      USE.NAMES = FALSE)
-    }
-    paste(x, collapse = '\n')
-  }), use.names = FALSE)
+move_leftbrace = function(x) {
+  if (length(idx <- grep('(\\)|else) \\{$', x)) == 0) return(x)
+  # indent the same amount of spaces as the { lines
+  b = gsub('^( *)(.*)', '\\1{', x[idx])
+  j = 0
+  x[idx] = gsub(' \\{$', '', x[idx])
+  for (i in seq_along(idx)) {
+    x = append(x, b[i], idx[i] + j)
+    j = j + 1
+  }
+  x
 }
 
 # parse but do not keep source (moved from knitr)

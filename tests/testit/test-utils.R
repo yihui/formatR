@@ -1,23 +1,22 @@
 library(testit)
 
-assert(
-  'move_leftbrace() works',
+assert('move_leftbrace() works', {
   # no indent before abc, so no indent before {
-  identical(move_leftbrace('abc() {\n    }'), 'abc()\n{\n    }'),
+  (move_leftbrace(c('abc() {', '    }')) %==% c('abc()', '{', '    }'))
   # 3 spaces before abc, 3 before {
-  identical(move_leftbrace('   a() {\n}'), c('   a()\n   {\n}')),
+  (move_leftbrace(c('   a() {', '}')) %==% c('   a()', '   {', '}'))
+  (move_leftbrace(rep(c('   a() {', '}'), 5)) %==% rep(c('   a()', '   {', '}'), 5))
   # blank lines are not removed
-  identical(move_leftbrace(c('a', '', 'b')), c('a', '', 'b')),
-  identical(move_leftbrace('if (TRUE) {\n  if (FALSE) {\n    1\n  }\n}'),
-            'if (TRUE)\n{\n  if (FALSE)\n  {\n    1\n  }\n}'),
-  identical(move_leftbrace('if (TRUE) {\n  1\n} else {\n  2}'),
-            'if (TRUE)\n{\n  1\n} else\n{\n  2}')
-)
+  (move_leftbrace(c('a', '', 'b')) %==% c('a', '', 'b'))
+  (move_leftbrace(c('if (TRUE) {', '  if (FALSE) {', '    1', '  }', '}')) %==%
+      c('if (TRUE)', '{', '  if (FALSE)', '  {', '    1', '  }', '}'))
+  (move_leftbrace(c('if (TRUE) {', '  1', '} else {', '  2}')) %==%
+      c('if (TRUE)', '{', '  1', '} else', '{', '  2}'))
+})
 
-assert(
-  'reindent_lines() works',
-  identical(reindent_lines(''), ''),
-  identical(reindent_lines(c('', '')), c('', '')),
-  identical(reindent_lines('    ', 2), '  '),
-  identical(reindent_lines(c('if (TRUE) {', '    1', '}'), 2), c('if (TRUE) {', '  1', '}'))
-)
+assert('reindent_lines() works', {
+  (reindent_lines('') %==% '')
+  (reindent_lines(c('', '')) %==% c('', ''))
+  (reindent_lines('    ', 2) %==% '  ')
+  (reindent_lines(c('if (TRUE) {', '    1', '}'), 2) %==% c('if (TRUE) {', '  1', '}'))
+})

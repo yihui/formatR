@@ -89,9 +89,10 @@ tidy_source = function(
   # broken after the operators
   spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
   if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
-  text.mask = tidy_block(text, width.cutoff, arrow && length(grep('=', text)), indent)
+  text.mask = tidy_block(
+    text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline
+  )
   text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
-  if (brace.newline) text.tidy = move_leftbrace(text.tidy)
   # restore new lines in the beginning and end
   if (blank) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
   if (output) cat(text.tidy, sep = '\n', ...)
@@ -157,7 +158,9 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
 }
 
 # wrapper around parse() and deparse()
-tidy_block = function(text, width = getOption('width'), arrow = FALSE, indent = 4) {
+tidy_block = function(
+  text, width = getOption('width'), arrow = FALSE, indent = 4, brace.newline = FALSE
+) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
@@ -165,6 +168,7 @@ tidy_block = function(text, width = getOption('width'), arrow = FALSE, indent = 
   unlist(lapply(exprs, function(e) {
     x = deparse(e, width)
     x = reindent_lines(x, indent)
+    if (brace.newline) x = move_leftbrace(x)
     paste(x, collapse = '\n')
   }))
 }
