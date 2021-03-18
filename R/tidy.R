@@ -87,7 +87,7 @@ tidy_source = function(
   if (width.cutoff < 20) width.cutoff[1] = 20
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
-  spaces = paste(rep(' ', max(10, width.cutoff)), collapse = '')
+  spaces = paste(rep(' ', width.cutoff), collapse = '')
   if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
   text.mask = tidy_block(
     text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline
