@@ -171,6 +171,7 @@ rand_string = function(len = 32) {
 .env = new.env()
 .env$line_break = NULL
 
+# protect \n in source code, otherwise deparse() will change it to \\n
 mask_line_break = function(x) {
   if (length(grep('\n', x)) == 0) return(x)
   m = (function() {
