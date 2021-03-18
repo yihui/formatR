@@ -8,12 +8,12 @@
 #'
 #' If the value of the argument \code{width.cutoff} is wrapped in
 #' \code{\link{I}()} (e.g., \code{I(60)}), it will be treated as the \emph{upper
-#' bound} on the line width, but this upper bound may not be satisfied. In this
-#' case, the function will perform a binary search for a width value that can
-#' make \code{deparse()} return code with line width smaller than or equal to
-#' the \code{width.cutoff} value. If the search fails to find such a value, it
-#' will emit a warning, which can be suppressed by the global option
-#' \code{options(formatR.width.warning = FALSE)}.
+#' bound} on the line width. The corresponding argument to \code{deparse()} is
+#' actually a lower bound, and so the function will perform a binary search for
+#' a width value that can make \code{deparse()} return code with line width
+#' smaller than or equal to the \code{width.cutoff} value. If the search fails
+#' to find such a value, it will emit a warning, which can be suppressed by the
+#' global option \code{options(formatR.width.warning = FALSE)}.
 #' @param source a character string: location of the source code (default to be
 #'   the clipboard; this means we can copy the code to clipboard and use
 #'   \code{tidy_source()} without specifying the argument \code{source})
