@@ -7,7 +7,7 @@ shinyServer(function(input, output, session) {
       text = input$src, output = FALSE, comment = input$arg_comment,
       blank = input$arg_blank, arrow = input$arg_assign,
       brace.newline = input$arg_brace, indent = input$arg_indent,
-      width.cutoff = input$arg_width
+      width.cutoff = if (input$width_type == 'minimum') input$arg_width else I(input$arg_width)
     ))
     session$sendCustomMessage(
       'replace_textarea',

@@ -2,7 +2,6 @@ inst/examples
 .gitignore
 ^\.Rproj\.user$
 ^.*\.Rproj$
-.travis.yml
-inst/shiny/shinyapps
+inst/shiny/rsconnect
 .Rhistory
 ^\.github$
