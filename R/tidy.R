@@ -109,7 +109,7 @@ pat.comment = sprintf('invisible\\("\\%s|\\%s"\\)', begin.comment, end.comment)
 mat.comment = sprintf('invisible\\("\\%s([^"]*)\\%s"\\)', begin.comment, end.comment)
 inline.comment = ' %\b%[ ]*"([ ]*#[^"]*)"'
 blank.comment = sprintf('invisible("%s%s")', begin.comment, end.comment)
-blank.comment2 = sprintf('(\n)\\s+invisible\\("%s%s"\\)(\n|$)', begin.comment, end.comment)
+blank.comment2 = paste0('^\\s*', gsub('\\(', '\\\\(', blank.comment), '\\s*$')
 
 # first, perform a (semi-)binary search to find the greatest cutoff width such
 # that the width of the longest line <= `width`; if the search fails, use
@@ -169,6 +169,8 @@ tidy_block = function(
     x = deparse(e, width)
     x = reindent_lines(x, indent)
     if (brace.newline) x = move_leftbrace(x)
+    # remove white spaces on blank lines
+    x = gsub(blank.comment2, '', x)
     paste(x, collapse = '\n')
   }))
 }
@@ -190,8 +192,6 @@ unmask_source = function(text.mask, spaces) {
     m = gregexpr(inline.comment, text.mask)
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
-  # remove white spaces on blank lines
-  text.mask = gsub(blank.comment2, '\\1\\2', text.mask)
   text.tidy = gsub(pat.comment, '', text.mask)
   # restore infix operators such as %>%
   text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.tidy)

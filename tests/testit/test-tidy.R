@@ -16,11 +16,10 @@ assert(
   identical(tidy.res('# \\a \\b \\c'), '# \\a \\b \\c')
 )
 
-assert(
-  'tidy_source() can preserve blank lines among non-empty code lines',
-  identical(tidy.res(c('if(TRUE){1+1', '', '}', '', '# a comment')),
-            c('if (TRUE) {\n    1 + 1\n\n}', '', '# a comment'))
-)
+assert('tidy_source() can preserve blank lines among non-empty code lines', {
+  (tidy.res(c('if(TRUE){1+1', '', '}', '', '# a comment')) %==%
+     c('if (TRUE) {\n    1 + 1\n\n}', '', '# a comment'))
+})
 
 x1 = paste(c('#', letters), collapse = ' ')
 x2 = c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z')
