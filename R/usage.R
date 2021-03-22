@@ -91,22 +91,21 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 
 #' Show the usage of a function
 #'
-#' Print the reformatted usage of a function. The arguments of the function are
+#' Prints the reformatted usage of a function. The arguments of the function are
 #' searched by \code{\link{argsAnywhere}()}, so the function can be either
-#' exported or non-exported in a package. S3 methods will be marked.
+#' exported or non-exported from a package. S3 methods will be marked.
 #'
-#' @param FUN the function name
-#' @param width the width of output
-#' @param tidy whether to reformat the usage code
-#' @param output whether to write the output to the console (via
-#'   \code{\link{cat}()})
-#' @param indent.by.FUN whether to indent subsequent lines by the width of the
-#'   function name (see \dQuote{Details})
-#' @param fail a character string that determines whether to generate a warning,
-#'   stop, or do neither, if the width constraint is unfulfillable (default is
-#'   \code{"warn"})
-#' @return The R code for the usage is returned as a character string
-#'   (invisibly).
+#' @param FUN The function name.
+#' @param width The width of the output.
+#' @param tidy Whether to reformat the usage code.
+#' @param output Whether to print the output to the console (via
+#'   \code{\link{cat}()}).
+#' @param indent.by.FUN Whether to indent subsequent lines by the width of the
+#'   function name (see \dQuote{Details}).
+#' @param fail A character string that represents the action taken when
+#' the width constraint is unfulfillable. "warn" and "stop" will signal
+#' warnings and errors, while "none" will do nothing.
+#' @return Reformatted usage code of a function, in character strings (invisible).
 #' @details Line breaks in the output occur between arguments. In particular,
 #'   default values of arguments will not be split across lines.
 #'

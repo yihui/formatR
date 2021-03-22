@@ -1,47 +1,44 @@
 #' Reformat R code while preserving blank lines and comments
 #'
-#' This function returns reformatted source code; it tries to preserve blank
-#' lines and comments, which is different with \code{\link{parse}()} and
-#' \code{\link{deparse}()}. It can also replace \code{=} with \code{<-} where
-#' \code{=} means assignments, and reindent code by a specified number of spaces
-#' (default is 4).
+#' Reads R code from a file or the clipboard and reformats it.
+#' That this function preserves blank lines and comments is a different behavior
+#' from that of \code{\link{parse}()} and \code{\link{deparse}()}.
+#' This function can also replace \code{=} with \code{<-} where \code{=} means assignment,
+#' and re-indent code with a specified number of spaces.
 #'
-#' If the value of the argument \code{width.cutoff} is wrapped in
-#' \code{\link{I}()} (e.g., \code{I(60)}), it will be treated as the \emph{upper
-#' bound} on the line width. The corresponding argument to \code{deparse()} is
-#' actually a lower bound, and so the function will perform a binary search for
+#' Value of the argument \code{width.cutoff} wrapped in
+#' \code{\link{I}()} (e.g., \code{I(60)}) will be treated as the \emph{upper
+#' bound} of the line width. The corresponding argument to \code{deparse()} is
+#' a lower bound, so the function will perform a binary search for
 #' a width value that can make \code{deparse()} return code with line width
-#' smaller than or equal to the \code{width.cutoff} value. If the search fails
-#' to find such a value, it will emit a warning, which can be suppressed by the
+#' smaller than or equal to the \code{width.cutoff} value.
+#' If the search fails, a warning will signal, suppressible by
 #' global option \code{options(formatR.width.warning = FALSE)}.
-#' @param source a character string: location of the source code (default to be
-#'   the clipboard; this means we can copy the code to clipboard and use
-#'   \code{tidy_source()} without specifying the argument \code{source})
-#' @param comment whether to keep comments (\code{TRUE} by default)
-#' @param blank whether to keep blank lines (\code{TRUE} by default)
-#' @param arrow whether to replace the assign operator \code{=} with \code{<-}
-#' @param brace.newline whether to put the left brace \code{\{} to a new line
-#'   (default \code{FALSE})
-#' @param indent number of spaces to indent the code (default 4)
-#' @param wrap whether to wrap comments to the linewidth determined by
-#'   \code{width.cutoff} (note that roxygen comments will never be wrapped)
-#' @param width.cutoff Passed to \code{\link{deparse}()}: an integer in
-#'   \code{[20, 500]} determining the cutoff at which line-breaking is tried
-#'   (default to be \code{getOption("width")}). In other words, this is the
-#'   \emph{lower bound} of the line width. See \sQuote{Details} if an upper
-#'   bound is desired instead.
-#' @param output output to the console or a file using \code{\link{cat}()}?
-#' @param text an alternative way to specify the input: if it is \code{NULL},
-#'   the function will read the source code from the \code{source} argument;
-#'   alternatively, if \code{text} is a character vector containing the source
-#'   code, it will be used as the input and the \code{source} argument will be
-#'   ignored
-#' @param ... other arguments passed to \code{\link{cat}()}, e.g. \code{file}
+#'
+#' @param source A character string: file path to the source code (defaults to
+#'   the clipboard).
+#' @param comment Whether to keep comments.
+#' @param blank Whether to keep blank lines.
+#' @param arrow Whether to replace the assign operator \code{=} with \code{<-}.
+#' @param brace.newline Whether to put the left brace \code{\{} to a new line.
+#' @param indent Number of spaces to indent the code.
+#' @param wrap Whether to wrap comments to the linewidth determined by
+#'   \code{width.cutoff} (roxygen comments will never be wrapped).
+#' @param width.cutoff An integer in \code{[20, 500]}: if a line's character length
+#' is at or over this number, the function will try to break it into a new line.
+#' In other words, this is the \emph{lower bound} of the line width.
+#' See \sQuote{Details} if an upper bound is desired instead.
+#' @param output Whether to output to the console or a file using \code{\link{cat}()}.
+#' @param text An alternative way to specify the input:
+#'   if \code{NULL}, the function will use the \code{source} argument;
+#'   if a character vector containing the source code, the function will use this
+#'   and ignore the \code{source} argument.
+#' @param ... Other arguments passed to \code{\link{cat}()}, e.g. \code{file}
 #'   (this can be useful for batch-processing R scripts, e.g.
-#'   \code{tidy_source(source = 'input.R', file = 'output.R')})
+#'   \code{tidy_source(source = 'input.R', file = 'output.R')}).
 #' @return A list with components \item{text.tidy}{the reformatted code as a
 #'   character vector} \item{text.mask}{the code containing comments, which are
-#'   masked in assignments or with the weird operator}
+#'   masked in assignments or with the weird operator}.
 #' @note Be sure to read the reference to know other limitations.
 #' @author Yihui Xie <\url{https://yihui.org}> with substantial contribution
 #'   from Yixuan Qiu <\url{https://yixuan.blog}>
@@ -208,16 +205,17 @@ unmask_source = function(text.mask, spaces) {
 
 #' Format all R scripts under a directory, or specified R scripts
 #'
-#' \code{tidy_dir()} first looks for all the R scripts under a directory (using
-#' the pattern \code{"[.][RrSsQq]$"}), then uses \code{\link{tidy_source}()} to
-#' tidy these scripts. The original scripts will be overwritten with reformatted
-#' code if reformatting was successful. You may need to back up the original
-#' directory first if you do not fully understand the tricks used by
-#' \code{\link{tidy_source}()}. \code{tidy_file()} formats specified R scripts.
-#' @param path the directory
-#' @param recursive whether to recursively look for R scripts under \code{path}
-#' @param ... other arguments to be passed to \code{\link{tidy_source}()}
-#' @param file a vector of filenames
+#' Looks for all R scripts under a directory (using the pattern \code{"[.][RrSsQq]$"}),
+#' then tidies them with \code{\link{tidy_source}()}.
+#' If successful, the original scripts will be overwritten with reformatted
+#' ones. Back up the original directory first if you do not fully understand the
+#' tricks used by \code{\link{tidy_source}()}.
+#' \code{tidy_file()} formats scripts specified by file names.
+#'
+#' @param path The path to a directory containning R scripts.
+#' @param recursive Whether to recursively look for R scripts under \code{path}.
+#' @param ... Other arguments to be passed to \code{\link{tidy_source}()}.
+#' @param file A vector of file names.
 #' @return Invisible \code{NULL}.
 #' @author Yihui Xie (\code{tidy_dir}) and Ed Lee (\code{tidy_file})
 #' @seealso \code{\link{tidy_source}()}
