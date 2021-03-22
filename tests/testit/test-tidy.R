@@ -75,11 +75,10 @@ assert('keep.comment=FALSE removes comments', {
      '1 + 1')
 })
 
-if (packageVersion('formatR') > '0.8') {
-  assert('when comment=FALSE and everything is comment, tidy_source() returns character(0)', {
-    (tidy.res('# a comment', comment = FALSE) %==% character(0))
-  })
-}
+assert('when comment=FALSE and everything is comment, tidy_source() returns character(0)', {
+  (tidy.res('# a comment', comment = FALSE) %==% character(0))
+})
+
 x1 = '1+1
 
 if(F){
