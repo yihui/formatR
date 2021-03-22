@@ -91,7 +91,7 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 
 #' Show the usage of a function
 #'
-#' Prints the reformatted usage of a function. The arguments of the function are
+#' Print the reformatted usage of a function. The arguments of the function are
 #' searched by \code{\link{argsAnywhere}()}, so the function can be either
 #' exported or non-exported from a package. S3 methods will be marked.
 #'

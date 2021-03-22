@@ -1,6 +1,6 @@
 #' A Shiny app to format R code
 #'
-#' Runs a Shiny app that formats R code via \code{\link{tidy_source}()}.
+#' Run a Shiny app that formats R code via \code{\link{tidy_source}()}.
 #' This app uses input widgets, such as checkboxes, to pass arguments
 #' to \code{tidy_source()}.
 #' @export

@@ -1,6 +1,6 @@
 #' Reformat R code while preserving blank lines and comments
 #'
-#' Reads R code from a file or the clipboard and reformats it.
+#' Read R code from a file or the clipboard and reformat it.
 #' That this function preserves blank lines and comments is a different behavior
 #' from that of \code{\link{parse}()} and \code{\link{deparse}()}.
 #' This function can also replace \code{=} with \code{<-} where \code{=} means assignment,
@@ -205,8 +205,8 @@ unmask_source = function(text.mask, spaces) {
 
 #' Format all R scripts under a directory, or specified R scripts
 #'
-#' Looks for all R scripts under a directory (using the pattern \code{"[.][RrSsQq]$"}),
-#' then tidies them with \code{\link{tidy_source}()}.
+#' Look for all R scripts under a directory (using the pattern \code{"[.][RrSsQq]$"}),
+#' then tidy them with \code{\link{tidy_source}()}.
 #' If successful, the original scripts will be overwritten with reformatted
 #' ones. Back up the original directory first if you do not fully understand the
 #' tricks used by \code{\link{tidy_source}()}.

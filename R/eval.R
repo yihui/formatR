@@ -1,6 +1,6 @@
 #' Insert output to source code
 #'
-#' Evaluates R code by chunks, then inserts the output to each chunk.
+#' Evaluate R code by chunks, then insert the output to each chunk.
 #' As the output is masked in comments, the source code will not break.
 #'
 #' @param source The input file name (by default the clipboard; see
