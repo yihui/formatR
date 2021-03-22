@@ -1,8 +1,7 @@
 #' Insert output to source code
 #'
-#' Evaluate R code by chunks, then insert the output to each chunk.
-#' As the output is masked in comments, the source code will not break.
-#'
+#' Evaluate R code by chunks, then insert the output to each chunk. As the
+#' output is masked in comments, the source code will not break.
 #' @param source The input file name (by default the clipboard; see
 #'   \code{\link{tidy_source}()}).
 #' @param ... Other arguments passed to \code{\link{tidy_source}()}.

@@ -1,3 +1,6 @@
+# the code below was mostly contributed by @egnha from
+# https://github.com/yihui/formatR/pull/66
+
 deparse_collapse = function(x) {
   d = deparse(x)
   if (length(d) > 1L) {
@@ -94,7 +97,6 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #' Print the reformatted usage of a function. The arguments of the function are
 #' searched by \code{\link{argsAnywhere}()}, so the function can be either
 #' exported or non-exported from a package. S3 methods will be marked.
-#'
 #' @param FUN The function name.
 #' @param width The width of the output.
 #' @param tidy Whether to reformat the usage code.
@@ -102,10 +104,11 @@ tidy_usage = function(nm, usg, width, indent, fail) {
 #'   \code{\link{cat}()}).
 #' @param indent.by.FUN Whether to indent subsequent lines by the width of the
 #'   function name (see \dQuote{Details}).
-#' @param fail A character string that represents the action taken when
-#' the width constraint is unfulfillable. "warn" and "stop" will signal
-#' warnings and errors, while "none" will do nothing.
-#' @return Reformatted usage code of a function, in character strings (invisible).
+#' @param fail A character string that represents the action taken when the
+#'   width constraint is unfulfillable. "warn" and "stop" will signal warnings
+#'   and errors, while "none" will do nothing.
+#' @return Reformatted usage code of a function, in character strings
+#'   (invisible).
 #' @details Line breaks in the output occur between arguments. In particular,
 #'   default values of arguments will not be split across lines.
 #'

@@ -14,30 +14,30 @@ usage(
 )
 }
 \arguments{
-\item{FUN}{the function name}
+\item{FUN}{The function name.}
 
-\item{width}{the width of output}
+\item{width}{The width of the output.}
 
-\item{tidy}{whether to reformat the usage code}
+\item{tidy}{Whether to reformat the usage code.}
 
-\item{output}{whether to write the output to the console (via
-\code{\link{cat}()})}
+\item{output}{Whether to print the output to the console (via
+\code{\link{cat}()}).}
 
-\item{indent.by.FUN}{whether to indent subsequent lines by the width of the
-function name (see \dQuote{Details})}
+\item{indent.by.FUN}{Whether to indent subsequent lines by the width of the
+function name (see \dQuote{Details}).}
 
-\item{fail}{a character string that determines whether to generate a warning,
-stop, or do neither, if the width constraint is unfulfillable (default is
-\code{"warn"})}
+\item{fail}{A character string that represents the action taken when the
+width constraint is unfulfillable. "warn" and "stop" will signal warnings
+and errors, while "none" will do nothing.}
 }
 \value{
-The R code for the usage is returned as a character string
-  (invisibly).
+Reformatted usage code of a function, in character strings
+  (invisible).
 }
 \description{
 Print the reformatted usage of a function. The arguments of the function are
 searched by \code{\link{argsAnywhere}()}, so the function can be either
-exported or non-exported in a package. S3 methods will be marked.
+exported or non-exported from a package. S3 methods will be marked.
 }
 \details{
 Line breaks in the output occur between arguments. In particular,

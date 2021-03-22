@@ -7,9 +7,9 @@
 tidy_app()
 }
 \description{
-This function calls \code{\link{tidy_source}()} to format R code in a Shiny
-app. The arguments of \code{tidy_source()} are presented in the app as input
-widgets such as checkboxes.
+Run a Shiny app that formats R code via \code{\link{tidy_source}()}. This app
+uses input widgets, such as checkboxes, to pass arguments to
+\code{tidy_source()}.
 }
 \examples{
 if (interactive()) formatR::tidy_app()
