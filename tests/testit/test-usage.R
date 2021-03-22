@@ -52,50 +52,43 @@ assert('usage() output respects indent and line width, whenver this is feasible'
 })
 
 assert('for an S3 method, usage() uses the generic function name in call signature', {
-  {
-    out = capture_usage(barplot.default, 60L)
-    (TRUE)
-  }
+  out = capture_usage(barplot.default, 60L)
   (out[1L] %==% '## Default S3 method:')
   (substr(out[2L], 1L, 8L) %==% 'barplot(')
 })
 
 assert('if width constraint is unfulfillable, usage() warns when fail is "warn"', {
-  {
-    # Verify that width constraint is unfulfillable
-    out = suppressWarnings(capture_usage(barplot.default, 30L, fail = 'warn'))
-    any(nchar(out) > 30L)
-  }
+  # verify that width constraint is unfulfillable
+  out = suppressWarnings(capture_usage(barplot.default, 30L, fail = 'warn'))
+  (any(nchar(out) > 30L))
   (has_warning(capture_usage(barplot.default, 30L, fail = 'warn')))
 })
 
 assert('if width constraint is unfulfillable, usage() stops when fail is "stop"', {
-  out = tryCatch(capture_usage(barplot.default, 30L, fail = 'stop'),
-                 error = function(e) 'Error signaled')
-  (out %==% 'Error signaled')
+  out = tryCatch(capture_usage(barplot.default, 30L, fail = 'stop'), error = identity)
+  (inherits(out, 'error'))
 })
 
 assert('if width constraint is unfulfillable, usage() is silent when fail is "none"', {
-  out = tryCatch(capture_usage(barplot.default, 30L, fail = 'none'),
-                 warning = function(w) 'Warning signaled',
-                 error   = function(e) 'Error signaled')
-  (!out %in% c('Warning signaled', 'Error signaled'))
+  out = tryCatch(
+    capture_usage(barplot.default, 30L, fail = 'none'),
+    warning = identity, error   = identity
+  )
+  (!inherits(out, c('error', 'warning')))
 })
 
-assert('if width constraint is unfulfillable and fail is "warn" or "stop", then
-        the lengths of all overflowing lines are shown', {
-          out = capture.output(
-            suppressWarnings(usage(barplot.default, 30L, fail = 'warn'))
-          )
-          warn = capture.output(cat(
-            tryCatch(usage(barplot.default, 30L, fail = 'warn'),
-                     warning = conditionMessage)
-          ))[-1L]
-          bad_lines = out[nchar(out) > 30L]
-          overflow_out  = nchar(bad_lines)
-          overflow_warn = as.integer(sub('^\\(([[:digit:]]*)\\).*', '\\1', warn))
-          (overflow_out %==% overflow_warn)
-        })
+assert('if width constraint is unfulfillable and fail is "warn" or "stop", the lengths of all overflowing lines are shown', {
+  out = capture.output(
+    suppressWarnings(usage(barplot.default, 30L, fail = 'warn'))
+  )
+  warn = capture.output(cat(tryCatch(
+    usage(barplot.default, 30L, fail = 'warn'), warning = conditionMessage
+  )))[-1L]
+  bad_lines = out[nchar(out) > 30L]
+  overflow_out  = nchar(bad_lines)
+  overflow_warn = as.integer(sub('^\\(([[:digit:]]*)\\).*', '\\1', warn))
+  (overflow_out %==% overflow_warn)
+})
 
 assert('usage() fits entire call on one line if it falls within width', {
   foo = function(bar, ..., baz = "baz") {}
@@ -107,83 +100,64 @@ assert('usage() fits entire call on one line if it falls within width', {
 })
 
 assert('usage() breaks lines maximally and uniformly when all lines of same length', {
-  {
-    foo = function(bar, baz = 0,
-                   buzz, x, ...,
-                   y = 2, z = 3) {}
-    w = nchar('foo(bar, baz = 0,')
-    out = capture_usage(foo, width = w, indent.by.FUN = TRUE)
-    (TRUE)
-  }
+  foo = function(bar, baz = 0, buzz, x, ..., y = 2, z = 3) {}
+  w = nchar('foo(bar, baz = 0,')
+  out = capture_usage(foo, width = w, indent.by.FUN = TRUE)
   (length(out) %==% 3L)
   (all(nchar(out) == w))
 })
 
-assert('usage() indents by getOption("formatR.indent", 4L),
-       when indent.by.FUN is FALSE', {
-         {
-           foo = function(bar, ..., baz = "baz") {}
-           (TRUE)
-         }
-         {
-           ops = options(formatR.indent = NULL)
-           out = capture_usage(foo, width = 20L, indent.by.FUN = FALSE)
-           options(ops)
-           (out[2L] %==% '    baz = "baz")')
-         }
-         {
-           ops = options(formatR.indent = 2L)
-           out = capture_usage(foo, width = 20L)
-           options(ops)
-           (out[2L] %==% '  baz = "baz")')
-         }
-       })
+assert('usage() indents by getOption("formatR.indent", 4L), when indent.by.FUN is FALSE', {
+  foo = function(bar, ..., baz = "baz") {}
+  ops = options(formatR.indent = NULL)
+  out = capture_usage(foo, width = 20L, indent.by.FUN = FALSE)
+  options(ops)
+  (out[2L] %==% '    baz = "baz")')
+
+  ops = options(formatR.indent = 2L)
+  out = capture_usage(foo, width = 20L)
+  options(ops)
+  (out[2L] %==% '  baz = "baz")')
+})
 
 assert('usage() indents by function name width, when indent.by.FUN is TRUE', {
-  {
-    re = function(n) sprintf('^%s\\S', n_spaces(n))
-    out1 = capture_usage(barplot.default, width = 60L, indent.by.FUN = TRUE)
-    out2 = capture_usage(stats::lm, width = 60, indent.by.FUN = TRUE)
-    (TRUE)
-  }
+  re = function(n) sprintf('^%s\\S', n_spaces(n))
+  out1 = capture_usage(barplot.default, width = 60L, indent.by.FUN = TRUE)
+  out2 = capture_usage(stats::lm, width = 60, indent.by.FUN = TRUE)
   (grepl(re(nchar('barplot(')), out1[-(1L:2L)]))
   (grepl(re(nchar('lm(')), out2[-1L]))
 })
 
 assert('usage() breaks line on function name, if function name exceeds width', {
-  {
-    reallylongfunctionname = function() {}
-    w = nchar('reallylongfunctionname')
-    out = capture_usage(reallylongfunctionname, w, fail = 'none')
-    (out %==% 'reallylongfunctionname()')
-  }
-  {
-    warn = tryCatch(usage(reallylongfunctionname, w, fail = 'warn'),
-                    warning = function(w) {
-                      capture.output(cat(conditionMessage(w)))
-                    })
-    l = nchar('reallylongfunctionname()')
-    (warn[2L] %==% sprintf('(%s) \"reallylongfunctionname()\"', l))
-  }
-  {
-    reallylongfunctionname = function(bar, baz, ..., a, b, c, d, e) {}
-    res = lapply(c(5L, 10L, 20L), function(w) {
-      list(
-        out  = capture_usage(reallylongfunctionname, w, fail = 'none'),
-        warn = tryCatch(usage(reallylongfunctionname, w, fail = 'warn'),
-                        warning = function(w) {
-                          capture.output(cat(conditionMessage(w)))
-                        })
+  reallylongfunctionname = function() {}
+  w = nchar('reallylongfunctionname')
+  out = capture_usage(reallylongfunctionname, w, fail = 'none')
+  (out %==% 'reallylongfunctionname()')
+
+  warn = tryCatch(
+    usage(reallylongfunctionname, w, fail = 'warn'),
+    warning = function(w) unlist(strsplit(w$message, '\n'))
+  )
+  l = nchar('reallylongfunctionname()')
+  (warn[2L] %==% sprintf('(%s) \"reallylongfunctionname()\"', l))
+
+  reallylongfunctionname = function(bar, baz, ..., a, b, c, d, e) {}
+  res = lapply(c(5L, 10L, 20L), function(w) {
+    list(
+      out  = capture_usage(reallylongfunctionname, w, fail = 'none'),
+      warn = tryCatch(
+        usage(reallylongfunctionname, w, fail = 'warn'),
+        warning = function(w) unlist(strsplit(w$message, '\n'))
       )
-    })
-    l = nchar('reallylongfunctionname(')
-    (vapply(res, function(.) {
-      all(
-        nchar(.$out[-1L]) <= w,
-        .$warn[2L] %==% sprintf('(%s) \"reallylongfunctionname(\"', l)
-      )
-    }, logical(1)))
-  }
+    )
+  })
+  l = nchar('reallylongfunctionname(')
+  (vapply(res, function(.) {
+    all(
+      nchar(.$out[-1L]) <= w,
+      .$warn[2L] %==% sprintf('(%s) \"reallylongfunctionname(\"', l)
+    )
+  }, logical(1)))
 })
 
 # Test internal functions (optional) --------------------------------------
