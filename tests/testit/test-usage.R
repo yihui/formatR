@@ -56,8 +56,8 @@ assert('for an S3 method, usage() uses the generic function name in call signatu
     out = capture_usage(barplot.default, 60L)
     (TRUE)
   }
-  (identical(out[1L], '## Default S3 method:'))
-  (identical(substr(out[2L], 1L, 8L), 'barplot('))
+  (out[1L] %==% '## Default S3 method:')
+  (substr(out[2L], 1L, 8L) %==% 'barplot(')
 })
 
 assert('if width constraint is unfulfillable, usage() warns when fail is "warn"', {
@@ -72,7 +72,7 @@ assert('if width constraint is unfulfillable, usage() warns when fail is "warn"'
 assert('if width constraint is unfulfillable, usage() stops when fail is "stop"', {
   out = tryCatch(capture_usage(barplot.default, 30L, fail = 'stop'),
                  error = function(e) 'Error signaled')
-  (identical(out, 'Error signaled'))
+  (out %==% 'Error signaled')
 })
 
 assert('if width constraint is unfulfillable, usage() is silent when fail is "none"', {
@@ -94,7 +94,7 @@ assert('if width constraint is unfulfillable and fail is "warn" or "stop", then
           bad_lines = out[nchar(out) > 30L]
           overflow_out  = nchar(bad_lines)
           overflow_warn = as.integer(sub('^\\(([[:digit:]]*)\\).*', '\\1', warn))
-          (identical(overflow_out, overflow_warn))
+          (overflow_out %==% overflow_warn)
         })
 
 assert('usage() fits entire call on one line if it falls within width', {
@@ -102,7 +102,7 @@ assert('usage() fits entire call on one line if it falls within width', {
   width = nchar('foo(bar, ..., baz = "baz")')
   (vapply(seq(width, width + 60L, by = 5L), function(w) {
     out = usage(foo, width = w, output = FALSE)
-    identical(nchar(out), width)
+    nchar(out) %==% width
   }, logical(1)))
 })
 
@@ -115,7 +115,7 @@ assert('usage() breaks lines maximally and uniformly when all lines of same leng
     out = capture_usage(foo, width = w, indent.by.FUN = TRUE)
     (TRUE)
   }
-  (identical(length(out), 3L))
+  (length(out) %==% 3L)
   (all(nchar(out) == w))
 })
 
@@ -129,13 +129,13 @@ assert('usage() indents by getOption("formatR.indent", 4L),
            ops = options(formatR.indent = NULL)
            out = capture_usage(foo, width = 20L, indent.by.FUN = FALSE)
            options(ops)
-           (identical(out[2L], '    baz = "baz")'))
+           (out[2L] %==% '    baz = "baz")')
          }
          {
            ops = options(formatR.indent = 2L)
            out = capture_usage(foo, width = 20L)
            options(ops)
-           (identical(out[2L], '  baz = "baz")'))
+           (out[2L] %==% '  baz = "baz")')
          }
        })
 
@@ -155,7 +155,7 @@ assert('usage() breaks line on function name, if function name exceeds width', {
     reallylongfunctionname = function() {}
     w = nchar('reallylongfunctionname')
     out = capture_usage(reallylongfunctionname, w, fail = 'none')
-    (identical(out, 'reallylongfunctionname()'))
+    (out %==% 'reallylongfunctionname()')
   }
   {
     warn = tryCatch(usage(reallylongfunctionname, w, fail = 'warn'),
@@ -163,7 +163,7 @@ assert('usage() breaks line on function name, if function name exceeds width', {
                       capture.output(cat(conditionMessage(w)))
                     })
     l = nchar('reallylongfunctionname()')
-    (identical(warn[2L], sprintf('(%s) \"reallylongfunctionname()\"', l)))
+    (warn[2L] %==% sprintf('(%s) \"reallylongfunctionname()\"', l))
   }
   {
     reallylongfunctionname = function(bar, baz, ..., a, b, c, d, e) {}
@@ -180,7 +180,7 @@ assert('usage() breaks line on function name, if function name exceeds width', {
     (vapply(res, function(.) {
       all(
         nchar(.$out[-1L]) <= w,
-        identical(.$warn[2L], sprintf('(%s) \"reallylongfunctionname(\"', l))
+        .$warn[2L] %==% sprintf('(%s) \"reallylongfunctionname(\"', l)
       )
     }, logical(1)))
   }
