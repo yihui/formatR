@@ -121,12 +121,12 @@ if (ignore_img <- Sys.getenv('USER', '') != 'yihui') cat('<!--')
 ```
 
 [![R source code before
-tidying](https://db.yihui.org/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
+reformatting](https://db.yihui.org/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
 
-After hitting the `Tidy` button:
+After hitting the `Format` button:
 
 [![R source code after
-tidying](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
+reformatting](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
 
 ```{r echo=FALSE, results='asis'}
 if (ignore_img) cat('\n-->')
