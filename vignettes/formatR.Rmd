@@ -117,7 +117,7 @@ formatR::tidy_app()
 ```
 
 ```{r echo=FALSE, results='asis'}
-if (ignore_img <- Sys.getenv('USER', '') != 'yihui') cat('<!--')
+if (ignore_img <- !is.na(Sys.getenv('_R_CHECK_PACKAGE_NAME_', NA))) cat('<!--')
 ```
 
 [![R source code before
