@@ -28,9 +28,8 @@ knitr::opts_chunk$set(tidy = TRUE)
 # 1. Installation
 
 You can install **formatR** from
-[CRAN](https://cran.r-project.org/package=formatR), or
-<https://yihui.r-universe.dev> if you want to test the latest development
-version:
+[CRAN](https://cran.r-project.org/package=formatR), or yihui.r-universe.dev if
+you want to test the latest development version:
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://cran.rstudio.com')
