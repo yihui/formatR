@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
+mask_comments = function(x, keep.blank.line, spaces) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -41,27 +41,9 @@ mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
   c0 = d.line[-1] != d.line[-n]  # is there a line change?
   c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
   c2 = i & !c1  # inline comments
-  c3 = c1 & grepl("^#+[-'+]", d.text)  # roxygen or knitr spin() comments
-  if (wrap) {
-    if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
-  } else c3 = c1  # comments not to be wrapped
-
-  # reflow blocks of comments: first collapse them, then wrap them
-  i1 = which(c1 & !c3) # do not wrap roxygen comments
-  j1 = i1[1]
-  if (length(i1) > 1) for (i in 2:length(i1)) {
-    # two neighbor lines of comments
-    if (d.line[i1[i]] - d.line[i1[i - 1]] == 1) {
-      j2 = i1[i]
-      d.text[j1] = paste(d.text[j1], sub('^#+', '', d.text[j2]))
-      d.text[j2] = ''
-      c1[j2] = FALSE  # the second line is no longer a comment
-    } else j1 = i1[i]
-  }
 
   # mask block and inline comments
-  d.text[c1 & !c3] = reflow_comments(d.text[c1 & !c3], width)
-  d.text[c3] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c3], end.comment)
+  d.text[c1] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c1], end.comment)
   d.text[c2] = sprintf('%%\b%% "%s"', d.text[c2])
 
   # add blank lines
@@ -93,6 +75,7 @@ move_else = function(x) {
   x
 }
 
+
 # reflow comments (excluding roxygen comments)
 reflow_comments = function(x, width) {
   if (length(x) == 0) return(x)
@@ -102,7 +85,13 @@ reflow_comments = function(x, width) {
     paste(sprintf(
       'invisible("%s%s%s")', begin.comment, paste(prefix, res), end.comment
     ), collapse = '\n')
-  }, strwrap(sub('^#+', '', x), width = width, simplify = FALSE), b)
+  },
+  strwrap(sub('^#+',
+              '',
+              x),
+          width = width,
+          simplify = FALSE),
+  b)
 }
 
 # reindent lines with a different number of spaces

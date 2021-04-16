@@ -88,7 +88,7 @@ tidy_source = function(
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = paste(rep(' ', width.cutoff), collapse = '')
-  if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
+  if (comment) text = mask_comments(text, blank, spaces)
   text.mask = tidy_block(
     text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline
   )
@@ -169,9 +169,55 @@ tidy_block = function(
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   deparse = if (inherits(width, 'AsIs')) deparse2 else base::deparse
+
   unlist(lapply(exprs, function(e) {
     x = deparse(e, width)
     x = reindent_lines(x, indent)
+    x = unlist(lapply(
+      x,
+      function(line){
+
+        is_comment = grepl(mat.comment,
+                           line)
+
+        is_special_comment = grepl("^#+[-'+]",
+                                   trimws(gsub(pat.comment,
+                                               '',
+                                               line)))
+
+        is_regular_comment = is_comment & !is_special_comment
+
+        # ignore code and special comment that starts with #'
+        if (is_regular_comment) {
+
+          # strip away masks
+          line = gsub(pat.comment, '', line)
+
+          # extract indent & comment characters
+          indent_and_comment_characters = sub('(#+).*', '\\1', line)
+
+          # remove indent & comment characters
+          line = sub(indent_and_comment_characters, '', line)
+
+          # wrap line
+          line = unlist(strwrap(line,
+                                width = (width - nchar(indent_and_comment_characters)),
+                                simplify = FALSE))
+
+          # add indent and comment characters back to wrapped lines
+          # re-mask line
+          line = unlist(lapply(line,
+                               function(line){
+                                 sprintf('invisible("%s%s%s")',
+                                         begin.comment,
+                                         paste(indent_and_comment_characters,
+                                               line),
+                                         end.comment)
+                               }))
+        }
+        line
+      }))
+
     if (brace.newline) x = move_leftbrace(x)
     # remove white spaces on blank lines
     x = gsub(blank.comment2, '', x)
