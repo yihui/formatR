@@ -75,25 +75,6 @@ move_else = function(x) {
   x
 }
 
-
-# reflow comments (excluding roxygen comments)
-reflow_comments = function(x, width) {
-  if (length(x) == 0) return(x)
-  # returns a character vector of the same length as x
-  b = sub('^(#+).*', '\\1', x)
-  mapply(function(res, prefix) {
-    paste(sprintf(
-      'invisible("%s%s%s")', begin.comment, paste(prefix, res), end.comment
-    ), collapse = '\n')
-  },
-  strwrap(sub('^#+',
-              '',
-              x),
-          width = width,
-          simplify = FALSE),
-  b)
-}
-
 # reindent lines with a different number of spaces
 reindent_lines = function(text, n = 2) {
   if (length(text) == 0) return(text)
