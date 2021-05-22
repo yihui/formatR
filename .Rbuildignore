@@ -5,3 +5,5 @@ inst/examples
 inst/shiny/rsconnect
 .Rhistory
 ^\.github$
+^NEWS\.md$
+^README\.md$

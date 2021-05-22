@@ -19,63 +19,59 @@ tidy_source(
 )
 }
 \arguments{
-\item{source}{a character string: location of the source code (default to be
-the clipboard; this means we can copy the code to clipboard and use
-\code{tidy_source()} without specifying the argument \code{source})}
+\item{source}{A character string: file path to the source code (defaults to
+the clipboard).}
 
-\item{comment}{whether to keep comments (\code{TRUE} by default)}
+\item{comment}{Whether to keep comments.}
 
-\item{blank}{whether to keep blank lines (\code{TRUE} by default)}
+\item{blank}{Whether to keep blank lines.}
 
-\item{arrow}{whether to replace the assign operator \code{=} with \code{<-}}
+\item{arrow}{Whether to replace the assign operator \code{=} with \code{<-}.}
 
-\item{brace.newline}{whether to put the left brace \code{\{} to a new line
-(default \code{FALSE})}
+\item{brace.newline}{Whether to put the left brace \code{\{} to a new line.}
 
-\item{indent}{number of spaces to indent the code (default 4)}
+\item{indent}{Number of spaces to indent the code.}
 
-\item{wrap}{whether to wrap comments to the linewidth determined by
-\code{width.cutoff} (note that roxygen comments will never be wrapped)}
+\item{wrap}{Whether to wrap comments to the linewidth determined by
+\code{width.cutoff} (roxygen comments will never be wrapped).}
 
-\item{width.cutoff}{Passed to \code{\link{deparse}()}: an integer in
-\code{[20, 500]} determining the cutoff at which line-breaking is tried
-(default to be \code{getOption("width")}). In other words, this is the
-\emph{lower bound} of the line width. See \sQuote{Details} if an upper
-bound is desired instead.}
+\item{width.cutoff}{An integer in \code{[20, 500]}: if a line's character
+length is at or over this number, the function will try to break it into a
+new line. In other words, this is the \emph{lower bound} of the line width.
+See \sQuote{Details} if an upper bound is desired instead.}
 
-\item{output}{output to the console or a file using \code{\link{cat}()}?}
+\item{output}{Whether to output to the console or a file using
+\code{\link{cat}()}.}
 
-\item{text}{an alternative way to specify the input: if it is \code{NULL},
-the function will read the source code from the \code{source} argument;
-alternatively, if \code{text} is a character vector containing the source
-code, it will be used as the input and the \code{source} argument will be
-ignored}
+\item{text}{An alternative way to specify the input: if \code{NULL}, the
+function will use the \code{source} argument; if a character vector
+containing the source code, the function will use this and ignore the
+\code{source} argument.}
 
-\item{...}{other arguments passed to \code{\link{cat}()}, e.g. \code{file}
+\item{...}{Other arguments passed to \code{\link{cat}()}, e.g. \code{file}
 (this can be useful for batch-processing R scripts, e.g.
-\code{tidy_source(source = 'input.R', file = 'output.R')})}
+\code{tidy_source(source = 'input.R', file = 'output.R')}).}
 }
 \value{
 A list with components \item{text.tidy}{the reformatted code as a
   character vector} \item{text.mask}{the code containing comments, which are
-  masked in assignments or with the weird operator}
+  masked in assignments or with the weird operator}.
 }
 \description{
-This function returns reformatted source code; it tries to preserve blank
-lines and comments, which is different with \code{\link{parse}()} and
-\code{\link{deparse}()}. It can also replace \code{=} with \code{<-} where
-\code{=} means assignments, and reindent code by a specified number of spaces
-(default is 4).
+Read R code from a file or the clipboard and reformat it. That this function
+preserves blank lines and comments is a different behavior from that of
+\code{\link{parse}()} and \code{\link{deparse}()}. This function can also
+replace \code{=} with \code{<-} where \code{=} means assignment, and
+re-indent code with a specified number of spaces.
 }
 \details{
-If the value of the argument \code{width.cutoff} is wrapped in
-\code{\link{I}()} (e.g., \code{I(60)}), it will be treated as the \emph{upper
-bound} on the line width. The corresponding argument to \code{deparse()} is
-actually a lower bound, and so the function will perform a binary search for
-a width value that can make \code{deparse()} return code with line width
-smaller than or equal to the \code{width.cutoff} value. If the search fails
-to find such a value, it will emit a warning, which can be suppressed by the
-global option \code{options(formatR.width.warning = FALSE)}.
+Value of the argument \code{width.cutoff} wrapped in \code{\link{I}()} (e.g.,
+\code{I(60)}) will be treated as the \emph{upper bound} of the line width.
+The corresponding argument to \code{deparse()} is a lower bound, so the
+function will perform a binary search for a width value that can make
+\code{deparse()} return code with line width smaller than or equal to the
+\code{width.cutoff} value. If the search fails, a warning will signal,
+suppressible by global option \code{options(formatR.width.warning = FALSE)}.
 }
 \note{
 Be sure to read the reference to know other limitations.

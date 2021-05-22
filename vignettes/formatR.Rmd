@@ -28,9 +28,8 @@ knitr::opts_chunk$set(tidy = TRUE)
 # 1. Installation
 
 You can install **formatR** from
-[CRAN](https://cran.r-project.org/package=formatR), or
-<https://yihui.r-universe.dev> if you want to test the latest development
-version:
+[CRAN](https://cran.r-project.org/package=formatR), or yihui.r-universe.dev if
+you want to test the latest development version:
 
 ```{r eval=FALSE}
 install.packages('formatR', repos = 'http://cran.rstudio.com')
@@ -117,16 +116,16 @@ formatR::tidy_app()
 ```
 
 ```{r echo=FALSE, results='asis'}
-if (ignore_img <- Sys.getenv('USER', '') != 'yihui') cat('<!--')
+if (ignore_img <- !is.na(Sys.getenv('_R_CHECK_PACKAGE_NAME_', NA))) cat('<!--')
 ```
 
 [![R source code before
-tidying](https://db.yihui.org/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
+reformatting](https://db.yihui.org/imgur/lUgtEAb.png)](https://yihui.shinyapps.io/formatR/)
 
-After hitting the `Tidy` button:
+After hitting the `Format` button:
 
 [![R source code after
-tidying](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
+reformatting](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
 
 ```{r echo=FALSE, results='asis'}
 if (ignore_img) cat('\n-->')

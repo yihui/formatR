@@ -1,10 +1,16 @@
+# CHANGES IN formatR VERSION 1.10
+
+## NEW FEATURES
+
+- Support the new pipe operator `|>` in R 4.1.0.
+
 # CHANGES IN formatR VERSION 1.9
 
 ## NEW FEATURES
 
 - Lines will be wrapped after operators `%>%`, `%T%`, `%$%`, and `%<>%` now (thanks, @g4challenge #54, @jzelner #62, @edlee123 #68).
 
-- The argument `width.cutoff` of `tidy_source()` used to be the lower bound of line widths. Now if you pass a number wrapped in I(), it will be treated as the uppper bound, e.g., `tidy_source(width.cutoff = I(60))`. However, please note that the upper bound cannot always be respected, e.g., when the code contains an extremely long string, there is no way to break it into shorter lines automatically (thanks, @krivit @pablo14, #71).
+- The argument `width.cutoff` of `tidy_source()` used to be the lower bound of line widths. Now if you pass a number wrapped in `I()`, it will be treated as the uppper bound, e.g., `tidy_source(width.cutoff = I(60))`. However, please note that the upper bound cannot always be respected, e.g., when the code contains an extremely long string, there is no way to break it into shorter lines automatically (thanks, @krivit @pablo14, #71).
 
 - The value of the argument `width.cutoff` can be specified in the global option `formatR.width` now. By default, the value is still taken from the global option `width` like before.
 

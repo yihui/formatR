@@ -22,7 +22,7 @@ shinyUI(fluidPage(
       numericInput ('arg_indent', 'Number of spaces for indentation', 4, min = 0),
       radioButtons('width_type', 'Line width type', c('minimum', 'maximum'), inline = TRUE),
       numericInput ('arg_width', 'Line width value', 70, min = 20, max = 500),
-      submitButton ('Tidy My Code', icon('toggle-right'))
+      submitButton ('Format My Code', icon('toggle-right'))
     ),
     mainPanel(
       tags$textarea(
