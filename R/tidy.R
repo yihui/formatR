@@ -129,6 +129,7 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
     d[[i]] <<- x
     x2 = grep(pat.comment, x, invert = TRUE, value = TRUE)  # don't check comments
     x2 = gsub(pat.infix, '\\1\\2\\3', x2)  # remove extra spaces in %>% operators
+    x2 = restore_pipe(x2)
     p[[i]] <<- x2[nchar(x2, type = 'width') > width]
     k[i] <<- length(p[[i]]) == 0
   }
@@ -169,6 +170,7 @@ tidy_block = function(
     x = deparse(e, width)
     x = reindent_lines(x, indent)
     if (brace.newline) x = move_leftbrace(x)
+    x = restore_pipe(x)
     # remove white spaces on blank lines
     x = gsub(blank.comment2, '', x)
     paste(x, collapse = '\n')

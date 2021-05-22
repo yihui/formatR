@@ -1,5 +1,8 @@
 # CHANGES IN formatR VERSION 1.10
 
+## NEW FEATURES
+
+- Support the new pipe operator `|>` in R 4.1.0.
 
 # CHANGES IN formatR VERSION 1.9
 

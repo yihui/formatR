@@ -71,11 +71,17 @@ mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
   }
   # break lines after some infix operators such as %>%
   d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\\2', spaces, '\\3'), d.text)
+  # similarly break lines after |>; later restore %|>|>% to |> in unmask_source()
+  d.text[d.text == '|>'] = paste0('%', '|>|>', spaces, '%')
 
   unlist(lapply(split(d.text, d.line), paste, collapse = ' '), use.names = FALSE)
 }
 
 infix_ops = '[>$]|T>|<>'
+
+restore_pipe = function(x) {
+  gsub('%[|]>[|]> +%\\s*$', '|>', x)
+}
 
 # no blank lines before an 'else' statement!
 move_else = function(x) {
