@@ -200,20 +200,8 @@ tidy_block = function(
           line = sub(indent_and_comment_characters, '', line)
 
           # wrap line
-          line = unlist(strwrap(line,
-                                width = (width - nchar(indent_and_comment_characters)),
-                                simplify = FALSE))
-
-          # add indent and comment characters back to wrapped lines
-          # re-mask line
-          line = unlist(lapply(line,
-                               function(line){
-                                 sprintf('invisible("%s%s%s")',
-                                         begin.comment,
-                                         paste(indent_and_comment_characters,
-                                               line),
-                                         end.comment)
-                               }))
+          line = strwrap(line, width - nchar(indent_and_comment_characters))
+          line = paste(indent_and_comment_characters, line)
         }
         line
       }))
