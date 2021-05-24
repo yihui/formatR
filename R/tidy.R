@@ -170,6 +170,8 @@ tidy_block = function(
   unlist(lapply(exprs, function(e) {
     x = deparse(e, width)
     x = reindent_lines(x, indent)
+    # remove white spaces on blank lines
+    x = gsub(blank.comment2, '', x)
     x = unlist(lapply(
       x,
       function(line){
@@ -217,8 +219,6 @@ tidy_block = function(
 
     if (brace.newline) x = move_leftbrace(x)
     x = restore_pipe(x)
-    # remove white spaces on blank lines
-    x = gsub(blank.comment2, '', x)
     paste(x, collapse = '\n')
   }))
 }
