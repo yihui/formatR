@@ -179,7 +179,7 @@ tidy_block = function(
         is_comment = grepl(mat.comment,
                            line)
 
-        is_special_comment = grepl("^#+[-'+]",
+        is_special_comment = grepl("^#+[-'+!]",
                                    trimws(gsub(pat.comment,
                                                '',
                                                line)))
