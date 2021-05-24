@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, keep.blank.line, spaces) {
+mask_comments = function(x, keep.blank.line, wrap, spaces) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -41,6 +41,23 @@ mask_comments = function(x, keep.blank.line, spaces) {
   c0 = d.line[-1] != d.line[-n]  # is there a line change?
   c1 = i & c(TRUE, c0 | (d.token[-n] == "'{'"))  # must be comment blocks
   c2 = i & !c1  # inline comments
+  c3 = c1 & grepl("^#+[-'+]", d.text)  # roxygen or knitr spin() comments
+  if (wrap) {
+    if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
+  } else c3 = c1  # comments not to be wrapped
+
+  # collapse blocks of comments
+  i1 = which(c1 & !c3) # do not wrap roxygen comments
+  j1 = i1[1]
+  if (length(i1) > 1) for (i in 2:length(i1)) {
+    # two neighbor lines of comments
+    if (d.line[i1[i]] - d.line[i1[i - 1]] == 1) {
+      j2 = i1[i]
+      d.text[j1] = paste(d.text[j1], sub('^#+', '', d.text[j2]))
+      d.text[j2] = ''
+      c1[j2] = FALSE  # the second line is no longer a comment
+    } else j1 = i1[i]
+  }
 
   # mask block and inline comments
   d.text[c1] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c1], end.comment)
@@ -166,6 +183,8 @@ trimws = function(x, which = c('both', 'left', 'right')) {
     left = gsub('^\\s+', '', x), right = gsub('\\s+$', '', x)
   )
 }
+
+one_string = function(..., collapse = '\n') paste(..., collapse = collapse)
 
 restore_encoding = function(x, enc) {
   if (length(enc) != 1) return(x)

@@ -84,9 +84,9 @@ tidy_source = function(
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = paste(rep(' ', width.cutoff), collapse = '')
-  if (comment) text = mask_comments(text, blank, spaces)
+  if (comment) text = mask_comments(text, blank, wrap, spaces)
   text.mask = tidy_block(
-    text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline
+    text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline, wrap
   )
   text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
   # restore new lines in the beginning and end
@@ -160,7 +160,8 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
 
 # wrapper around parse() and deparse()
 tidy_block = function(
-  text, width = getOption('width'), arrow = FALSE, indent = 4, brace.newline = FALSE
+  text, width = getOption('width'), arrow = FALSE, indent = 4,
+  brace.newline = FALSE, wrap = TRUE
 ) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
