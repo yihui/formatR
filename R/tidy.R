@@ -191,6 +191,7 @@ tidy_block = function(
 
           # strip away masks
           line = gsub(pat.comment, '', line)
+          line = restore_bs(line)
 
           # extract indent & comment characters
           indent_and_comment_characters = sub('(#+).*', '\\1', line)
@@ -233,10 +234,7 @@ unmask_source = function(text.mask, spaces) {
   text.mask = gsub('(%\b%)[ ]*\n', '\\1', text.mask)
   # move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
-  if (any(grepl('\\\\\\\\', text.mask)) &&
-      (any(grepl(mat.comment, text.mask)) || any(grepl(inline.comment, text.mask)))) {
-    m = gregexpr(mat.comment, text.mask)
-    regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+  if (any(grepl('\\\\\\\\', text.mask)) || any(grepl(inline.comment, text.mask))) {
     m = gregexpr(inline.comment, text.mask)
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
