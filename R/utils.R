@@ -108,9 +108,11 @@ reflow_comments = function(x, width, wrap) {
   # extract indent & comment prefix, e.g., '## '
   r  = '^(\\s*#+)\\s*(.*)'
   x[c2] = unlist(lapply(x[c2], function(z) {
-    p = sub(r, '\\1 ', z)
+    p = sub(r, '\\1', z)
     z = sub(r, '\\2', z)
-    one_string(strwrap(z, width, prefix = p))
+    z = one_string(strwrap(z, width, prefix = paste0(p, ' ')))
+    # the comment might be empty, in which case we return the comment chars
+    if (z == '') p else z
   }))
   x
 }

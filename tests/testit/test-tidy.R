@@ -52,6 +52,11 @@ assert('tidy_source() can deal with code that only contains a comment', {
   (tidy.res(x2) %==% x2)
 })
 
+assert('tidy_source() works for empty comments', {
+  (tidy.res('#') %==% '#')
+  (tidy.res(c('#', 'a+b')) %==% c('#', 'a + b'))
+})
+
 x1 = '{if (TRUE) {
 1
 }
