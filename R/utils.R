@@ -99,9 +99,10 @@ move_else = function(x) {
 }
 
 # reflow comments (excluding roxygen comments)
-reflow_comments = function(x, width) {
+reflow_comments = function(x, width, wrap) {
   c1 = grepl(mat.comment, x)
   x  = gsub(pat.comment, '', x)  # strip the invisible() masks
+  if (!wrap) return(x)
   x[c1] = restore_bs(x[c1])
   c2 = c1 & !grepl("^\\s*#+[-'+!]", x)
   # extract indent & comment prefix, e.g., '## '

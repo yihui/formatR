@@ -172,7 +172,7 @@ tidy_block = function(
     x = reindent_lines(x, indent)
     # remove white spaces on blank lines
     x = gsub(blank.comment2, '', x)
-    if (wrap) x = reflow_comments(x, width)
+    x = reflow_comments(x, width, wrap)
     if (brace.newline) x = move_leftbrace(x)
     x = restore_pipe(x)
     one_string(x)
@@ -193,7 +193,6 @@ unmask_source = function(text.mask, spaces) {
     m = gregexpr(inline.comment, text.mask)
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
-  text.tidy = gsub(pat.comment, '', text.mask)
   # restore infix operators such as %>%
   text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.tidy)
   # inline comments should be terminated by $ or \n
