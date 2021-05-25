@@ -144,7 +144,7 @@ iris %>%
 '
 
 assert('magrittr lines are wrapped after the pipes', {
-  (paste(tidy.res(x1, indent = 2), collapse = '\n') %==% x2)
+  (one_string(tidy.res(x1, indent = 2)) %==% x2)
 })
 
 if (getRversion() >= '4.1.0') assert('The new pipe |> is supported', {

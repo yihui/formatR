@@ -68,7 +68,7 @@ overflow_message = function(overflow, width, indent, text) {
               collapse = '')
     sprintf('(%s) \"%s\"', nchar(l), l)
   }, character(1L))
-  paste(c(header, args), collapse = '\n')
+  one_string(c(header, args))
 }
 
 tidy_usage = function(nm, usg, width, indent, fail) {

@@ -74,7 +74,7 @@ tidy_source = function(
     return(list(text.tidy = text, text.mask = text))
   }
   if (blank) {
-    one = paste(text, collapse = '\n') # record how many line breaks before/after
+    one = one_string(text) # record how many line breaks before/after
     n1 = attr(regexpr('^\n*', one), 'match.length')
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
@@ -152,7 +152,7 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
   i = as.character(width)
   if (warn) warning(
     'Unable to find a suitable cut-off to make the line widths smaller than ',
-    width, ' for the line(s) of code:\n', paste0('  ', p[[i]], collapse = '\n'),
+    width, ' for the line(s) of code:\n', one_string('  ', p[[i]]),
     call. = FALSE
   )
   d[[i]]
@@ -167,7 +167,6 @@ tidy_block = function(
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   deparse = if (inherits(width, 'AsIs')) deparse2 else base::deparse
-
   unlist(lapply(exprs, function(e) {
     x = deparse(e, width)
     x = reindent_lines(x, indent)
@@ -176,7 +175,7 @@ tidy_block = function(
     if (wrap) x = reflow_comments(x, width)
     if (brace.newline) x = move_leftbrace(x)
     x = restore_pipe(x)
-    paste(x, collapse = '\n')
+    one_string(x)
   }))
 }
 

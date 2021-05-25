@@ -66,7 +66,7 @@ mask_comments = function(x, keep.blank.line, wrap, spaces) {
   # add blank lines
   if (keep.blank.line) for (i in seq_along(d.text)) {
     if (blank[i] > 0)
-      d.text[i] = paste(c(d.text[i], rep(blank.comment, blank[i])), collapse = '\n')
+      d.text[i] = one_string(c(d.text[i], rep(blank.comment, blank[i])))
   }
   # break lines after some infix operators such as %>%
   d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\\2', spaces, '\\3'), d.text)
@@ -168,7 +168,7 @@ get_src_string = function(x, l1, l2, c1, c2) {
   if (l1 == l2) return(substr(x[l1], c1, c2))
   x[l1] = substr(x[l1], c1, nchar(x[l1]))
   x[l2] = substr(x[l2], 1, c2)
-  paste(x[l1:l2], collapse = '\n')
+  one_string(x[l1:l2])
 }
 
 # generate a random string
