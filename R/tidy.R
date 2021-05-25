@@ -173,40 +173,7 @@ tidy_block = function(
     x = reindent_lines(x, indent)
     # remove white spaces on blank lines
     x = gsub(blank.comment2, '', x)
-    x = unlist(lapply(
-      x,
-      function(line){
-
-        is_comment = grepl(mat.comment,
-                           line)
-
-        is_special_comment = grepl("^#+[-'+!]",
-                                   trimws(gsub(pat.comment,
-                                               '',
-                                               line)))
-
-        is_regular_comment = is_comment & !is_special_comment
-
-        # ignore code and special comment that starts with #'
-        if (is_regular_comment) {
-
-          # strip away masks
-          line = gsub(pat.comment, '', line)
-          line = restore_bs(line)
-
-          # extract indent & comment characters
-          indent_and_comment_characters = sub('(#+).*', '\\1', line)
-
-          # remove indent & comment characters
-          line = sub(indent_and_comment_characters, '', line)
-
-          # wrap line
-          line = strwrap(line, width - nchar(indent_and_comment_characters))
-          line = paste(indent_and_comment_characters, line)
-        }
-        line
-      }))
-
+    if (wrap) x = reflow_comments(x, width)
     if (brace.newline) x = move_leftbrace(x)
     x = restore_pipe(x)
     paste(x, collapse = '\n')

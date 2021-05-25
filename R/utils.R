@@ -98,6 +98,22 @@ move_else = function(x) {
   x
 }
 
+# reflow comments (excluding roxygen comments)
+reflow_comments = function(x, width) {
+  c1 = grepl(mat.comment, x)
+  x  = gsub(pat.comment, '', x)  # strip the invisible() masks
+  x[c1] = restore_bs(x[c1])
+  c2 = c1 & !grepl("^\\s*#+[-'+!]", x)
+  # extract indent & comment prefix, e.g., '## '
+  r  = '^(\\s*#+)\\s*(.*)'
+  x[c2] = unlist(lapply(x[c2], function(z) {
+    p = sub(r, '\\1 ', z)
+    z = sub(r, '\\2', z)
+    one_string(strwrap(z, width, prefix = p))
+  }))
+  x
+}
+
 # reindent lines with a different number of spaces
 reindent_lines = function(text, n = 2) {
   if (length(text) == 0) return(text)
