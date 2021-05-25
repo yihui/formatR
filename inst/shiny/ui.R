@@ -34,8 +34,12 @@ shinyUI(fluidPage(
         id = 'demo', style = 'display: none;',
         paste(c(
           readLines(system.file('format', 'messy.R', package = 'formatR')),
+          if (getRversion() >= '4.1.0') c(
+            '', "# R's native pipe on a single line",
+            'mtcars |> subset(am==0) |> (\\(.) lm(mpg~hp, data=.))()'
+          ),
           '',
-          '# and pipes on a single line',
+          '# magrittr pipes on a single line',
           'mtcars %>% subset(am==0) %>% lm(mpg~hp, data=.)'
         ), collapse = '\n')
       )
