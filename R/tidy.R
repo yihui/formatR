@@ -194,7 +194,7 @@ unmask_source = function(text.mask, spaces) {
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
   # restore infix operators such as %>%
-  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.tidy)
+  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.mask)
   # inline comments should be terminated by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
   # the rest of inline comments should be appended by \n
