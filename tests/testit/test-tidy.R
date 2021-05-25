@@ -39,6 +39,10 @@ assert('roxygen comments are not wrapped', {
   (tidy.res(c(paste("#'", x1), '1*1')) %==% c(paste("#'", x1), '1 * 1'))
 })
 
+assert('wrap = FALSE does not wrap long comments', {
+  (tidy.res(x1, width.cutoff = 20, wrap = FALSE) %==% x1)
+})
+
 x1 = '
 # only a comment
 '
