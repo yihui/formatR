@@ -20,17 +20,27 @@ assert('tidy_source() can preserve blank lines among non-empty code lines', {
 })
 
 x1 = paste(c('#', letters), collapse = ' ')
-x2 = c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z')
+x2 = c('# a b c d e f g h i', '# j k l m n o p q r', '# s t u v w x y z')
 assert('long comments are wrapped in tidy_source()', {
-  (tidy.res(x1, width.cutoff = 20) %==% x2)
+  (tidy.res(x1, width.cutoff = 20) %==% one_string(x2))
   (tidy.res(rep(x1, 2), width.cutoff = 20) %==%
-    c('# a b c d e f g h i j', '# k l m n o p q r s t', '# u v w x y z a b c d',
-      '# e f g h i j k l m n', '# o p q r s t u v w x', '# y z'))
-  (tidy.res(c(x1, '1+1', x1), width.cutoff = 20) %==% c(x2, '1 + 1', x2))
+      '# a b c d e f g h i
+# j k l m n o p q r
+# s t u v w x y z a
+# b c d e f g h i j
+# k l m n o p q r s
+# t u v w x y z'
+  )
+  (tidy.res(c(x1, '1+1', x1), width.cutoff = 20) %==%
+      c(one_string(x2), '1 + 1', one_string(x2)))
 })
 
 assert('roxygen comments are not wrapped', {
   (tidy.res(c(paste("#'", x1), '1*1')) %==% c(paste("#'", x1), '1 * 1'))
+})
+
+assert('wrap = FALSE does not wrap long comments', {
+  (tidy.res(x1, width.cutoff = 20, wrap = FALSE) %==% x1)
 })
 
 x1 = '
@@ -138,7 +148,7 @@ iris %>%
 '
 
 assert('magrittr lines are wrapped after the pipes', {
-  (paste(tidy.res(x1, indent = 2), collapse = '\n') %==% x2)
+  (one_string(tidy.res(x1, indent = 2)) %==% x2)
 })
 
 if (getRversion() >= '4.1.0') assert('The new pipe |> is supported', {

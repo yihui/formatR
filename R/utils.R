@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
+mask_comments = function(x, keep.blank.line, wrap, spaces) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -46,7 +46,7 @@ mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
     if (grepl('^#!', d.text[1])) c3[1] = TRUE  # shebang comment
   } else c3 = c1  # comments not to be wrapped
 
-  # reflow blocks of comments: first collapse them, then wrap them
+  # collapse blocks of comments
   i1 = which(c1 & !c3) # do not wrap roxygen comments
   j1 = i1[1]
   if (length(i1) > 1) for (i in 2:length(i1)) {
@@ -60,14 +60,13 @@ mask_comments = function(x, width, keep.blank.line, wrap = TRUE, spaces) {
   }
 
   # mask block and inline comments
-  d.text[c1 & !c3] = reflow_comments(d.text[c1 & !c3], width)
-  d.text[c3] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c3], end.comment)
+  d.text[c1] = sprintf('invisible("%s%s%s")', begin.comment, d.text[c1], end.comment)
   d.text[c2] = sprintf('%%\b%% "%s"', d.text[c2])
 
   # add blank lines
   if (keep.blank.line) for (i in seq_along(d.text)) {
     if (blank[i] > 0)
-      d.text[i] = paste(c(d.text[i], rep(blank.comment, blank[i])), collapse = '\n')
+      d.text[i] = one_string(c(d.text[i], rep(blank.comment, blank[i])))
   }
   # break lines after some infix operators such as %>%
   d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\\2', spaces, '\\3'), d.text)
@@ -100,15 +99,20 @@ move_else = function(x) {
 }
 
 # reflow comments (excluding roxygen comments)
-reflow_comments = function(x, width) {
-  if (length(x) == 0) return(x)
-  # returns a character vector of the same length as x
-  b = sub('^(#+).*', '\\1', x)
-  mapply(function(res, prefix) {
-    paste(sprintf(
-      'invisible("%s%s%s")', begin.comment, paste(prefix, res), end.comment
-    ), collapse = '\n')
-  }, strwrap(sub('^#+', '', x), width = width, simplify = FALSE), b)
+reflow_comments = function(x, width, wrap) {
+  c1 = grepl(mat.comment, x)
+  x  = gsub(pat.comment, '', x)  # strip the invisible() masks
+  if (!wrap) return(x)
+  x[c1] = restore_bs(x[c1])
+  c2 = c1 & !grepl("^\\s*#+[-'+!]", x)
+  # extract indent & comment prefix, e.g., '## '
+  r  = '^(\\s*#+)\\s*(.*)'
+  x[c2] = unlist(lapply(x[c2], function(z) {
+    p = sub(r, '\\1 ', z)
+    z = sub(r, '\\2', z)
+    one_string(strwrap(z, width, prefix = p))
+  }))
+  x
 }
 
 # reindent lines with a different number of spaces
@@ -165,7 +169,7 @@ get_src_string = function(x, l1, l2, c1, c2) {
   if (l1 == l2) return(substr(x[l1], c1, c2))
   x[l1] = substr(x[l1], c1, nchar(x[l1]))
   x[l2] = substr(x[l2], 1, c2)
-  paste(x[l1:l2], collapse = '\n')
+  one_string(x[l1:l2])
 }
 
 # generate a random string
@@ -196,6 +200,8 @@ trimws = function(x, which = c('both', 'left', 'right')) {
     left = gsub('^\\s+', '', x), right = gsub('\\s+$', '', x)
   )
 }
+
+one_string = function(..., collapse = '\n') paste(..., collapse = collapse)
 
 restore_encoding = function(x, enc) {
   if (length(enc) != 1) return(x)

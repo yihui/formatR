@@ -4,6 +4,8 @@
 
 - Support the new pipe operator `|>` in R 4.1.0.
 
+- The `width.cutoff` argument works more accurately when comments are indented (thanks, @iqis, #92). Previously, `width.cutoff` did not take the indentation or the number of `#` characters in a comment when wrapping it, which may lead to wrapped comment lines that are wider than `width.cutoff`.
+
 # CHANGES IN formatR VERSION 1.9
 
 ## NEW FEATURES

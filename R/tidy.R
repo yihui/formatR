@@ -74,7 +74,7 @@ tidy_source = function(
     return(list(text.tidy = text, text.mask = text))
   }
   if (blank) {
-    one = paste(text, collapse = '\n') # record how many line breaks before/after
+    one = one_string(text) # record how many line breaks before/after
     n1 = attr(regexpr('^\n*', one), 'match.length')
     n2 = attr(regexpr('\n*$', one), 'match.length')
   }
@@ -84,9 +84,9 @@ tidy_source = function(
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = paste(rep(' ', width.cutoff), collapse = '')
-  if (comment) text = mask_comments(text, width.cutoff, blank, wrap, spaces)
+  if (comment) text = mask_comments(text, blank, wrap, spaces)
   text.mask = tidy_block(
-    text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline
+    text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline, wrap
   )
   text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
   # restore new lines in the beginning and end
@@ -152,7 +152,7 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
   i = as.character(width)
   if (warn) warning(
     'Unable to find a suitable cut-off to make the line widths smaller than ',
-    width, ' for the line(s) of code:\n', paste0('  ', p[[i]], collapse = '\n'),
+    width, ' for the line(s) of code:\n', one_string('  ', p[[i]]),
     call. = FALSE
   )
   d[[i]]
@@ -160,7 +160,8 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
 
 # wrapper around parse() and deparse()
 tidy_block = function(
-  text, width = getOption('width'), arrow = FALSE, indent = 4, brace.newline = FALSE
+  text, width = getOption('width'), arrow = FALSE, indent = 4,
+  brace.newline = FALSE, wrap = TRUE
 ) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
@@ -169,11 +170,12 @@ tidy_block = function(
   unlist(lapply(exprs, function(e) {
     x = deparse(e, width)
     x = reindent_lines(x, indent)
-    if (brace.newline) x = move_leftbrace(x)
-    x = restore_pipe(x)
     # remove white spaces on blank lines
     x = gsub(blank.comment2, '', x)
-    paste(x, collapse = '\n')
+    x = reflow_comments(x, width, wrap)
+    if (brace.newline) x = move_leftbrace(x)
+    x = restore_pipe(x)
+    one_string(x)
   }))
 }
 
@@ -187,16 +189,12 @@ unmask_source = function(text.mask, spaces) {
   text.mask = gsub('(%\b%)[ ]*\n', '\\1', text.mask)
   # move 'else ...' back to the last line
   text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
-  if (any(grepl('\\\\\\\\', text.mask)) &&
-      (any(grepl(mat.comment, text.mask)) || any(grepl(inline.comment, text.mask)))) {
-    m = gregexpr(mat.comment, text.mask)
-    regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+  if (any(grepl('\\\\\\\\', text.mask)) || any(grepl(inline.comment, text.mask))) {
     m = gregexpr(inline.comment, text.mask)
     regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
   }
-  text.tidy = gsub(pat.comment, '', text.mask)
   # restore infix operators such as %>%
-  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.tidy)
+  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.mask)
   # inline comments should be terminated by $ or \n
   text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
   # the rest of inline comments should be appended by \n
