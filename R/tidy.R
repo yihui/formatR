@@ -84,9 +84,9 @@ tidy_source = function(
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = paste(rep(' ', width.cutoff), collapse = '')
-  if (comment) text = mask_comments(text, blank, wrap, spaces)
+  if (comment) text = mask_comments(text, blank, wrap, arrow, spaces)
   text.mask = tidy_block(
-    text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline, wrap
+    text, width.cutoff, arrow && !comment, indent, brace.newline, wrap
   )
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
   # restore new lines in the beginning and end

@@ -105,8 +105,9 @@ assert('keep.blank.line=FALSE removes blank lines', {
   (tidy.res(x1, blank = FALSE) %==% c('1 + 1', 'if (F) {\n}'))
 })
 
-assert('= can be replaced with <- when replace.assign=TRUE', {
-  (tidy.res('x=1;c(x=1)', arrow = TRUE) %==% c('x <- 1', 'c(x = 1)'))
+assert('The assignment operator = can be replaced with <- when arrow = TRUE', {
+  (tidy.res('x=1;c(x=1) # abc', arrow = TRUE) %==% c('x <- 1', 'c(x = 1)  # abc'))
+  (tidy.res('x=1;c(x=1) # abc', arrow = TRUE, comment=FALSE) %==% c('x <- 1', 'c(x = 1)'))
 })
 
 assert('since R 3.0.0 comments can be written with double quotes in them', {

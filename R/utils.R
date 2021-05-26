@@ -18,7 +18,7 @@ replace_assignment = function(exp) {
 }
 
 ## mask comments to cheat R
-mask_comments = function(x, keep.blank.line, wrap, spaces) {
+mask_comments = function(x, keep.blank.line, wrap, arrow, spaces) {
   d = utils::getParseData(parse_source(x))
   if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
   d = d[d$terminal, ]
@@ -33,6 +33,9 @@ mask_comments = function(x, keep.blank.line, wrap, spaces) {
   }
   # how many blank lines after each token?
   blank = c(pmax(d.line[-1] - d.line2[-n] - 1, 0), 0)
+
+  # replace = with <- when = means assignment
+  if (arrow) d.text[d.token == 'EQ_ASSIGN'] = '<-'
 
   i = d.token == 'COMMENT'
   # double backslashes and replace " with ' in comments
