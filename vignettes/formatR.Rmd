@@ -165,19 +165,19 @@ We continue the example code in Section 2, using different arguments in
 
 ## Replace `=` with `<-`
 
-```{r example, eval=FALSE, echo=6, tidy.opts=list(arrow=TRUE)}
+```{r example, eval=FALSE, echo=5, tidy.opts=list(arrow=TRUE)}
 ```
 
 ## Discard blank lines
 
 Note the 5th line (an empty line) was discarded:
 
-```{r example, eval=FALSE, echo=1:6, tidy.opts=list(blank = FALSE)}
+```{r example, eval=FALSE, echo=1:5, tidy.opts=list(blank = FALSE)}
 ```
 
 ## Reindent code (2 spaces instead of 4)
 
-```{r example, eval=FALSE, echo=6, tidy.opts=list(indent = 2)}
+```{r example, eval=FALSE, echo=5, tidy.opts=list(indent = 2)}
 ```
 
 ## The pipe operator `%>%`
@@ -196,7 +196,7 @@ will be reformatted to:
 
 ## Move left braces `{` to new lines
 
-```{r example, eval=FALSE, echo=6, tidy.opts=list(brace.newline = TRUE)}
+```{r example, eval=FALSE, echo=5, tidy.opts=list(brace.newline = TRUE)}
 ```
 
 ## Do not wrap comments
