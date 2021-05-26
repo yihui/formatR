@@ -159,3 +159,7 @@ assert('magrittr lines are wrapped after the pipes', {
 if (getRversion() >= '4.1.0') assert('The new pipe |> is supported', {
   (tidy.res('1|>c()') %==% '1 |>\n    c()')
 })
+
+assert('The right arrow -> assignment operator is supported', {
+  (tidy.res('1->a# right assign') %==% '1 -> a  # right assign')
+})

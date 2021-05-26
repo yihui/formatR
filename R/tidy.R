@@ -88,7 +88,7 @@ tidy_source = function(
   text.mask = tidy_block(
     text, width.cutoff, arrow && length(grep('=', text)), indent, brace.newline, wrap
   )
-  text.tidy = if (comment) unmask_source(text.mask, spaces) else text.mask
+  text.tidy = if (comment) unmask_source(text.mask) else text.mask
   # restore new lines in the beginning and end
   if (blank) text.tidy = c(rep('', n1), text.tidy, rep('', n2))
   if (output) cat(text.tidy, sep = '\n', ...)
@@ -129,7 +129,7 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
     d[[i]] <<- x
     x2 = grep(pat.comment, x, invert = TRUE, value = TRUE)  # don't check comments
     x2 = gsub(pat.infix, '\\1\\2\\3', x2)  # remove extra spaces in %>% operators
-    x2 = restore_pipe(x2)
+    x2 = restore_infix(x2)
     p[[i]] <<- x2[nchar(x2, type = 'width') > width]
     k[i] <<- length(p[[i]]) == 0
   }
@@ -174,31 +174,29 @@ tidy_block = function(
     x = gsub(blank.comment2, '', x)
     x = reflow_comments(x, width, wrap)
     if (brace.newline) x = move_leftbrace(x)
-    x = restore_pipe(x)
+    x = restore_infix(x)
     one_string(x)
   }))
 }
 
 # Restore the real source code from the masked text
-unmask_source = function(text.mask, spaces) {
-  if (length(text.mask) == 0) return(text.mask)
+unmask_source = function(x) {
+  if (length(x) == 0) return(x)
   m = .env$line_break
-  if (!is.null(m)) text.mask = gsub(m, '\n', text.mask)
+  if (!is.null(m)) x = gsub(m, '\n', x)
   # if the comments were separated into the next line, then remove '\n' after
   # the identifier first to move the comments back to the same line
-  text.mask = gsub('(%\b%)[ ]*\n', '\\1', text.mask)
+  x = gsub('(%\b%)[ ]*\n', '\\1', x)
   # move 'else ...' back to the last line
-  text.mask = gsub('\n\\s*else(\\s+|$)', ' else\\1', text.mask)
-  if (any(grepl('\\\\\\\\', text.mask)) || any(grepl(inline.comment, text.mask))) {
-    m = gregexpr(inline.comment, text.mask)
-    regmatches(text.mask, m) = lapply(regmatches(text.mask, m), restore_bs)
+  x = gsub('\n\\s*else(\\s+|$)', ' else\\1', x)
+  if (any(grepl('\\\\\\\\', x)) || any(grepl(inline.comment, x))) {
+    m = gregexpr(inline.comment, x)
+    regmatches(x, m) = lapply(regmatches(x, m), restore_bs)
   }
-  # restore infix operators such as %>%
-  text.tidy = gsub(paste0('(%)(', infix_ops, ')', spaces, '(%)\\s*(\n)'), '\\1\\2\\3\\4', text.mask)
   # inline comments should be terminated by $ or \n
-  text.tidy = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', text.tidy)
+  x = gsub(paste(inline.comment, '(\n|$)', sep = ''), '  \\1\\2', x)
   # the rest of inline comments should be appended by \n
-  gsub(inline.comment, '  \\1\n', text.tidy)
+  gsub(inline.comment, '  \\1\n', x)
 }
 
 

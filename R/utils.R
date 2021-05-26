@@ -69,17 +69,22 @@ mask_comments = function(x, keep.blank.line, wrap, spaces) {
       d.text[i] = one_string(c(d.text[i], rep(blank.comment, blank[i])))
   }
   # break lines after some infix operators such as %>%
-  d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\\2', spaces, '\\3'), d.text)
-  # similarly break lines after |>; later restore %|>|>% to |> in unmask_source()
-  d.text[d.text == '|>'] = paste0('%', '|>|>', spaces, '%')
+  d.text = gsub(paste0('^(%)(', infix_ops, ')(%)$'), paste0('\\1\b\\2', spaces, '\\3'), d.text)
+  # similarly break lines after |>; later restore %\b|>% to |> in unmask_source()
+  d.text[d.text == '|>'] = paste0('%', '\b|>', spaces, '%')
+  # preserve the assignment operator ->
+  d.text[d.text == '->'] = '%\b->%'
 
   unlist(lapply(split(d.text, d.line), paste, collapse = ' '), use.names = FALSE)
 }
 
 infix_ops = '[>$]|T>|<>'
 
-restore_pipe = function(x) {
-  gsub('%[|]>[|]> +%\\s*$', '|>', x)
+restore_infix = function(x) {
+  x = gsub('%\b([^ %]+)%', '\\1', x)
+  x = gsub('%\b([|]>) +%\\s*', '\\1', x)
+  x = gsub('(%)\b([^ ]+) +(%)\\s*$', '\\1\\2\\3', x)
+  x
 }
 
 # no blank lines before an 'else' statement!

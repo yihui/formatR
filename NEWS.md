@@ -1,5 +1,8 @@
 # CHANGES IN formatR VERSION 1.11
 
+## NEW FEATURES
+
+- The right arrow assignment operator `->` is supported now.
 
 # CHANGES IN formatR VERSION 1.10
 
