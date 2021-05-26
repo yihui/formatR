@@ -55,16 +55,18 @@ sessionInfo()
 The **formatR** package was designed to reformat R code to improve readability;
 the main workhorse is the function `tidy_source()`. Features include:
 
--   long lines of code and comments are reorganized into appropriately shorter
-    ones
--   spaces and indent are added where necessary
--   comments are preserved in most cases
--   the number of spaces to indent the code (i.e. tab width) can be specified
-    (default is 4)
--   an `else` statement in a separate line without the leading `}` will be moved
-    one line back
--   `=` as an assignment operator can be replaced with `<-`
--   the left brace `{` can be moved to a new line
+-   Long lines of code and comments are reorganized into appropriately shorter
+    ones;
+-   Spaces and indentation are added where necessary;
+-   Comments are preserved in most cases;
+-   The number of spaces to indent the code (i.e., tab width) can be specified
+    (default is 4);
+-   An `else` statement on a separate line without the leading `}` will be moved
+    one line back;
+-   `=` as an assignment operator can be replaced with `<-`;
+-   The left brace `{` can be moved to a new line;
+-   Lines can be wrapped after pipes (both magrittr pipes such as `%>%` and R's
+    native pipe `|>` are supported).
 
 Below is an example of what `tidy_source()` can do. The source code is:
 
@@ -82,7 +84,7 @@ x=2;print('Oh no... ask the right bracket to go away!')}
 2+2+2    # only 'single quotes' are allowed in comments
 
 lm(y~x1+x2, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))  ### a linear model
-1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  # comment after a long line
+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1  # comment after a long line
 ## here is a long long long long long long long long long long long long long comment that may be wrapped
 ```
 
@@ -180,10 +182,10 @@ Note the 5th line (an empty line) was discarded:
 ```{r example, eval=FALSE, echo=5, tidy.opts=list(indent = 2)}
 ```
 
-## The pipe operator `%>%`
+## The pipe operators `%>%` and `|>`
 
-Since **formatR** 1.9, code lines contains operators `%>%`, `%T%`, `%$%`, and/or
-`%<>%` will be automatically wrapped after these operators. For example,
+Since **formatR** 1.9, code lines contains operators `|>`, `%>%`, `%T%`, `%$%`,
+and/or `%<>%` will be automatically wrapped after these operators. For example,
 
 ```{r, pipe-code, eval=FALSE, tidy=FALSE}
 mtcars %>% subset(am == 0) %>% lm(mpg~hp, data=.)
@@ -217,7 +219,7 @@ exactly how comments are preserved. The best strategy to avoid failure is to put
 comments in complete lines or after *complete* R expressions. Below are some
 known cases in which `tidy_source()` fails.
 
-## In-line comments after an incomplete expression or ;
+## Inline comments after an incomplete expression or ;
 
 ``` {.r}
 1 + 2 + ## comments after an incomplete line
