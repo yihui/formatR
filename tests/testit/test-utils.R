@@ -17,6 +17,6 @@ assert('move_leftbrace() works', {
 assert('reindent_lines() works', {
   (reindent_lines('') %==% '')
   (reindent_lines(c('', '')) %==% c('', ''))
-  (reindent_lines('    ', 2) %==% '  ')
-  (reindent_lines(c('if (TRUE) {', '    1', '}'), 2) %==% c('if (TRUE) {', '  1', '}'))
+  (reindent_lines('    ', n = 2) %==% '  ')
+  (reindent_lines(c('if (TRUE) {', '    1', '}'), n = 2) %==% c('if (TRUE) {', '  1', '}'))
 })

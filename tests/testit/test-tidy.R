@@ -164,3 +164,41 @@ if (getRversion() >= '4.1.0') assert('The new pipe |> is supported', {
 assert('The right arrow -> assignment operator is supported', {
   (tidy.res('1->a# right assign') %==% '1 -> a  # right assign')
 })
+
+assert('args.newline = TRUE can start function arguments on a new line', {
+  x1 = 'c(aaaaa=1,bbbbb=2,ccccc=3,ddddd=4)'
+  (tidy.res(x1, args.newline = TRUE, width.cutoff = 20) %==%
+     'c(\n    aaaaa = 1, bbbbb = 2,\n    ccccc = 3, ddddd = 4\n)')
+  (tidy.res(x1, args.newline = TRUE, width.cutoff = 40) %==%
+      'c(\n    aaaaa = 1, bbbbb = 2, ccccc = 3, ddddd = 4\n)')
+  # strict width
+  (tidy.res(x1, args.newline = TRUE, width.cutoff = I(40)) %==%
+      'c(\n    aaaaa = 1, bbbbb = 2, ccccc = 3,\n    ddddd = 4\n)')
+  (tidy.res(x1, args.newline = TRUE, width.cutoff = I(23), indent = 2) %==%
+      'c(\n  aaaaa = 1, bbbbb = 2,\n  ccccc = 3, ddddd = 4\n)')
+  # when arguments can fit one line, don't break the line after function name
+  (tidy.res(x1, args.newline = TRUE, width.cutoff = 45) %==%
+      'c(aaaaa = 1, bbbbb = 2, ccccc = 3, ddddd = 4)')
+  # nested calls
+  x2 = 'lm(y~x1+x2+x3+x4+x5+x6+x7+x8, data=data.frame(y=rnorm(100),x1=rnorm(100),x2=rnorm(100)))'
+  (tidy.res(x2, args.newline = TRUE, width.cutoff = 20, indent = 2) %==%
+      'lm(
+  y ~ x1 + x2 + x3 +
+    x4 + x5 + x6 +
+    x7 + x8, data = data.frame(
+    y = rnorm(100),
+    x1 = rnorm(100),
+    x2 = rnorm(100)
+  )
+)')
+  (tidy.res(x2, args.newline = TRUE, width.cutoff = I(25), indent = 2) %==%
+      'lm(
+  y ~ x1 + x2 + x3 + x4 +
+    x5 + x6 + x7 + x8,
+  data = data.frame(
+    y = rnorm(100),
+    x1 = rnorm(100),
+    x2 = rnorm(100)
+  )
+)')
+})

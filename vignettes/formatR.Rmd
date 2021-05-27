@@ -65,6 +65,8 @@ the main workhorse is the function `tidy_source()`. Features include:
     one line back;
 -   `=` as an assignment operator can be replaced with `<-`;
 -   The left brace `{` can be moved to a new line;
+-   Arguments of a function call can start on a new line after the function name
+    when they cannot fit on one line;
 -   Lines can be wrapped after pipes (both magrittr pipes such as `%>%` and R's
     native pipe `|>` are supported).
 
@@ -180,6 +182,21 @@ Note the 5th line (an empty line) was discarded:
 ## Reindent code (2 spaces instead of 4)
 
 ```{r example, eval=FALSE, echo=5, tidy.opts=list(indent = 2)}
+```
+
+## Start function arguments on a new line
+
+With `args.newline = TRUE`, the example code below
+
+```{r, args-code, eval=FALSE}
+shiny::updateSelectizeInput(session, "foo", label = "New Label",
+                            selected = c("A", "B"), choices = LETTERS,
+                            server = TRUE)
+```
+
+will be reformatted to:
+
+```{r, args-code, eval=FALSE, tidy.opts=list(args.newline=TRUE)}
 ```
 
 ## The pipe operators `%>%` and `|>`
@@ -339,6 +356,7 @@ There are global options which can override some arguments in `tidy_source()`:
 | `wrap`          | `options('formatR.wrap')`          | `TRUE`             |
 | `width.cutoff`  | `options('formatR.width')`         | `options('width')` |
 | `brace.newline` | `options('formatR.brace.newline')` | `FALSE`            |
+| `args.newline`  | `options('formatR.args.newline')`  | `FALSE`            |
 
 Also note that single lines of long comments will be wrapped into shorter ones
 automatically when `wrap = TRUE`, but roxygen comments will not be wrapped

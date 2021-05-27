@@ -26,6 +26,9 @@
 #'   length is at or over this number, the function will try to break it into a
 #'   new line. In other words, this is the \emph{lower bound} of the line width.
 #'   See \sQuote{Details} if an upper bound is desired instead.
+#' @param args.newline Whether to start the arguments of a function call on a
+#'   new line instead of after the function name and \code{(} when the arguments
+#'   cannot fit one line.
 #' @param output Whether to output to the console or a file using
 #'   \code{\link{cat}()}.
 #' @param text An alternative way to specify the input: if \code{NULL}, the
@@ -55,6 +58,7 @@ tidy_source = function(
   indent = getOption('formatR.indent', 4),
   wrap = getOption('formatR.wrap', TRUE),
   width.cutoff = getOption('formatR.width', getOption('width')),
+  args.newline = getOption('formatR.args.newline', FALSE),
   output = TRUE, text = NULL, ...
 ) {
   if (is.null(text)) {
@@ -83,10 +87,11 @@ tidy_source = function(
   if (width.cutoff < 20) width.cutoff[1] = 20
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
-  spaces = paste(rep(' ', width.cutoff), collapse = '')
-  if (comment) text = mask_comments(text, blank, wrap, arrow, spaces)
+  spaces = rep_chars(width.cutoff)
+  if (comment) text = mask_comments(text, blank, wrap, arrow, args.newline, spaces)
   text.mask = tidy_block(
-    text, width.cutoff, arrow && !comment, indent, brace.newline, wrap
+    text, width.cutoff, arrow && !comment, rep_chars(indent), brace.newline,
+    wrap, args.newline, spaces
   )
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
   # restore new lines in the beginning and end
@@ -111,7 +116,10 @@ blank.comment2 = paste0('^\\s*', gsub('\\(', '\\\\(', blank.comment), '\\s*$')
 # first, perform a (semi-)binary search to find the greatest cutoff width such
 # that the width of the longest line <= `width`; if the search fails, use
 # brute-force to try all possible widths
-deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)) {
+deparse2 = function(
+  expr, width, spaces = '', indent = '    ',
+  warn = getOption('formatR.width.warning', TRUE)
+) {
   wmin = 20  # if deparse() can't manage it with width.cutoff <= 20, issue a warning
   wmax = min(500, width + 10)  # +10 because a larger width may result in smaller actual width
 
@@ -125,12 +133,14 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
     i = as.character(w)
     if (!is.na(x <- k[i])) return(x)
     x = deparse(expr, w)
-    x = gsub('\\s+$', '', x)
+    x = trimws(x, 'right')
     d[[i]] <<- x
     x2 = grep(pat.comment, x, invert = TRUE, value = TRUE)  # don't check comments
     x2 = gsub(pat.infix, '\\1\\2\\3', x2)  # remove extra spaces in %>% operators
     x2 = restore_infix(x2)
-    p[[i]] <<- x2[nchar(x2, type = 'width') > width]
+    x2 = reindent_lines(x2, indent)
+    x2 = restore_arg_breaks(x2, width, spaces, indent, split = TRUE)
+    p[[i]] <<- x2[exceed_width(x2, width)]
     k[i] <<- length(p[[i]]) == 0
   }
 
@@ -160,22 +170,27 @@ deparse2 = function(expr, width, warn = getOption('formatR.width.warning', TRUE)
 
 # wrapper around parse() and deparse()
 tidy_block = function(
-  text, width = getOption('width'), arrow = FALSE, indent = 4,
-  brace.newline = FALSE, wrap = TRUE
+  text, width = getOption('width'), arrow = FALSE, indent = '    ',
+  brace.newline = FALSE, wrap = TRUE, args.newline = FALSE, spaces = rep_chars(width)
 ) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
   exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
-  deparse = if (inherits(width, 'AsIs')) deparse2 else base::deparse
+  deparse = if (inherits(width, 'AsIs')) {
+    function(x, width) deparse2(x, width, spaces, indent)
+  } else base::deparse
   unlist(lapply(exprs, function(e) {
     x = deparse(e, width)
+    x = trimws(x, 'right')
     x = reindent_lines(x, indent)
     # remove white spaces on blank lines
     x = gsub(blank.comment2, '', x)
     x = reflow_comments(x, width, wrap)
     if (brace.newline) x = move_leftbrace(x)
     x = restore_infix(x)
-    one_string(x)
+    x = one_string(x)
+    if (args.newline) x = restore_arg_breaks(x, width, spaces, indent)
+    x
   }))
 }
 

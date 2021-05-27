@@ -13,6 +13,7 @@ tidy_source(
   indent = getOption("formatR.indent", 4),
   wrap = getOption("formatR.wrap", TRUE),
   width.cutoff = getOption("formatR.width", getOption("width")),
+  args.newline = getOption("formatR.args.newline", FALSE),
   output = TRUE,
   text = NULL,
   ...
@@ -39,6 +40,10 @@ the clipboard).}
 length is at or over this number, the function will try to break it into a
 new line. In other words, this is the \emph{lower bound} of the line width.
 See \sQuote{Details} if an upper bound is desired instead.}
+
+\item{args.newline}{Whether to start the arguments of a function call on a
+new line instead of after the function name and \code{(} when the arguments
+cannot fit one line.}
 
 \item{output}{Whether to output to the console or a file using
 \code{\link{cat}()}.}
