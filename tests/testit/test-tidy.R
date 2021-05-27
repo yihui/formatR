@@ -201,4 +201,10 @@ assert('args.newline = TRUE can start function arguments on a new line', {
     x2 = rnorm(100)
   )
 )')
+  # also works on function() definitions in addition to function calls
+  x3 = 'my_sum=function(a=1,b=2,c=3,d=4,e=5,f=6,g=7){return(a+b+c)}'
+  (tidy.res(x3, args.newline = TRUE, width.cutoff = 20, indent = 2) %==%
+      'my_sum = function(\n  a = 1, b = 2, c = 3,\n  d = 4, e = 5, f = 6,\n  g = 7\n) {\n  return(a + b + c)\n}')
+  (tidy.res(x3, args.newline = TRUE, width.cutoff = I(33), indent = 2) %==%
+      'my_sum = function(\n  a = 1, b = 2, c = 3, d = 4,\n  e = 5, f = 6, g = 7\n) {\n  return(a + b + c)\n}')
 })

@@ -206,16 +206,17 @@ mask_line_break = function(x) {
 
 # add a long argument to a function call, so that other arguments can be pushed
 # to the next line; this is for breaking arguments onto new lines, e.g.,
-# c(a = 1) -> c("\b    \b", a = 1, "\b    \b") ->
-# c("\b    \b",
+# c(a = 1) -> c(`\b    \b`, a = 1, `\b    \b#`) ->
+# c(`\b    \b`,
 #   a = 1,
-#   "\b    \b")
+#   `\b    \b#`)
 # ->
 # c(
 #   a = 1
 # )
 insert_arg_breaks = function(d, spaces) {
-  if (length(i <- which(d$token == 'SYMBOL_FUNCTION_CALL')) == 0) return(d)
+  if (length(i <- which(d$token %in% c('SYMBOL_FUNCTION_CALL', 'FUNCTION'))) == 0)
+    return(d)
   i1 = i[d[i + 1, 'token'] == "'('"] + 1  # the next line must be (
   i1 = i1[d[i1 + 1, 'token'] != "')'"]  # there must be arguments inside ()
   if (length(i1) == 0) return(d)
@@ -226,19 +227,20 @@ insert_arg_breaks = function(d, spaces) {
     return(d)
   }
   s1 = arg_spaces(spaces, d[i1, 'parent'])
-  s2 = arg_spaces(spaces, d[i2, 'parent'])
+  s2 = arg_spaces(spaces, d[i2, 'parent'], '#')
+  s3 = gsub('#', '##', s2)
   d[i1, 'text'] = paste0('(', s1, ',')
-  d[i2, 'text'] = paste0(',', s2, ',', s2, ')')
+  d[i2, 'text'] = paste0(',', s2, ',', s3, ')')
   d
 }
 
-arg_spaces = function(x, id) sprintf('"%s\b%s\b"', id, x)
+arg_spaces = function(x, id, id2 = '') sprintf('`%s\b%s\b%s`', id, x, id2)
 
 # restore breaks for all function calls
 restore_arg_breaks = function(
   x, width, spaces = rep_chars(width), indent = '    ', split = FALSE
 ) {
-  s = gsub('\b', '\\\\\\\\b', arg_spaces(spaces, '([0-9]+)'))
+  s = gsub('\b', '\\\\\\\\b', arg_spaces(spaces, '([0-9]+)', '#{0,2}'))
   if (length(grep(s, x)) == 0) return(x)
   if (split) x = one_string(x)
   m = gregexpr(s, x)
