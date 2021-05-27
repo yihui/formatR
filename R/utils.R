@@ -17,11 +17,15 @@ replace_assignment = function(exp) {
   lapply(as.list(exp), codetools::walkCode, w = wc)
 }
 
+parse_data = function(x) {
+  d = utils::getParseData(parse_source(x))
+  d[d$terminal, ]
+}
+
 ## mask comments to cheat R
 mask_comments = function(x, keep.blank.line, wrap, arrow, args.newline, spaces) {
-  d = utils::getParseData(parse_source(x))
-  if (nrow(d) == 0 || (n <- sum(d$terminal)) == 0) return(x)
-  d = d[d$terminal, ]
+  d = parse_data(x)
+  if (nrow(d) == 0) return(x)
   d = fix_parse_data(d, x)
   if (args.newline) d = insert_arg_breaks(d, spaces)
   d.line = d$line1; d.line2 = d$line2; d.token = d$token; d.text = d$text
