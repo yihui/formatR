@@ -112,8 +112,8 @@ Two applications of `tidy_source()`:
 # 3. The Graphical User Interface
 
 If the **shiny** packages has been installed, the function `tidy_app()` can
-launch a Shiny app to reformat R code like this ([live
-demo](https://yihui.shinyapps.io/formatR/)):
+launch a Shiny app to reformat R code like this (live demo at
+`https://yihui.shinyapps.io/formatR/`):
 
 ``` {.r}
 formatR::tidy_app()
