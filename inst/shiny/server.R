@@ -1,12 +1,12 @@
 library(shiny)
-library(formatR)
 
 shinyServer(function(input, output, session) {
   observe({
-    res = try(tidy_source(
+    res = try(formatR::tidy_source(
       text = input$src, output = FALSE, comment = input$arg_comment,
       blank = input$arg_blank, arrow = input$arg_assign,
       brace.newline = input$arg_brace, indent = input$arg_indent,
+      args.newline = input$arg_anl, wrap = input$arg_wrap,
       width.cutoff = if (input$width_type == 'minimum') input$arg_width else I(input$arg_width)
     ))
     session$sendCustomMessage(
