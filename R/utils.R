@@ -25,7 +25,7 @@ parse_data = function(x) {
 ## mask comments to cheat R
 mask_comments = function(x, keep.blank.line, wrap, arrow, args.newline, spaces) {
   d = parse_data(x)
-  if (nrow(d) == 0) return(x)
+  if ((n <- nrow(d)) == 0) return(x)
   d = fix_parse_data(d, x)
   if (args.newline) d = insert_arg_breaks(d, spaces)
   d.line = d$line1; d.line2 = d$line2; d.token = d$token; d.text = d$text
