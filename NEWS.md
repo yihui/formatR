@@ -7,7 +7,7 @@
 
 - The right arrow assignment operator `->` is supported now.
 
-- Added a new argument `args.newline`. When set to `TRUE`, function arguments can start on a new line, e.g.,
+- Added a new argument `args.newline` to `formatR::tidy_source()`. When set to `TRUE`, function arguments can start on a new line, e.g.,
 
   ```r
   shiny::updateSelectizeInput(session, "foo", label = "New Label", selected = c("A",
