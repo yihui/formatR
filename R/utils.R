@@ -22,7 +22,7 @@ parse_data = function(x) {
   d[d$terminal, ]
 }
 
-## mask comments to cheat R
+# mask comments in strings so that deparse() will not drop them
 mask_comments = function(x, keep.blank.line, wrap, arrow, args.newline, spaces) {
   d = parse_data(x)
   if ((n <- nrow(d)) == 0) return(x)
@@ -153,7 +153,7 @@ move_leftbrace = function(x) {
   x
 }
 
-# parse but do not keep source (moved from knitr)
+# parse but do not keep source (copied from xfun)
 parse_only = function(code) {
   if (length(code) == 0) return(expression())
   base::parse(text = code, keep.source = FALSE)
