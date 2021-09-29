@@ -115,7 +115,7 @@ If the **shiny** packages has been installed, the function `tidy_app()` can
 launch a Shiny app to reformat R code like this (live demo at
 `https://yihui.shinyapps.io/formatR/`):
 
-``` {.r}
+``` r
 formatR::tidy_app()
 ```
 
@@ -238,7 +238,7 @@ known cases in which `tidy_source()` fails.
 
 ## Inline comments after an incomplete expression or ;
 
-``` {.r}
+``` r
 1 + 2 + ## comments after an incomplete line
     3 + 4
 x <- ## this is not a complete expression
@@ -266,7 +266,7 @@ Blank lines are often used to separate complete chunks of R code, and arbitrary
 blank lines may cause failures in `tidy_source()` as well when the argument
 `blank = TRUE`, e.g.
 
-``` {.r}
+``` r
 if (TRUE)
 
 {'this is a BAD style of R programming!'} else 'failure!'
@@ -280,7 +280,7 @@ There should not be a blank line after the `if` statement. Of course
 We can use the question mark (`?`) to view the help page, but **formatR**
 package is unable to correctly format the code using `?` with comments, e.g.
 
-``` {.r}
+``` r
 ?sd  # help on sd()
 ```
 
@@ -300,13 +300,13 @@ deparse(parse(text = '1+2-3*4/5 # a comment'))
 The method to preserve comments is to protect them as strings in R expressions.
 For example, there is a single line of comments in the source code:
 
-``` {.r}
+``` r
   # asdf
 ```
 
 It will be first masked as
 
-``` {.r}
+``` r
 invisible(".IDENTIFIER1  # asdf.IDENTIFIER2")
 ```
 
@@ -318,20 +318,20 @@ to restore the original comments, i.e. the strings `invisible(".IDENTIFIER1` and
 Inline comments are handled differently: two spaces will be added before the
 hash symbol `#`, e.g.
 
-``` {.r}
+``` r
 1+1#  comments
 ```
 
 will become
 
-``` {.r}
+``` r
 1+1  #  comments
 ```
 
 Inline comments are first disguised as a weird operation with its preceding R
 code, which is essentially meaningless but syntactically correct! For example,
 
-``` {.r}
+``` r
 1+1 %\b% "#  comments"
 ```
 
