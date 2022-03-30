@@ -23,7 +23,7 @@ parse_data = function(x) {
 }
 
 # mask comments in strings so that deparse() will not drop them
-mask_comments = function(x, keep.blank.line, wrap, arrow, args.newline, spaces) {
+mask_comments = function(x, blank.line, wrap, arrow, args.newline, spaces) {
   d = parse_data(x)
   if ((n <- nrow(d)) == 0) return(x)
   d = fix_parse_data(d, x)
@@ -72,7 +72,7 @@ mask_comments = function(x, keep.blank.line, wrap, arrow, args.newline, spaces) 
   d.text[c2] = sprintf('%%\b%% "%s"', d.text[c2])
 
   # add blank lines
-  if (keep.blank.line) for (i in seq_along(d.text)) {
+  if (blank.line) for (i in seq_along(d.text)) {
     if (blank[i] > 0)
       d.text[i] = one_string(c(d.text[i], rep(blank.comment, blank[i])))
   }
