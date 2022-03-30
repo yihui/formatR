@@ -88,10 +88,9 @@ tidy_source = function(
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = rep_chars(width.cutoff)
-  if (comment) text = mask_comments(text, blank, wrap, arrow, args.newline, spaces)
+  text = mask_comments(text, comment, blank, wrap, arrow, args.newline, spaces)
   text.mask = tidy_block(
-    text, width.cutoff, arrow && !comment, rep_chars(indent), brace.newline,
-    wrap, args.newline, spaces
+    text, width.cutoff, rep_chars(indent), brace.newline, wrap, args.newline, spaces
   )
   text.tidy = if (comment) unmask_source(text.mask) else text.mask
   # restore new lines in the beginning and end
@@ -170,16 +169,15 @@ deparse2 = function(
 
 # wrapper around parse() and deparse()
 tidy_block = function(
-  text, width = getOption('width'), arrow = FALSE, indent = '    ',
+  text, width = getOption('width'), indent = '    ',
   brace.newline = FALSE, wrap = TRUE, args.newline = FALSE, spaces = rep_chars(width)
 ) {
   exprs = parse_only(text)
   if (length(exprs) == 0) return(character(0))
-  exprs = if (arrow) replace_assignment(exprs) else as.list(exprs)
   deparse = if (inherits(width, 'AsIs')) {
     function(x, width) deparse2(x, width, spaces, indent)
   } else base::deparse
-  unlist(lapply(exprs, function(e) {
+  unlist(lapply(as.list(exprs), function(e) {
     x = deparse(e, width)
     x = trimws(x, 'right')
     x = reindent_lines(x, indent)

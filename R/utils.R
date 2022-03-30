@@ -1,29 +1,10 @@
-# replace `=` by `<-` in expressions
-replace_assignment = function(exp) {
-  wc = codetools::makeCodeWalker(
-    call = function(e, w) {
-      cl = codetools::walkCode(e[[1]], w)
-      arg = lapply(as.list(e[-1]), function(a) if (missing(a)) NA else {
-        codetools::walkCode(a, w)
-      })
-      as.call(c(list(cl), arg))
-    },
-    leaf = function(e, w) {
-      if (length(e) == 0 || inherits(e, "srcref")) return(NULL)
-      # x = 1 is actually `=`(x, 1), i.e. `=` is a function
-      if (identical(e, as.name("="))) e <- as.name("<-")
-      e
-    })
-  lapply(as.list(exp), codetools::walkCode, w = wc)
-}
-
 parse_data = function(x) {
   d = utils::getParseData(parse_source(x))
   d[d$terminal, ]
 }
 
 # mask comments in strings so that deparse() will not drop them
-mask_comments = function(x, blank.line, wrap, arrow, args.newline, spaces) {
+mask_comments = function(x, comment, blank.line, wrap, arrow, args.newline, spaces) {
   d = parse_data(x)
   if ((n <- nrow(d)) == 0) return(x)
   d = fix_parse_data(d, x)
@@ -42,7 +23,7 @@ mask_comments = function(x, blank.line, wrap, arrow, args.newline, spaces) {
   # replace = with <- when = means assignment
   if (arrow) d.text[d.token == 'EQ_ASSIGN'] = '<-'
 
-  i = d.token == 'COMMENT'
+  i = if (comment) d.token == 'COMMENT' else logical(n)
   # double backslashes and replace " with ' in comments
   d.text[i] = gsub('"', "'", gsub('\\\\', '\\\\\\\\', d.text[i]))
 
