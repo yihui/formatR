@@ -289,3 +289,23 @@ rstudio_context = function() {
   if (is.null(ctx)) stop('There is no open document in the RStudio source editor.')
   ctx
 }
+
+#' Substitute the \pkg{magrittr} pipe with R's native pipe operator
+#'
+#' Parse the R code in the RStudio editor, identify \code{\%>\%}, and substitute
+#' with \code{|>}.
+#' @note Currently this function only works inside the RStudio IDE, and may be
+#'   extended in future to deal with arbitrary R code elsewhere.
+#' @export
+#' @examplesIf interactive()
+#' formatR::tidy
+tidy_pipe = function() {
+  ctx = rstudio_context()
+  d = parse_data(ctx$contents)
+  i = d$token == 'SPECIAL' & d$text == '%>%'
+  if (!any(i)) return(invisible())
+  d = d[i, c('line1', 'col1', 'line2', 'col2')]
+  d[, 4] = d[, 4] + 1
+  r = unname(as.list(as.data.frame(t(d))))
+  rstudioapi::modifyRange(r, '|>', ctx$id)
+}

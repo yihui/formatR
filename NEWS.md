@@ -4,6 +4,8 @@
 
 - Added a function `tidy_rstudio()` to reformat R code in the RStudio editor.
 
+- Added a function `tidy_pipe()` to substitute `%>%` with `|>` (currently works only in RStudio).
+
 # CHANGES IN formatR VERSION 1.11
 
 ## NEW FEATURES
