@@ -28,10 +28,11 @@ the clipboard).}
 
 \item{blank}{Whether to keep blank lines.}
 
-\item{arrow}{Whether to replace the assign operator \code{=} with \code{<-}.}
+\item{arrow}{Whether to substitute the assignment operator \code{=} with
+\code{<-}.}
 
-\item{pipe}{Whether to replace the \pkg{magrittr} pipe \code{\%>\%} with R's
-native pipe operator \code{|>}.}
+\item{pipe}{Whether to substitute the \pkg{magrittr} pipe \code{\%>\%} with
+R's native pipe operator \code{|>}.}
 
 \item{brace.newline}{Whether to put the left brace \code{\{} to a new line.}
 
@@ -70,7 +71,7 @@ A list with components \item{text.tidy}{the reformatted code as a
 Read R code from a file or the clipboard and reformat it. That this function
 preserves blank lines and comments is a different behavior from that of
 \code{\link{parse}()} and \code{\link{deparse}()}. This function can also
-replace \code{=} with \code{<-} where \code{=} means assignment, and
+substitute \code{=} with \code{<-} where \code{=} means assignment, and
 re-indent code with a specified number of spaces.
 }
 \details{

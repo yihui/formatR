@@ -63,7 +63,7 @@ the main workhorse is the function `tidy_source()`. Features include:
     (default is 4);
 -   An `else` statement on a separate line without the leading `}` will be moved
     one line back;
--   `=` as an assignment operator can be replaced with `<-`;
+-   `=` as an assignment operator can be substituted with `<-`;
 -   `%>%` can be substituted with `|>`;
 -   The left brace `{` can be moved to a new line;
 -   Arguments of a function call can start on a new line after the function name
@@ -168,7 +168,7 @@ We continue the example code in Section 2, using different arguments in
 `tidy_source()` such as `arrow`, `blank`, `indent`, `brace.newline` and
 `comment`, etc.
 
-## Replace `=` with `<-`
+## Substitute `=` with `<-`
 
 ```{r example, eval=FALSE, echo=5, tidy.opts=list(arrow=TRUE)}
 ```
@@ -314,7 +314,7 @@ invisible(".IDENTIFIER1  # asdf.IDENTIFIER2")
 which is a legal R expression, so `base::parse()` can deal with it and will no
 longer remove the disguised comments. In the end the identifiers will be removed
 to restore the original comments, i.e. the strings `invisible(".IDENTIFIER1` and
-`.IDENTIFIER2")` are replaced with empty strings.
+`.IDENTIFIER2")` are substituted with empty strings.
 
 Inline comments are handled differently: two spaces will be added before the
 hash symbol `#`, e.g.

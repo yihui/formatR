@@ -20,13 +20,13 @@ mask_comments = function(x, comment, blank.line, wrap, arrow, pipe, args.newline
   # how many blank lines after each token?
   blank = c(pmax(d.line[-1] - d.line2[-n] - 1, 0), 0)
 
-  # replace = with <- when = means assignment
+  # substitute = with <- when = means assignment
   if (arrow) d.text[d.token == 'EQ_ASSIGN'] = '<-'
-  # replace %>% with |>
+  # substitute %>% with |>
   if (pipe) d.text[d.token == 'SPECIAL' & d.text == '%>%'] = '|>'
 
   i = if (comment) d.token == 'COMMENT' else logical(n)
-  # double backslashes and replace " with ' in comments
+  # double backslashes and substitute " with ' in comments
   d.text[i] = gsub('"', "'", gsub('\\\\', '\\\\\\\\', d.text[i]))
 
   c0 = d.line[-1] != d.line[-n]  # is there a line change?

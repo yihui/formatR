@@ -100,7 +100,7 @@ if(F){
 
 }
 '
-assert('keep.blank.line=FALSE removes blank lines', {
+assert('blank=FALSE removes blank lines', {
   (tidy.res(x1) %==% c('1 + 1', '', 'if (F) {\n\n}', ''))
   (tidy.res(x1, blank = FALSE) %==% c('1 + 1', 'if (F) {\n}'))
 })

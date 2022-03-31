@@ -17,7 +17,7 @@ shinyUI(fluidPage(
                  onclick = '$("textarea#src").val($("#demo").val()).trigger("change");')),
       checkboxInput('arg_comment', 'Preserve comments', TRUE),
       checkboxInput('arg_blank', 'Preserve blank lines', TRUE),
-      checkboxInput('arg_assign', 'Replace = with <-', FALSE),
+      checkboxInput('arg_assign', 'Substitute = with <-', FALSE),
       checkboxInput('arg_pipe', 'Substitute %>% with |>', FALSE),
       checkboxInput('arg_anl', 'Start function arguments on a new line', FALSE),
       checkboxInput('arg_brace', 'Put { on a new line', FALSE),
