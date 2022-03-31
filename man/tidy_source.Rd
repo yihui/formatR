@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidy.R
 \name{tidy_source}
 \alias{tidy_source}
-\title{Reformat R code while preserving blank lines and comments}
+\title{Reformat R code}
 \usage{
 tidy_source(
   source = "clipboard",
@@ -68,17 +68,17 @@ A list with components \item{text.tidy}{the reformatted code as a
   masked in assignments or with the weird operator}.
 }
 \description{
-Read R code from a file or the clipboard and reformat it. That this function
-preserves blank lines and comments is a different behavior from that of
-\code{\link{parse}()} and \code{\link{deparse}()}. This function can also
-substitute \code{=} with \code{<-} where \code{=} means assignment, and
-re-indent code with a specified number of spaces.
+Read R code from a file or the clipboard and reformat it. This function is
+based on \code{\link{parse}()} and \code{\link{deparse}()}, but it does
+several other things, such as preserving blank lines and comments,
+substituting the assignment operator \code{=} with \code{<-}, and
+re-indenting code with a specified number of spaces.
 }
 \details{
-Value of the argument \code{width.cutoff} wrapped in \code{\link{I}()} (e.g.,
-\code{I(60)}) will be treated as the \emph{upper bound} of the line width.
-The corresponding argument to \code{deparse()} is a lower bound, so the
-function will perform a binary search for a width value that can make
+A value of the argument \code{width.cutoff} wrapped in \code{\link{I}()}
+(e.g., \code{I(60)}) will be treated as the \emph{upper bound} of the line
+width. The corresponding argument to \code{deparse()} is a lower bound, so
+the function will perform a binary search for a width value that can make
 \code{deparse()} return code with line width smaller than or equal to the
 \code{width.cutoff} value. If the search fails, a warning will signal,
 suppressible by global option \code{options(formatR.width.warning = FALSE)}.
