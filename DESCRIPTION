@@ -18,7 +18,7 @@ Description: Provides a function tidy_source() to format R source code. Spaces
 Depends:
     R (>= 3.2.3)
 Suggests:
-    codetools,
+    rstudioapi,
     shiny,
     testit,
     rmarkdown,
