@@ -161,6 +161,10 @@ if (getRversion() >= '4.1.0') assert('The new pipe |> is supported', {
   (tidy.res('1|>c()') %==% '1 |>\n    c()')
 })
 
+assert('The magrittr pipe can be substituted with the base R pipe', {
+  (tidy.res('1%>%c()%>%paste()', pipe = TRUE) %==% '1 |>\n    c() |>\n    paste()')
+})
+
 assert('The right arrow -> assignment operator is supported', {
   (tidy.res('1->a# right assign') %==% '1 -> a  # right assign')
 })
