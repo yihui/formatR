@@ -9,6 +9,7 @@ tidy_source(
   comment = getOption("formatR.comment", TRUE),
   blank = getOption("formatR.blank", TRUE),
   arrow = getOption("formatR.arrow", FALSE),
+  pipe = getOption("formatR.pipe", FALSE),
   brace.newline = getOption("formatR.brace.newline", FALSE),
   indent = getOption("formatR.indent", 4),
   wrap = getOption("formatR.wrap", TRUE),
@@ -28,6 +29,9 @@ the clipboard).}
 \item{blank}{Whether to keep blank lines.}
 
 \item{arrow}{Whether to replace the assign operator \code{=} with \code{<-}.}
+
+\item{pipe}{Whether to replace the \pkg{magrittr} pipe \code{\%>\%} with R's
+native pipe operator \code{|>}.}
 
 \item{brace.newline}{Whether to put the left brace \code{\{} to a new line.}
 

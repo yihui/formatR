@@ -4,7 +4,7 @@ parse_data = function(x) {
 }
 
 # mask comments in strings so that deparse() will not drop them
-mask_comments = function(x, comment, blank.line, wrap, arrow, args.newline, spaces) {
+mask_comments = function(x, comment, blank.line, wrap, arrow, pipe, args.newline, spaces) {
   d = parse_data(x)
   if ((n <- nrow(d)) == 0) return(x)
   d = fix_parse_data(d, x)
@@ -22,6 +22,8 @@ mask_comments = function(x, comment, blank.line, wrap, arrow, args.newline, spac
 
   # replace = with <- when = means assignment
   if (arrow) d.text[d.token == 'EQ_ASSIGN'] = '<-'
+  # replace %>% with |>
+  if (pipe) d.text[d.token == 'SPECIAL' & d.text == '%>%'] = '|>'
 
   i = if (comment) d.token == 'COMMENT' else logical(n)
   # double backslashes and replace " with ' in comments

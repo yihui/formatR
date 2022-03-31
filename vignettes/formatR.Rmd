@@ -64,6 +64,7 @@ the main workhorse is the function `tidy_source()`. Features include:
 -   An `else` statement on a separate line without the leading `}` will be moved
     one line back;
 -   `=` as an assignment operator can be replaced with `<-`;
+-   `%>%` can be substituted with `|>`;
 -   The left brace `{` can be moved to a new line;
 -   Arguments of a function call can start on a new line after the function name
     when they cannot fit on one line;
@@ -352,6 +353,7 @@ There are global options which can override some arguments in `tidy_source()`:
 | `comment`       | `options('formatR.comment')`       | `TRUE`             |
 | `blank`         | `options('formatR.blank')`         | `TRUE`             |
 | `arrow`         | `options('formatR.arrow')`         | `FALSE`            |
+| `pipe`          | `options('formatR.pipe')`          | `FALSE`            |
 | `indent`        | `options('formatR.indent')`        | `4`                |
 | `wrap`          | `options('formatR.wrap')`          | `TRUE`             |
 | `width.cutoff`  | `options('formatR.width')`         | `options('width')` |

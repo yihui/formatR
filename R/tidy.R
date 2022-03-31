@@ -18,6 +18,8 @@
 #' @param comment Whether to keep comments.
 #' @param blank Whether to keep blank lines.
 #' @param arrow Whether to replace the assign operator \code{=} with \code{<-}.
+#' @param pipe Whether to replace the \pkg{magrittr} pipe \code{\%>\%} with R's
+#'   native pipe operator \code{|>}.
 #' @param brace.newline Whether to put the left brace \code{\{} to a new line.
 #' @param indent Number of spaces to indent the code.
 #' @param wrap Whether to wrap comments to the linewidth determined by
@@ -54,6 +56,7 @@ tidy_source = function(
   source = 'clipboard', comment = getOption('formatR.comment', TRUE),
   blank = getOption('formatR.blank', TRUE),
   arrow = getOption('formatR.arrow', FALSE),
+  pipe = getOption('formatR.pipe', FALSE),
   brace.newline = getOption('formatR.brace.newline', FALSE),
   indent = getOption('formatR.indent', 4),
   wrap = getOption('formatR.wrap', TRUE),
@@ -88,7 +91,7 @@ tidy_source = function(
   # insert enough spaces into infix operators such as %>% so the lines can be
   # broken after the operators
   spaces = rep_chars(width.cutoff)
-  text = mask_comments(text, comment, blank, wrap, arrow, args.newline, spaces)
+  text = mask_comments(text, comment, blank, wrap, arrow, pipe, args.newline, spaces)
   text.mask = tidy_block(
     text, width.cutoff, rep_chars(indent), brace.newline, wrap, args.newline, spaces
   )
