@@ -1,5 +1,5 @@
 parse_data = function(x) {
-  d = utils::getParseData(parse_source(x))
+  d = utils::getParseData(parse_source(x, TRUE))
   d[d$terminal, ]
 }
 
@@ -136,14 +136,11 @@ move_leftbrace = function(x) {
   x
 }
 
-# parse but do not keep source (copied from xfun)
-parse_only = function(code) {
+# base::parse(text = NULL) will ask for user input but should return an empty
+# expression instead
+parse_source = function(code, keep.source = FALSE) {
   if (length(code) == 0) return(expression())
-  base::parse(text = code, keep.source = FALSE)
-}
-
-parse_source = function(lines) {
-  parse(text = lines, keep.source = TRUE)
+  base::parse(text = code, keep.source = keep.source)
 }
 
 # restore backslashes

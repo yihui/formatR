@@ -176,7 +176,7 @@ tidy_block = function(
   text, width = getOption('width'), indent = '    ',
   brace.newline = FALSE, wrap = TRUE, args.newline = FALSE, spaces = rep_chars(width)
 ) {
-  exprs = parse_only(text)
+  exprs = parse_source(text)
   if (length(exprs) == 0) return(character(0))
   deparse = if (inherits(width, 'AsIs')) {
     function(x, width) deparse2(x, width, spaces, indent)
