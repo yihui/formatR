@@ -298,7 +298,7 @@ rstudio_context = function() {
 #'   extended in future to deal with arbitrary R code elsewhere.
 #' @export
 #' @examplesIf interactive()
-#' formatR::tidy
+#' formatR::tidy_pipe()
 tidy_pipe = function() {
   ctx = rstudio_context()
   d = parse_data(ctx$contents)
