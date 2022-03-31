@@ -2,6 +2,8 @@
 
 - Added a new argument `pipe` to `tidy_source()`. If `pipe = TRUE`, it will convert the **magrittr** pipe `%>%` to the base R pipe operator `|>`.
 
+- Added a function `tidy_rstudio()` to reformat R code in the RStudio editor.
+
 # CHANGES IN formatR VERSION 1.11
 
 ## NEW FEATURES

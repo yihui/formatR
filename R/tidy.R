@@ -253,3 +253,39 @@ tidy_file = function(file, ...) {
     try(tidy_source(f, file = f, ...))
   }
 }
+
+#' Reformat R code in RStudio IDE
+#'
+#' If any R code is selected in the RStudio source editor, this function
+#' reformats the selected code; otherwise it reformats the current open file (if
+#' it is unsaved, it will be automatically saved).
+#' @param ... Arguments to be passed to \code{\link{tidy_source}()}, among which
+#'   the \code{indent} argument will respect the value you set for the number of
+#'   spaces for indentation in RStudio.
+#' @note If the output is not what you want, you can undo the change in the
+#'   editor (Ctrl + Z or Command + Z).
+#' @export
+#' @examplesIf interactive()
+#' formatR::tidy_rstudio()
+#' formatR::tidy_rstudio(args.newline = TRUE)
+tidy_rstudio = function(...) {
+  ctx = rstudio_context()
+  if (is.null(getOption('formatR.indent'))) {
+    opts = options(formatR.indent = rstudioapi::readRStudioPreference('num_spaces_for_tab', 4))
+    on.exit(options(opts), add = TRUE)
+  }
+  if (length(ctx$selection) == 1 && !identical(txt <- ctx$selection[[1]]$text, '')) {
+    res = tidy_source(text = txt, output = FALSE, ...)$text.tidy
+    rstudioapi::modifyRange(ctx$selection[[1]]$range, one_string(res), ctx$id)
+  } else {
+    rstudioapi::documentSave(ctx$id)
+    res = tidy_source(ctx$path, output = FALSE, ...)$text.tidy
+    writeLines(enc2utf8(res), ctx$path, useBytes = TRUE)
+  }
+}
+
+rstudio_context = function() {
+  ctx = rstudioapi::getSourceEditorContext()
+  if (is.null(ctx)) stop('There is no open document in the RStudio source editor.')
+  ctx
+}
