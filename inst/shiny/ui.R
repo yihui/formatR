@@ -13,18 +13,19 @@ shinyUI(fluidPage(
                'in the', a(href = 'https://yihui.org/formatR/', strong('formatR')),
                sprintf('(>= v%s)', packageVersion('formatR')),
                'package to reformat R code in the text box on the right.',
-               a(list(icon('hand-o-right'), 'demo'), class = 'btn btn-small btn-info',
+               a(list(icon('hand-point-right'), 'demo'), class = 'btn btn-small btn-info',
                  onclick = '$("textarea#src").val($("#demo").val()).trigger("change");')),
       checkboxInput('arg_comment', 'Preserve comments', TRUE),
       checkboxInput('arg_blank', 'Preserve blank lines', TRUE),
       checkboxInput('arg_assign', 'Replace = with <-', FALSE),
+      checkboxInput('arg_pipe', 'Substitute %>% with |>', FALSE),
       checkboxInput('arg_anl', 'Start function arguments on a new line', FALSE),
       checkboxInput('arg_brace', 'Put { on a new line', FALSE),
       checkboxInput('arg_wrap', 'Wrap comments', TRUE),
       numericInput ('arg_indent', 'Number of spaces for indentation', 4, min = 0),
       radioButtons('width_type', 'Line width type', c('minimum', 'maximum'), inline = TRUE),
       numericInput ('arg_width', 'Line width value', 70, min = 20, max = 500),
-      submitButton ('Format My Code', icon('toggle-right'))
+      submitButton ('Format My Code', icon('play'))
     ),
     mainPanel(
       tags$textarea(
