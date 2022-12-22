@@ -1,3 +1,7 @@
+# CHANGES IN formatR VERSION 1.14
+
+- `tidy_source()` supports the `:=` operator now (which is widely used in **data.table**).
+
 # CHANGES IN formatR VERSION 1.13
 
 - `tidy_source()` supports anonymous functions of the form `\(args) expr` for R >= 4.1.0 now (thanks, @notPlancha, #98).

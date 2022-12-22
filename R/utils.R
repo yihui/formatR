@@ -65,6 +65,8 @@ mask_comments = function(x, comment, blank.line, wrap, arrow, pipe, args.newline
   d.text[d.text == '|>'] = paste0('%', '\b|>', spaces, '%')
   # preserve the assignment operator ->
   d.text[d.text == '->'] = '%\b->%'
+  # preserve := for data.table
+  d.text[d.text == ':='] = '%\b:=%'
   # R 4.1.0 anonymous functions
   if (length(i <- which(d.token == "'\\\\'"))) {
     d.text[i] = '`\\\\`'
