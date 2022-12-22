@@ -212,3 +212,10 @@ assert('args.newline = TRUE can start function arguments on a new line', {
   (tidy.res(x3, args.newline = TRUE, width.cutoff = I(33), indent = 2) %==%
       'my_sum = function(\n  a = 1, b = 2, c = 3, d = 4,\n  e = 5, f = 6, g = 7\n) {\n  return(a + b + c)\n}')
 })
+
+if (getRversion() >= '4.1.0') assert('Anonymous functions \\() are supported', {
+  (tidy.res('\\(x)x+1') %==% '\\(x) x + 1')
+  x = '\\(a,b,c,d,e,f,g){a%in%b}'
+  (tidy.res(x) %==% '\\(a, b, c, d, e, f, g) {\n    a %in% b\n}')
+  (tidy.res(x, width.cutoff = 10) %==% '\\(a, b, c, d, e, f,\n    g) {\n    a %in% b\n}')
+})

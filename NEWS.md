@@ -1,5 +1,6 @@
 # CHANGES IN formatR VERSION 1.13
 
+- `tidy_source()` supports anonymous functions of the form `\(args) expr` for R >= 4.1.0 now (thanks, @notPlancha, #98).
 
 # CHANGES IN formatR VERSION 1.12
 

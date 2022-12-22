@@ -191,6 +191,10 @@ tidy_block = function(
     if (brace.newline) x = move_leftbrace(x)
     x = restore_infix(x)
     x = one_string(x)
+    # restore anonymous functions
+    if (!brace.newline)
+      x = gsub('( %\\\\\b%)\\s+(\\{)', '\\1 \\2', x)  # remove possible \n before {
+    x = gsub('`\\\\\\\\`(\\(.*?\\)) %\\\\\b%', '\\\\\\1', x)
     if (args.newline) x = restore_arg_breaks(x, width, spaces, indent)
     x
   }))
