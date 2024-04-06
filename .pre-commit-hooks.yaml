@@ -1,6 +1,8 @@
 - id: formatr
   name: formatR
   description: Uses formatR to format R files
-  entry: Rescript scripts/pre-commit-formatR.R
+  entry: Rscript scripts/pre-commit-formatR.R
   language: r
   types: [text]
+  files: '.*.[rR]$'
+  additional_dependencies: [docopt]
