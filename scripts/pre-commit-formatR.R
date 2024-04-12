@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-if (!require("pacman")) install.packages("pacman")
+if (!require("pacman", quietly = TRUE)) install.packages("pacman")
 pacman::p_load("docopt", "formatR")
 
 
