@@ -4,5 +4,5 @@
   entry: Rscript scripts/pre-commit-formatR.R
   language: r
   types: [text]
-  files: '.*.[rR]$'
-  additional_dependencies: [docopt]
+  files: '.*\.[rR]$'
+  require_serial: true
