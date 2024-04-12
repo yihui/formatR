@@ -1,8 +1,8 @@
 - id: formatr
   name: formatR
   description: Uses formatR to format R files
-  entry: Rscript scripts/pre-commit-formatR.R
-  language: r
+  entry: scripts/pre-commit-formatR.R
+  language: script
   types: [text]
   files: '.*\.[rR]$'
   require_serial: true
