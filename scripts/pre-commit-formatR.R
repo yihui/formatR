@@ -1,9 +1,5 @@
 #!/usr/bin/env Rscript
 
-if (!require("pacman", quietly = TRUE)) install.packages("pacman")
-pacman::p_load("docopt", "formatR")
-
-
 library(docopt)
 library(formatR)
 
@@ -25,21 +21,11 @@ Options:
 
 args <- docopt(doc)
 
-source_files <- args[["files"]]
-
-# get the width cutoff as integer
-width_cutoff <- as.integer(args[["--width-cutoff"]])
-
-fileName_results <- c()
-
-for (source_file in source_files)
-{
-    tidy_result <- formatR::tidy_source(
-        source = source_file, file = source_file, comment = !args[["--no-comments"]],
-        blank = !args[["--no-blanks"]], arrow = args[["--arrow"]], pipe = args[["--pipe"]],
-        brace.newline = args[["--brace-newline"]], indent = as.integer(args[["--indent"]]),
+for (source_file in args[["files"]]) {
+    tidy_result <- formatR::tidy_source(source = source_file, file = source_file,
+        comment = !args[["--no-comments"]], blank = !args[["--no-blanks"]], arrow = args[["--arrow"]],
+        pipe = args[["--pipe"]], brace.newline = args[["--brace-newline"]], indent = as.integer(args[["--indent"]]),
         wrap = !args[["--no-wrap"]], width.cutoff = as.integer(args[["--width-cutoff"]]),
-        args.newline = args[["--args-newline"]]
-    )$text
+        args.newline = args[["--args-newline"]])$text
 
 }
