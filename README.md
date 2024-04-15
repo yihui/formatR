@@ -17,7 +17,9 @@ reformatting](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.i
 
 ## Pre-commit Hook
 
-formatR is available as a pre-commit hook. The following arguments are available:
+formatR is available as a pre-commit hook. Note that, to use this, `formatR` and `docopt` must be installed in the system R library; the hook does not install anything itself.
+
+The following arguments are available:
 
 ```
 Options:    
