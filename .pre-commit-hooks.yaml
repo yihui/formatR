@@ -1,0 +1,6 @@
+- id: formatr
+  name: formatR
+  description: Uses formatR to format R files
+  entry: scripts/pre-commit-formatR.R
+  language: script
+  files: '.*\.[rR]$'
