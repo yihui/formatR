@@ -1,0 +1,9 @@
+inst/examples
+.gitignore
+^\.Rproj\.user$
+^.*\.Rproj$
+inst/shiny/rsconnect
+.Rhistory
+^\.github$
+^NEWS\.md$
+^README\.md$
