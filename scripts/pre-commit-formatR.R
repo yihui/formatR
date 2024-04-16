@@ -22,9 +22,9 @@ Options:
 args <- docopt(doc)
 
 for (source_file in args[["files"]]) {
-    tidy_result <- formatR::tidy_source(source = source_file, file = source_file,
-        comment = !args[["--no-comments"]], blank = !args[["--no-blanks"]], arrow = args[["--arrow"]],
-        pipe = args[["--pipe"]], brace.newline = args[["--brace-newline"]], indent = as.integer(args[["--indent"]]),
+    formatR::tidy_source(source = source_file, file = source_file, comment = !args[["--no-comments"]],
+        blank = !args[["--no-blanks"]], arrow = args[["--arrow"]], pipe = args[["--pipe"]],
+        brace.newline = args[["--brace-newline"]], indent = as.integer(args[["--indent"]]),
         wrap = !args[["--no-wrap"]], width.cutoff = as.integer(args[["--width-cutoff"]]),
         args.newline = args[["--args-newline"]])$text
 
