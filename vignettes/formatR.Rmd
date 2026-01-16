@@ -24,7 +24,7 @@ options(formatR.indent = 4, width = 70)
 knitr::opts_chunk$set(tidy = TRUE)
 ```
 
-# 1. Installation
+## 1. Installation
 
 You can install **formatR** from
 [CRAN](https://cran.r-project.org/package=formatR), or yihui.r-universe.dev if
@@ -49,7 +49,7 @@ library(formatR)
 sessionInfo()
 ```
 
-# 2. Reformat R code
+## 2. Reformat R code
 
 The **formatR** package was designed to reformat R code to improve readability;
 the main workhorse is the function `tidy_source()`. Features include:
@@ -109,7 +109,7 @@ Two applications of `tidy_source()`:
     args(glm)
     ```
 
-# 3. The Graphical User Interface
+## 3. The Graphical User Interface
 
 If the **shiny** packages has been installed, the function `tidy_app()` can
 launch a Shiny app to reformat R code like this (live demo at
@@ -135,7 +135,7 @@ reformatting](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.i
 if (ignore_img) cat('\n-->')
 ```
 
-# 4. Evaluate the code and mask output in comments
+## 4. Evaluate the code and mask output in comments
 
 It is often a pain when trying to copy R code from other people's code which has
 been run in R and the prompt characters (usually `>`) are attached in the
@@ -161,7 +161,7 @@ tidy_eval()
 # without specifying any arguments, it reads code from clipboard
 ```
 
-# 5. Showcase
+## 5. Showcase
 
 We continue the example code in Section 2, using different arguments in
 `tidy_source()` such as `arrow`, `blank`, `indent`, `brace.newline` and
@@ -228,7 +228,7 @@ will be reformatted to:
 ```{r example, eval=FALSE, tidy.opts=list(comment = FALSE, width.cutoff = 50)}
 ```
 
-# 6. Further notes
+## 6. Further notes
 
 The tricks used in this packages are very dirty. There might be dangers in using
 the functions in **formatR**. Please read the next section carefully to know
@@ -287,7 +287,7 @@ package is unable to correctly format the code using `?` with comments, e.g.
 In this case, it is recommended to use the function `help()` instead of the
 short-hand version `?`.
 
-# 7. How does `tidy_source()` actually work?
+## 7. How does `tidy_source()` actually work?
 
 In a nutshell, `tidy_source(text = code)` is basically
 `deparse(parse(text = code))`, but actually it is more complicated only because
@@ -343,7 +343,7 @@ All these special treatments to comments are due to the fact that
 `base::parse()` and `base::deparse()` can tidy the R code at the price of
 dropping all the comments.
 
-# 8. Global options
+## 8. Global options
 
 There are global options which can override some arguments in `tidy_source()`:
 
