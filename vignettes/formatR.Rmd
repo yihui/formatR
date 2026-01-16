@@ -3,7 +3,6 @@ title: formatR
 subtitle: Format R code automatically
 author: Yihui Xie
 date: "`r Sys.Date()`"
-show_toc: true
 slug: formatr
 githubEditURL: https://github.com/yihui/formatR/edit/master/vignettes/formatR.Rmd
 output:
