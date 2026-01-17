@@ -46,7 +46,7 @@ the development version.
 
 ```{r}
 library(formatR)
-sessionInfo()
+packageVersion('formatR')
 ```
 
 ## 2. Reformat R code
