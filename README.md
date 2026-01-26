@@ -14,3 +14,22 @@ to
 
 [![R source code after
 reformatting](https://db.yihui.org/imgur/TBZm0B8.png)](https://yihui.shinyapps.io/formatR/)
+
+## Pre-commit Hook
+
+formatR is available as a pre-commit hook. Note that, to use this, `formatR` and `docopt` must be installed in the system R library; the hook does not install anything itself.
+
+The following arguments are available:
+
+```
+Options:    
+  --no-comments         Remove comments. 
+  --no-blanks           Remove blank lines. 
+  --arrow               If given, arrows will not be substituted for = signs. 
+  --pipe                If given, pipes will not be changed. 
+  --brace-newline       If given, braces will not be put on new lines. 
+  --indent=INDENT       Number of indents. [default: 4]    
+  --no-wrap             Skip wrapping the text. 
+  --width-cutoff=WIDTH  Text width cutoff. [default: 80]    
+  --args-newline        If TRUE, arguments are started on a new line after a function call. [default: FALSE]    
+```
